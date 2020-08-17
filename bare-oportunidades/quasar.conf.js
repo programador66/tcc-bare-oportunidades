@@ -79,7 +79,7 @@ module.exports = function(/* ctx */) {
       importStrategy: "auto",
 
       // Quasar plugins
-      plugins: ["QToolbar"]
+      plugins: ["QToolbar", "QTabs"]
     },
 
     // animations: 'all', // --- includes all animations

@@ -8,6 +8,13 @@
 
     <div id="form-container">
       <img alt="Baré logo" src="~assets/img/marca-bare.oportunidades-02.svg" />
+
+      <q-tabs v-model="tab" id="tabs-menu">
+        <q-tab name="alunos" label="Alunos" />
+        <q-tab name="empresas" label="Empresa" />
+        <q-tab name="faculdades" label="Faculdades" />
+      </q-tabs>
+
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-lg">
         <q-input
           outlined
@@ -25,10 +32,10 @@
 
         <q-input
           outlined
+          :type="isPwd ? 'password' : 'text'"
           stack-label
           label-color="orange"
           filled
-          type="password"
           v-model="age"
           label="Senha"
           hint="No mínimo 6 caractéres"
@@ -38,7 +45,15 @@
               (val !== null && val !== '') || 'Campo login não pode ser nulo',
             val => (val > 0 && val < 100) || 'Campo senha não pode ser nulo'
           ]"
-        />
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+            />
+          </template>
+        </q-input>
 
         <div>
           <q-btn
@@ -70,7 +85,9 @@ export default {
   data() {
     return {
       name: null,
-      age: null
+      age: null,
+      isPwd: true,
+      tab: "alunos"
     };
   },
 
@@ -120,5 +137,10 @@ export default {
 
 #img-03 {
   margin-top: 6%;
+}
+
+#tabs-menu {
+  margin-bottom: 2%;
+  color: #8b8b8b;
 }
 </style>
