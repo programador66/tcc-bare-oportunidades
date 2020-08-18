@@ -10,12 +10,12 @@
       <img alt="Baré logo" src="~assets/img/marca-bare.oportunidades-02.svg" />
 
       <q-tabs v-model="tab" id="tabs-menu">
-        <q-tab name="alunos" label="Alunos" />
-        <q-tab name="empresas" label="Empresa" />
-        <q-tab name="faculdades" label="Faculdades" />
+        <q-tab name="alunos" label="Alunos" @click="onReset()" />
+        <q-tab name="empresas" label="Empresa" @click="onReset()" />
+        <q-tab name="faculdades" label="Faculdades" @click="onReset()" />
       </q-tabs>
 
-      <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-lg">
+      <q-form @submit="onSubmit" ref="formLogin" class="q-gutter-lg">
         <q-input
           outlined
           stack-label
@@ -23,7 +23,7 @@
           filled
           v-model="name"
           label="Login"
-          hint="Seu E-mail ou registro acadêmico"
+          hint="Seu E-mail"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Campo login não pode ser nulo'
@@ -36,14 +36,12 @@
           stack-label
           label-color="orange"
           filled
-          v-model="age"
+          v-model="password"
           label="Senha"
           hint="No mínimo 6 caractéres"
           lazy-rules
           :rules="[
-            val =>
-              (val !== null && val !== '') || 'Campo login não pode ser nulo',
-            val => (val > 0 && val < 100) || 'Campo senha não pode ser nulo'
+            val => (val && val.length > 0) || 'Campo senha não pode ser nulo'
           ]"
         >
           <template v-slot:append>
@@ -64,11 +62,14 @@
         </div>
       </q-form>
     </div>
-    <img
-      alt="Quasar logo"
-      src="~assets/img/imagens-bare-02.svg"
-      width="350px"
-    />
+    <span id="img-02">
+      <img
+        alt="Quasar logo"
+        src="~assets/img/imagens-bare-02.svg"
+        width="350px"
+      />
+    </span>
+
     <span id="img-03">
       <img
         alt="Quasar logo"
@@ -85,7 +86,7 @@ export default {
   data() {
     return {
       name: null,
-      age: null,
+      password: null,
       isPwd: true,
       tab: "alunos"
     };
@@ -112,8 +113,8 @@ export default {
 
     onReset() {
       this.name = null;
-      this.age = null;
-      this.accept = false;
+      this.password = null;
+      this.$refs.formLogin.resetValidation();
     }
   }
 };
@@ -135,12 +136,21 @@ export default {
   width: 340px;
 }
 
+#form-container img {
+  margin-bottom: 2%;
+}
+
+#img-02 {
+  margin-top: 6%;
+  margin-left: 2%;
+}
+
 #img-03 {
   margin-top: 6%;
 }
 
 #tabs-menu {
-  margin-bottom: 2%;
+  margin-bottom: 4%;
   color: #8b8b8b;
 }
 </style>
