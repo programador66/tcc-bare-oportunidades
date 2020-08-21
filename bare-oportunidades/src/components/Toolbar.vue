@@ -12,20 +12,78 @@
         <q-tab name="tab1" label="Vagas Disponíveis" />
         <q-tab name="tab2" label="Minhas Oportunidades" />
       </q-tabs>
-      <q-avatar size="60px">
+      <q-avatar size="60px" @click="drawer = !drawer">
         <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
       </q-avatar>
     </q-toolbar>
+    <q-drawer
+      side="right"
+      v-model="drawer"
+      :width="250"
+      :breakpoint="500"
+      overlay
+      bordered
+      :content-style="{ backgroundColor: '#FBFBFB' }"
+    >
+      <q-scroll-area class="fit">
+        <q-list v-for="(menuItem, index) in menuList" :key="index">
+          <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple>
+            <q-item-section avatar>
+              <q-icon :name="menuItem.icon" style="color:#e65100" />
+            </q-item-section>
+            <q-item-section
+              style="color:#e65100"
+              @click="logout(menuItem.label)"
+            >
+              {{ menuItem.label }}
+            </q-item-section>
+          </q-item>
+
+          <q-separator v-if="menuItem.separator" />
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
   </div>
 </template>
 
 <script>
+const menuList = [
+  {
+    icon: "account_box",
+    label: "Perfil",
+    separator: true
+  },
+  {
+    icon: "school",
+    label: "Faculdade",
+    separator: false
+  },
+  {
+    icon: "feedback",
+    label: "Sobre o Sistema",
+    separator: false
+  },
+  {
+    icon: "exit_to_app",
+    label: "Sair",
+    separator: false
+  }
+];
 export default {
   name: "Tollbar",
   data() {
     return {
-      tab: ""
+      tab: "",
+      drawer: false,
+      menuList
     };
+  },
+  methods: {
+    logout(e) {
+      if (e === "Sair") {
+        window.location = "http://localhost:8080/";
+      }
+    }
   }
 };
 </script>
@@ -52,5 +110,9 @@ export default {
 .q-avatar {
   margin-bottom: 0.5%;
   margin-right: 6%;
+}
+
+.q-avatar:hover {
+  cursor: pointer;
 }
 </style>

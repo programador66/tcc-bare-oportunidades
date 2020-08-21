@@ -58,6 +58,7 @@
             label="Entrar"
             type="submit"
             style="background: #e65100; color: white;width:340px"
+            @click="onSubmit"
           />
         </div>
       </q-form>
@@ -94,21 +95,16 @@ export default {
 
   methods: {
     onSubmit() {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: "red-5",
-          textColor: "white",
-          icon: "warning",
-          message: "You need to accept the license and terms first"
-        });
-      } else {
-        this.$q.notify({
-          color: "green-4",
-          textColor: "white",
-          icon: "cloud_done",
-          message: "Submitted"
-        });
-      }
+      this.$q.loading.show({
+        message: "Validando dados aguarde ..."
+      });
+
+      // hiding in 2s
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide();
+        this.timer = void 0;
+        this.$router.push("/home-students");
+      }, 2000);
     },
 
     onReset() {
