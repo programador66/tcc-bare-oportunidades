@@ -17,7 +17,7 @@ class UserController {
 
       return response.status(200).json({
         msg: "Cadastro realizado com sucesso!",
-        data: { ...usu, id: usuario },
+        data: { email, id: usuario, tp_usuario },
       });
     } catch (err) {
       return response.status(406).json({
