@@ -81,6 +81,7 @@ export default {
   methods: {
     logout(e) {
       if (e === "Sair") {
+        sessionStorage.clear();
         window.location = "http://localhost:8080/";
       }
     }

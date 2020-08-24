@@ -26,8 +26,12 @@ class UserService {
     return client;
   }
 
-  async getUserByEmail(email: String) {
-    const client = await knex("usuario").select("*").where("email", email);
+  async getUserByEmail(email: String, tp_usuario: String) {
+    const client = await knex("usuario")
+      .select("*")
+      .where("email", email)
+      .where("tp_usuario", tp_usuario);
+
     return client;
   }
 }

@@ -10,18 +10,18 @@
       <img alt="Baré logo" src="~assets/img/marca-bare.oportunidades-02.svg" />
 
       <q-tabs v-model="tab" id="tabs-menu">
-        <q-tab name="alunos" label="Alunos" @click="onReset()" />
-        <q-tab name="empresas" label="Empresa" @click="onReset()" />
-        <q-tab name="faculdades" label="Faculdades" @click="onReset()" />
+        <q-tab name="A" label="Alunos" @click="onReset()" />
+        <q-tab name="E" label="Empresa" @click="onReset()" />
+        <q-tab name="F" label="Faculdades" @click="onReset()" />
       </q-tabs>
 
-      <q-form @submit="onSubmit" ref="formLogin" class="q-gutter-lg">
+      <q-form ref="formLogin" class="q-gutter-lg">
         <q-input
           outlined
           stack-label
           label-color="orange"
           filled
-          v-model="name"
+          v-model="email"
           label="Login"
           hint="Seu E-mail"
           lazy-rules
@@ -36,7 +36,7 @@
           stack-label
           label-color="orange"
           filled
-          v-model="password"
+          v-model="senha"
           label="Senha"
           hint="No mínimo 6 caractéres"
           lazy-rules
@@ -56,10 +56,13 @@
         <div>
           <q-btn
             label="Entrar"
-            type="submit"
+            type="button"
             style="background: #e65100; color: white;width:340px"
             @click="onSubmit"
           />
+        </div>
+        <div id="ntc">
+          <label>Não Tem Cadastro?</label>
         </div>
       </q-form>
     </div>
@@ -82,14 +85,16 @@
 </template>
 
 <script>
+import usuario from "../services/usuario/login";
+
 export default {
   name: "LoginLayout",
   data() {
     return {
-      name: null,
-      password: null,
+      email: null,
+      senha: null,
       isPwd: true,
-      tab: "alunos"
+      tab: "A"
     };
   },
 
@@ -99,18 +104,52 @@ export default {
         message: "Validando dados aguarde ..."
       });
 
-      // hiding in 2s
-      this.timer = setTimeout(() => {
-        this.$q.loading.hide();
-        this.timer = void 0;
-        this.$router.push("/home-students");
-      }, 2000);
+      const user = {
+        email: this.email,
+        senha: this.senha,
+        tp_usuario: this.tab
+      };
+
+      usuario
+        .realizarLogin(user)
+        .then(response => {
+          this.msgSucesso("Bem vindo ao Baré Oportunidades!");
+          sessionStorage.setItem("usuario", JSON.stringify(response.data));
+
+          this.timer = setTimeout(() => {
+            this.$q.loading.hide();
+            this.timer = void 0;
+            this.$router.push("/home-students");
+          }, 2000);
+        })
+        .catch(e => {
+          this.msgError(e.response.data.message);
+
+          this.timer = setTimeout(() => {
+            this.$q.loading.hide();
+            this.timer = void 0;
+          }, 2000);
+        });
     },
 
     onReset() {
       this.name = null;
       this.password = null;
       this.$refs.formLogin.resetValidation();
+    },
+    msgError(params) {
+      this.$q.notify({
+        type: "negative",
+        message: `${params}`,
+        timeout: 1500
+      });
+    },
+    msgSucesso(params) {
+      this.$q.notify({
+        type: "positive",
+        message: `${params}`,
+        timeout: 1000
+      });
     }
   }
 };
@@ -148,5 +187,16 @@ export default {
 #tabs-menu {
   margin-bottom: 4%;
   color: #8b8b8b;
+}
+#ntc {
+  display: flex;
+  justify-content: center;
+  color: #e65100;
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+#ntc label:hover {
+  cursor: pointer;
 }
 </style>

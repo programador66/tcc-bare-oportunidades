@@ -5,7 +5,7 @@ const routes = [
   },
   {
     path: "/home-students",
-    component: () => import("layouts/MainLayout.vue"),
+    component: () => import("layouts/Aluno/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/Index.vue") }]
   },
 

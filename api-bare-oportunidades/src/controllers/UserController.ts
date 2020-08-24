@@ -34,9 +34,9 @@ class UserController {
   }
 
   async login(request: Request, response: Response) {
-    const { email, senha } = request.body;
+    const { email, senha, tp_usuario } = request.body;
 
-    const usuario = await new UserService().getUserByEmail(email);
+    const usuario = await new UserService().getUserByEmail(email, tp_usuario);
 
     if (usuario.length === 1) {
       if (await bcrypt.compare(senha, usuario[0].senha)) {
