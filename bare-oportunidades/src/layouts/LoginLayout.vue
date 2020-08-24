@@ -62,7 +62,7 @@
           />
         </div>
         <div id="ntc">
-          <label>Não Tem Cadastro?</label>
+          <label @click="escolha = true">Não Tem Cadastro?</label>
         </div>
       </q-form>
     </div>
@@ -81,20 +81,27 @@
         width="260px"
       />
     </span>
+    <dialog-escolha
+      :escolha="escolha"
+      @escolha="escolha = $event"
+    ></dialog-escolha>
   </q-layout>
 </template>
 
 <script>
 import usuario from "../services/usuario/login";
+import DialogEscolha from "../components/Dialogs/DialogEscolha";
 
 export default {
   name: "LoginLayout",
+  components: { DialogEscolha },
   data() {
     return {
       email: null,
       senha: null,
       isPwd: true,
-      tab: "A"
+      tab: "A",
+      escolha: false
     };
   },
 
