@@ -1,12 +1,13 @@
 import Knex from "knex";
 
 export async function up(knex: Knex) {
-  return await knex.schema.createTable("faculdade", (table) => {
+  return await knex.schema.createTable("aluno", (table) => {
     table.increments("id").primary();
-    table.string("cnpj").notNullable().unique();
+    table.string("cpf").notNullable().unique();
     table.string("nome").notNullable();
     table.string("endereco").notNullable();
-    table.string("telefone").notNullable();
+    table.string("sexo", 1).notNullable();
+    table.string("registro_academico").notNullable();
     table
       .integer("id_usuario")
       .notNullable()
@@ -16,5 +17,5 @@ export async function up(knex: Knex) {
 }
 
 export async function down(knex: Knex) {
-  return await knex.schema.dropTable("faculdade");
+  return await knex.schema.dropTable("aluno");
 }

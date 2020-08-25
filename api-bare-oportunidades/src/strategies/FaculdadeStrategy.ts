@@ -1,10 +1,17 @@
+import { Request } from "express";
 import ICadastro from "../interfaces/ICadastro";
 import FaculdadeService from "../services/FaculdadeService";
-import IModelFaculdade from "../interfaces/IModelFaculdade";
-
 class FaculdadeStrategy implements ICadastro {
-  async cadastrar(request: IModelFaculdade): Promise<any> {
-    const faculdade = new FaculdadeService().insert(request);
+  async cadastrar(request: Request, id_usuario: Number): Promise<any> {
+    const { nome, endereco, cnpj, telefone } = request.body;
+
+    const faculdade = new FaculdadeService().insert({
+      nome,
+      endereco,
+      cnpj,
+      telefone,
+      id_usuario,
+    });
 
     return faculdade;
   }

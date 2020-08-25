@@ -3,4 +3,5 @@ export default interface IFaculdade {
   cnpj: String;
   endereco: String;
   id_usuario: Number;
+  telefone: String;
 }

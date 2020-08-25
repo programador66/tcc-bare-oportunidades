@@ -1,5 +1,5 @@
 interface ICadastro {
-  cadastrar(request: any): Promise<any>;
+  cadastrar(request: any, id_usuario: Number): Promise<any>;
   render(): void;
 }
 
