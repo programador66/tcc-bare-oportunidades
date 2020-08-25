@@ -3,21 +3,34 @@ import UserService from "../services/UserService";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+import NovoCadastroFactory from "../factories/NovoCadastroFactory";
+
 class UserController {
   async create(request: Request, response: Response) {
     try {
       const { email, tp_usuario, senha } = request.body;
+      const { nome, cnpj, endereco } = request.body;
 
       const passwordHash = await bcrypt.hash(senha, 8);
 
       const usu = { email, tp_usuario, senha: passwordHash };
       const { usuario } = await new UserService().insert(usu);
 
-      console.log(usuario);
+      const novoCadastro = new NovoCadastroFactory(tp_usuario).getClasse();
+
+      const resNovoCadastro = await novoCadastro.cadastrar({
+        nome,
+        cnpj,
+        endereco,
+        id_usuario: usuario,
+      });
+
+      if (!resNovoCadastro.success) {
+        throw new Error("Erro na inserção de um novo cadastro!");
+      }
 
       return response.status(200).json({
         msg: "Cadastro realizado com sucesso!",
-        data: { email, id: usuario, tp_usuario },
       });
     } catch (err) {
       return response.status(406).json({

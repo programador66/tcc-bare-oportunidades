@@ -39,36 +39,32 @@ exports.__esModule = true;
 var UserService_1 = require("../services/UserService");
 var bcrypt = require("bcrypt");
 var jsonwebtoken_1 = require("jsonwebtoken");
+var NovoCadastroFactory_1 = require("../factories/NovoCadastroFactory");
 var UserController = /** @class */ (function () {
     function UserController() {
     }
     UserController.prototype.create = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, email, tp_usuario, senha, passwordHash, usu, usuario, err_1;
+            var _a, email, tp_usuario, senha, passwordHash, usu, novoCadastro, err_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 3, , 4]);
+                        _b.trys.push([0, 2, , 3]);
                         _a = request.body, email = _a.email, tp_usuario = _a.tp_usuario, senha = _a.senha;
                         return [4 /*yield*/, bcrypt.hash(senha, 8)];
                     case 1:
                         passwordHash = _b.sent();
                         usu = { email: email, tp_usuario: tp_usuario, senha: passwordHash };
-                        return [4 /*yield*/, new UserService_1["default"]().insert(usu)];
+                        novoCadastro = new NovoCadastroFactory_1["default"](tp_usuario).getClasse();
+                        console.log(novoCadastro.render());
+                        return [3 /*break*/, 3];
                     case 2:
-                        usuario = (_b.sent()).usuario;
-                        console.log(usuario);
-                        return [2 /*return*/, response.status(200).json({
-                                msg: "Cadastro realizado com sucesso!",
-                                data: { email: email, id: usuario, tp_usuario: tp_usuario }
-                            })];
-                    case 3:
                         err_1 = _b.sent();
                         return [2 /*return*/, response.status(406).json({
                                 msg: "Erro na inserção do Usuario, por favor contatar o ADM",
                                 error: err_1.message
                             })];
-                    case 4: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
