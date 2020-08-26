@@ -1,7 +1,7 @@
-import FaculdadeStrategy from "../strategies/FaculdadeStrategy";
 import ICadastro from "../interfaces/ICadastro";
-import AlunoStrategy from "../strategies/AlunoStrategy copy";
-
+import FaculdadeStrategy from "../strategies/FaculdadeStrategy";
+import AlunoStrategy from "../strategies/AlunoStrategy";
+import EmpresaStrategy from "../strategies/EmpresaStrategy";
 class NovoCadastroFactory {
   constructor(private tp_usuario: String) {
     this.tp_usuario = tp_usuario;
@@ -18,6 +18,11 @@ class NovoCadastroFactory {
         return new AlunoStrategy();
 
         break;
+
+      case "E":
+        return new EmpresaStrategy();
+
+        break;  
 
       default:
         throw new Error("Strategy Inválida!");

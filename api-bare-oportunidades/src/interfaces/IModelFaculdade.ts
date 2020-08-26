@@ -1,4 +1,4 @@
-export default interface IFaculdade {
+export default interface IModelFaculdade {
   nome: String;
   cnpj: String;
   endereco: String;

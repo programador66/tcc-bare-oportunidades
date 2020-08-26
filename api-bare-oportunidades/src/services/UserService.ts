@@ -1,13 +1,7 @@
 import knex from "../database/connection";
-
-interface IUser {
-  email: String;
-  tp_usuario: String;
-  senha: String;
-}
-
+import IModelUser from '../interfaces/IModelUser'
 class UserService {
-  async insert(user: IUser) {
+  async insert(user: IModelUser) {
     const begintransaction = await knex.transaction();
 
     const newUser = await begintransaction("usuario").insert(user);

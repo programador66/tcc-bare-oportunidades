@@ -8,6 +8,7 @@ export async function up(knex: Knex) {
     table.string("endereco").notNullable();
     table.string("sexo", 1).notNullable();
     table.string("registro_academico").notNullable();
+    table.string("telefone").notNullable();
     table
       .integer("id_usuario")
       .notNullable()
