@@ -2,35 +2,40 @@ import { Request, Response } from "express";
 import UserService from "../services/UserService";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import { validationResult } from 'express-validator';
 import NovoCadastroFactory from "../factories/NovoCadastroFactory";
-import UserControllerValidate from "../RequestValidate/UserControllerValidate";
+
 
 class UserController {
   async create(request: Request, response: Response) {
     try {
-      const validate = UserControllerValidate(request, response);
-      // const { email, tp_usuario, senha } = request.body;
+     
+      const schemaErrors = validationResult(request);
 
-      // const passwordHash = await bcrypt.hash(senha, 8);
+      if (!schemaErrors.isEmpty()) {
+        return response.status(403).send(schemaErrors.array());
+      }
+      const { email, tp_usuario, senha } = request.body;
 
-      // const usu = { email, tp_usuario, senha: passwordHash };
-      // const { usuario } = await new UserService().insert(usu);
+      const passwordHash = await bcrypt.hash(senha, 8);
 
-      // const novoCadastro = new NovoCadastroFactory(tp_usuario).getClasse();
+      const usu = { email, tp_usuario, senha: passwordHash };
+      const { usuario } = await new UserService().insert(usu);
 
-      // const resNovoCadastro = await novoCadastro.cadastrar(
-      //   request,
-      //   Number(usuario)
-      // );
+      const novoCadastro = new NovoCadastroFactory(tp_usuario).getClasse();
 
-      // if (!resNovoCadastro.success) {
-      //   throw new Error("Erro na inserção de um novo cadastro!");
-      // }
+      const resNovoCadastro = await novoCadastro.cadastrar(
+        request,
+        Number(usuario)
+      );
 
-      // return response.status(201).json({
-      //   msg: "Cadastro realizado com sucesso!",
-      // });
+      if (!resNovoCadastro.success) {
+        throw new Error("Erro na inserção de um novo cadastro!");
+      }
+
+      return response.status(201).json({
+        msg: "Cadastro realizado com sucesso!",
+      });
     } catch (err) {
       return response.status(406).json({
         msg: "Erro na inserção do registro, por favor contatar o ADM",
