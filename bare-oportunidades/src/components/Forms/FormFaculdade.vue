@@ -1,18 +1,34 @@
 <template>
   <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
     <h4>Registro de novo usuário</h4>
-    <q-input
-      outlined
-      stack-label
-      label-color="orange"
-      filled
-      v-model="name"
-      label="Razão Social"
-      lazy-rules
-      :rules="[
-        val => (val && val.length > 0) || 'Campo Razao Social não pode ser nulo'
-      ]"
-    />
+    <div id="position1">
+      <q-input
+        outlined
+        stack-label
+        label-color="orange"
+        filled
+        v-model="name"
+        label="Razão Social"
+        lazy-rules
+        :rules="[
+          val =>
+            (val && val.length > 0) || 'Campo Razao Social não pode ser nulo'
+        ]"
+      />
+
+      <q-input
+        outlined
+        stack-label
+        label-color="orange"
+        filled
+        v-model="name"
+        label="CNPJ"
+        lazy-rules
+        :rules="[
+          val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
+        ]"
+      />
+    </div>
 
     <q-input
       outlined
@@ -20,13 +36,49 @@
       label-color="orange"
       filled
       v-model="name"
-      label="CNPJ"
+      label="Endereço"
       lazy-rules
       :rules="[
         val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
       ]"
     />
 
+    <q-input
+      outlined
+      stack-label
+      label-color="orange"
+      filled
+      v-model="name"
+      label="Telefone"
+      lazy-rules
+      :rules="[
+        val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
+      ]"
+    />
+    <q-input
+      outlined
+      stack-label
+      label-color="orange"
+      filled
+      v-model="name"
+      label="Email"
+      lazy-rules
+      :rules="[
+        val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
+      ]"
+    />
+    <q-input
+      outlined
+      stack-label
+      label-color="orange"
+      filled
+      v-model="name"
+      label="Senha"
+      lazy-rules
+      :rules="[
+        val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
+      ]"
+    />
     <div id="btns">
       <q-btn
         label="Voltar"
@@ -73,5 +125,13 @@ h4 {
 #btns {
   display: flex;
   justify-content: flex-end;
+}
+
+#position1 {
+  display: flex;
+  justify-content: space-between;
+}
+#position1 q-input {
+  max-width: 100%;
 }
 </style>
