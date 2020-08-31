@@ -6,7 +6,10 @@ class usuario extends api {
 
     return response;
   }
-
+  async criarNovoUsuario(parametros) {
+    const response = await this.api.post('/user', parametros);
+    return response;
+  }
   // async getCurriculo(parametros) {
   //     let config = this.headerToken();
   //     const response = await this.api.post('candidato/getCurriculo', parametros, { ...config });

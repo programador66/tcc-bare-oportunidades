@@ -1,137 +1,206 @@
 <template>
-  <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-    <h4>Registro de novo usuário</h4>
-    <div id="position1">
-      <q-input
-        outlined
-        stack-label
-        label-color="orange"
-        filled
-        v-model="name"
-        label="Razão Social"
-        lazy-rules
-        :rules="[
-          val =>
-            (val && val.length > 0) || 'Campo Razao Social não pode ser nulo'
-        ]"
-      />
-
-      <q-input
-        outlined
-        stack-label
-        label-color="orange"
-        filled
-        v-model="name"
-        label="CNPJ"
-        lazy-rules
-        :rules="[
-          val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
-        ]"
-      />
-    </div>
-
+  <q-form class="form-faculdade" ref="formFaculdade">
     <q-input
+      class="form-qinput-faculdade"
       outlined
-      stack-label
+      v-model="faculdade.nome"
+      label="Faculdade"
       label-color="orange"
-      filled
-      v-model="name"
+      ref="nome"
+      lazy-rules
+      :rules="rule"
+      hint="razão social"
+    />
+    <q-input
+      class="form-qinput-faculdade"
+      outlined
+      v-model="faculdade.cnpj"
+      label="CNPJ"
+      label-color="orange"
+      ref="cnpj"
+      lazy-rules
+      :rules="rule"
+      mask="##.###.###/####-##"
+      hint="Exemplo: 00.000.000/0000-00"
+    />
+    <q-input
+      class="form-qinput-faculdade"
+      outlined
+      v-model="faculdade.email"
+      label="E-Mail"
+      label-color="orange"
+      ref="email"
+      lazy-rules
+      :rules="rule"
+      hint="email@mail.com"
+    />
+    <q-input
+      class="form-qinput-faculdade"
+      outlined
+      v-model="faculdade.endereco"
       label="Endereço"
-      lazy-rules
-      :rules="[
-        val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
-      ]"
-    />
-
-    <q-input
-      outlined
-      stack-label
       label-color="orange"
-      filled
-      v-model="name"
+      ref="endereco"
+      lazy-rules
+      :rules="rule"
+      hint="Rua/Av n°"
+    />
+    <q-input
+      class="form-qinput-faculdade"
+      outlined
+      v-model="faculdade.telefone"
       label="Telefone"
+      label-color="orange"
+      ref="telefone"
       lazy-rules
-      :rules="[
-        val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
-      ]"
+      :rules="rule"
+      mask="(##) ####-####"
+      hint="(00) 0000-0000"
     />
     <q-input
+      class="form-qinput-faculdade"
       outlined
-      stack-label
-      label-color="orange"
-      filled
-      v-model="name"
-      label="Email"
-      lazy-rules
-      :rules="[
-        val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
-      ]"
-    />
-    <q-input
-      outlined
-      stack-label
-      label-color="orange"
-      filled
-      v-model="name"
+      v-model="faculdade.senha"
       label="Senha"
+      label-color="orange"
+      ref="senha"
       lazy-rules
-      :rules="[
-        val => (val && val.length > 0) || 'Campo CNPJ não pode ser nulo'
-      ]"
+      :rules="rule"
+      :type="isPwd1 ? 'password' : 'text'"
+      hint="min 6 caracteres"
+    >
+      <template v-slot:append>
+        <q-icon
+          :name="isPwd1 ? 'visibility_off' : 'visibility'"
+          class="cursor-pointer"
+          @click="isPwd1 = !isPwd1"
+        />
+      </template>
+    </q-input>
+    <q-input
+      class="form-qinput-faculdade"
+      outlined
+      v-model="faculdade.confirmar_senha"
+      label="confirmar Senha"
+      label-color="orange"
+      ref="confirmar_senha"
+      lazy-rules
+      :rules="rule"
+      :type="isPwd2 ? 'password' : 'text'"
+    >
+      <template v-slot:append>
+        <q-icon
+          :name="isPwd2 ? 'visibility_off' : 'visibility'"
+          class="cursor-pointer"
+          @click="isPwd2 = !isPwd2"
+        />
+      </template>
+    </q-input>
+    <q-btn
+      label="Entrar"
+      type="button"
+      style="background: #e65100; color: white; width: 100%;height: 50px;border-radius: 8px;  text-decoration: none;"
+      @click="novoCadastro"
     />
-    <div id="btns">
-      <q-btn
-        label="Voltar"
-        type="button"
-        style="background: white; color:  #e65100;width:250px"
-      />
-      <q-btn
-        label="Entrar"
-        type="button"
-        style="background: #e65100; color: white;width:250px"
-      />
-    </div>
   </q-form>
 </template>
 
 <script>
+import usuario from "../../services/usuario/login";
+import SnackBarMixins from "../../mixins/SnackBarMixins";
+
 export default {
   name: "FormFaculdade",
+  mixins: [SnackBarMixins],
   data() {
     return {
-      name: null,
-      age: null,
-      accept: false
+      isPwd1: true,
+      isPwd2: true,
+      nome: "",
+      cnpj: "",
+      email: "",
+      telefone: "",
+      senha: "",
+      endereco: "",
+      confirmar_senha: "",
+      rule: [val => (val && val.length > 0) || "Campo obrigatório"],
+      faculdade: {
+        nome: "",
+        cnpj: "",
+        email: "",
+        telefone: "",
+        senha: "",
+        endereco: "",
+        confirmar_senha: "",
+        tp_usuario: "F"
+      }
     };
   },
 
   methods: {
-    onSubmit() {},
+    validateForm() {
+      this.$refs.nome.validate();
+      this.$refs.cnpj.validate();
+      this.$refs.email.validate();
+      this.$refs.telefone.validate();
+      this.$refs.senha.validate();
+      this.$refs.confirmar_senha.validate();
+      this.$refs.endereco.validate();
 
-    onReset() {
-      this.name = null;
-      this.age = null;
-      this.accept = false;
+      if (
+        this.$refs.nome.hasError ||
+        this.$refs.cnpj.hasError ||
+        this.$refs.email.hasError ||
+        this.$refs.telefone.hasError ||
+        this.$refs.senha.hasError ||
+        this.$refs.confirmar_senha.hasError ||
+        this.$refs.endereco.hasError
+      ) {
+        return true;
+      }
+
+      return false;
+    },
+    novoCadastro() {
+      const validate = this.validateForm();
+
+      if (validate) {
+        return (this.formHasError = true);
+      }
+      this.$q.loading.show({
+        message: "Validando dados aguarde ..."
+      });
+
+      usuario
+        .criarNovoUsuario(this.faculdade)
+        .then(response => {
+          this.snackBarPositive(response.msg);
+
+          this.timer = setTimeout(() => {
+            this.$q.loading.hide();
+            this.timer = void 0;
+            // this.$router.push("/home-students");
+          }, 2000);
+        })
+        .catch(e => {
+          this.snackBarNegative(
+            e.response.msg ? e.response.msg : "Favor Verificar seus dados!"
+          );
+          this.$q.loading.hide();
+        });
     }
   }
 };
 </script>
 
 <style>
-h4 {
-  color: #e65100;
-  font-weight: bold;
-}
-#btns {
-  display: flex;
-  justify-content: flex-end;
+.form-faculdade {
+  width: 100%;
+  max-width: 450px;
+  margin-left: 4%;
 }
 
-#position1 {
-  display: flex;
-  justify-content: space-between;
-}
-#position1 q-input {
-  max-width: 100%;
+.form-qinput-faculdade {
+  margin-bottom: 2px;
 }
 </style>

@@ -65,8 +65,9 @@ export default {
     cadastro() {
       this.fechaModal();
 
-      console.log("==========");
-      console.log(this.usuario);
+      if (this.usuario === "faculdade") {
+        this.$router.push("/register");
+      }
     }
   },
   watch: {

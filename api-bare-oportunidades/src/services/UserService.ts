@@ -1,5 +1,5 @@
 import knex from "../database/connection";
-import IModelUser from '../interfaces/IModelUser'
+import IModelUser from "../interfaces/IModelUser";
 class UserService {
   async insert(user: IModelUser) {
     const begintransaction = await knex.transaction();
@@ -27,6 +27,12 @@ class UserService {
       .where("tp_usuario", tp_usuario);
 
     return client;
+  }
+
+  async deleteUserById(id: Number) {
+    const response = await knex("usuario").where("id", id).del();
+
+    return response;
   }
 }
 

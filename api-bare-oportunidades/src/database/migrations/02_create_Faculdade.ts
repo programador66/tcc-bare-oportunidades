@@ -7,6 +7,7 @@ export async function up(knex: Knex) {
     table.string("nome").notNullable();
     table.string("endereco").notNullable();
     table.string("telefone").notNullable();
+    table.string("status").notNullable();
     table
       .integer("id_usuario")
       .notNullable()

@@ -2,15 +2,14 @@ import { Request, Response } from "express";
 import UserService from "../services/UserService";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { validationResult } from 'express-validator';
+import { validationResult } from "express-validator";
 import NovoCadastroFactory from "../factories/NovoCadastroFactory";
-
 
 class UserController {
   async create(request: Request, response: Response) {
     try {
-     
       const schemaErrors = validationResult(request);
+      const userService = new UserService();
 
       if (!schemaErrors.isEmpty()) {
         return response.status(403).send(schemaErrors.array());
@@ -20,7 +19,8 @@ class UserController {
       const passwordHash = await bcrypt.hash(senha, 8);
 
       const usu = { email, tp_usuario, senha: passwordHash };
-      const { usuario } = await new UserService().insert(usu);
+
+      const { usuario } = await userService.insert(usu);
 
       const novoCadastro = new NovoCadastroFactory(tp_usuario).getClasse();
 
@@ -30,6 +30,8 @@ class UserController {
       );
 
       if (!resNovoCadastro.success) {
+        const del = await userService.deleteUserById(Number(usuario));
+        console.log(del);
         throw new Error("Erro na inserção de um novo cadastro!");
       }
 
