@@ -168,18 +168,18 @@ export default {
         return (this.formHasError = true);
       }
       this.$q.loading.show({
-        message: "Validando dados aguarde ..."
+        message: "Realizando Login Aguarde ..."
       });
 
       usuario
         .criarNovoUsuario(this.faculdade)
         .then(response => {
-          this.snackBarPositive(response.msg);
+          this.snackBarPositive(response.data.msg);
 
           this.timer = setTimeout(() => {
             this.$q.loading.hide();
             this.timer = void 0;
-            // this.$router.push("/home-students");
+            this.login(this.faculdade.email, this.faculdade.senha, "F");
           }, 2000);
         })
         .catch(e => {

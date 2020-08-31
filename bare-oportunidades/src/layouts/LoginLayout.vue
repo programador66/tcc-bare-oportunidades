@@ -91,9 +91,11 @@
 <script>
 import usuario from "../services/usuario/login";
 import DialogEscolha from "../components/Dialogs/DialogEscolha";
+import SnackBarMixins from "../mixins/SnackBarMixins";
 
 export default {
   name: "LoginLayout",
+  mixins: [SnackBarMixins],
   components: { DialogEscolha },
   data() {
     return {
@@ -107,56 +109,13 @@ export default {
 
   methods: {
     onSubmit() {
-      this.$q.loading.show({
-        message: "Validando dados aguarde ..."
-      });
-
-      const user = {
-        email: this.email,
-        senha: this.senha,
-        tp_usuario: this.tab
-      };
-
-      usuario
-        .realizarLogin(user)
-        .then(response => {
-          this.msgSucesso("Bem vindo ao Baré Oportunidades!");
-          sessionStorage.setItem("usuario", JSON.stringify(response.data));
-
-          this.timer = setTimeout(() => {
-            this.$q.loading.hide();
-            this.timer = void 0;
-            this.$router.push("/home-students");
-          }, 2000);
-        })
-        .catch(e => {
-          this.msgError(e.response.data.message);
-
-          this.timer = setTimeout(() => {
-            this.$q.loading.hide();
-            this.timer = void 0;
-          }, 2000);
-        });
+      this.login(this.email, this.senha, this.tab);
     },
 
     onReset() {
       this.name = null;
       this.password = null;
       this.$refs.formLogin.resetValidation();
-    },
-    msgError(params) {
-      this.$q.notify({
-        type: "negative",
-        message: `${params}`,
-        timeout: 1500
-      });
-    },
-    msgSucesso(params) {
-      this.$q.notify({
-        type: "positive",
-        message: `${params}`,
-        timeout: 1000
-      });
     }
   }
 };

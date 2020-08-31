@@ -1,3 +1,5 @@
+import usuario from '../services/usuario/login';
+
 const SnackBarMixins = {
   methods: {
     snackBarPositive(params) {
@@ -13,7 +15,39 @@ const SnackBarMixins = {
         message: `${params}`,
         timeout: 1500
       });
-    }
+    },
+    login(email, senha, tp_usuario) {
+      this.$q.loading.show({
+        message: "Validando dados aguarde ..."
+      });
+
+      const user = {
+        email,
+        senha,
+        tp_usuario
+      };
+
+      usuario
+        .realizarLogin(user)
+        .then(response => {
+          this.snackBarPositive("Bem vindo ao Baré Oportunidades!");
+          sessionStorage.setItem("usuario", JSON.stringify(response.data));
+
+          this.timer = setTimeout(() => {
+            this.$q.loading.hide();
+            this.timer = void 0;
+            this.$router.push("/home-students");
+          }, 2000);
+        })
+        .catch(e => {
+          this.snackBarNegative(e.response.data.message);
+
+          this.timer = setTimeout(() => {
+            this.$q.loading.hide();
+            this.timer = void 0;
+          }, 2000);
+        });
+    },
   }
 }
 
