@@ -65,9 +65,9 @@
       label-color="orange"
       ref="senha"
       lazy-rules
-      :rules="rule"
+      :rules="ruleSenha"
       :type="isPwd1 ? 'password' : 'text'"
-      hint="min 6 caracteres"
+      hint="min 8 caracteres"
     >
       <template v-slot:append>
         <q-icon
@@ -85,7 +85,7 @@
       label-color="orange"
       ref="confirmar_senha"
       lazy-rules
-      :rules="rule"
+      :rules="ruleSenha"
       :type="isPwd2 ? 'password' : 'text'"
     >
       <template v-slot:append>
@@ -124,6 +124,11 @@ export default {
       endereco: "",
       confirmar_senha: "",
       rule: [val => (val && val.length > 0) || "Campo obrigatório"],
+      ruleSenha: [
+        val =>
+          (val && val.length > 7) ||
+          "Campo senha deve conter no Mínimo 8 caracteres"
+      ],
       faculdade: {
         nome: "",
         cnpj: "",
