@@ -4,4 +4,5 @@ export default interface IModelFaculdade {
   endereco: String;
   id_usuario: Number;
   telefone: String;
+  status: String;
 }

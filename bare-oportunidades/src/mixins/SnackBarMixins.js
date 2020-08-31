@@ -18,7 +18,7 @@ const SnackBarMixins = {
     },
     login(email, senha, tp_usuario) {
       this.$q.loading.show({
-        message: "Validando dados aguarde ..."
+        message: "Realizando Login aguarde ..."
       });
 
       const user = {

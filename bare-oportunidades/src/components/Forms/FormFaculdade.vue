@@ -168,7 +168,7 @@ export default {
         return (this.formHasError = true);
       }
       this.$q.loading.show({
-        message: "Realizando Login Aguarde ..."
+        message: "Validando dados Aguarde ..."
       });
 
       usuario

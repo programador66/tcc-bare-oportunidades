@@ -15,6 +15,7 @@ class FaculdadeStrategy implements ICadastro {
       cnpj,
       telefone,
       id_usuario,
+      status: "I",
     });
 
     return faculdade;
