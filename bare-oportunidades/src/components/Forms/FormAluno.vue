@@ -1,6 +1,7 @@
 <template>
   <q-form class="form-faculdade" ref="formAluno">
     <q-input
+      class="form-qinput-faculdade"
       outlined
       label="Nome Completo"
       label-color="orange"
@@ -9,38 +10,58 @@
       v-model="aluno.nome"
     />
     <q-input
+      class="form-qinput-faculdade"
       outlined
       label="Cpf"
       label-color="orange"
-      ref="nome"
+      ref="cpf"
       :rules="rule"
       v-model="aluno.cpf"
+      mask="###.###.###-##"
+      hint="somente números"
     />
     <q-input
+      class="form-qinput-faculdade"
       outlined
       label="E-Mail"
       label-color="orange"
-      ref="nome"
+      ref="email"
       :rules="rule"
       v-model="aluno.email"
     />
     <q-input
+      class="form-qinput-faculdade"
       outlined
       label="Telefone"
       label-color="orange"
-      ref="nome"
+      ref="telefone"
       :rules="rule"
       v-model="aluno.telefone"
+      mask="(##) ####-####"
+      hint="Somente Números"
     />
     <q-input
+      class="form-qinput-faculdade"
+      outlined
+      label="Endereço"
+      label-color="orange"
+      ref="endereco"
+      :rules="rule"
+      v-model="aluno.endereco"
+      hint="Av/Rua número"
+    />
+    <q-input
+      class="form-qinput-faculdade"
       outlined
       label="Registro Acadêmico"
       label-color="orange"
-      ref="nome"
+      ref="ra"
       :rules="rule"
       v-model="aluno.ra"
+      hint="Somente Números"
     />
     <q-select
+      class="form-qinput-faculdade"
       outlined
       v-model="model"
       use-input
@@ -49,6 +70,8 @@
       label-color="orange"
       input-debounce="0"
       label="Faculdade"
+      ref="faculdade"
+      :rules="rule"
       :options="options"
       @filter="filterFn"
       hint="no min 2 caracteres"
@@ -86,6 +109,7 @@
       label="Entrar"
       type="button"
       style="background: #e65100; color: white; width: 100%;height: 50px;border-radius: 8px;  text-decoration: none;margin-top:2px;"
+      @click="novoCadastro"
     />
   </q-form>
 </template>
@@ -125,6 +149,40 @@ export default {
     };
   },
   methods: {
+    validateForm() {
+      this.$refs.nome.validate();
+      this.$refs.cpf.validate();
+      this.$refs.email.validate();
+      this.$refs.telefone.validate();
+      this.$refs.endereco.validate();
+      this.$refs.senha.validate();
+      this.$refs.ra.validate();
+      this.$refs.faculdade.validate();
+
+      if (
+        this.$refs.nome.hasError ||
+        this.$refs.cpf.hasError ||
+        this.$refs.email.hasError ||
+        this.$refs.telefone.hasError ||
+        this.$refs.senha.hasError ||
+        this.$refs.ra.hasError ||
+        this.$refs.endereco.hasError ||
+        this.$refs.faculdade.hasError
+      ) {
+        return true;
+      }
+
+      return false;
+    },
+    novoCadastro() {
+      const validate = this.validateForm();
+
+      if (validate) {
+        return (this.formHasError = true);
+      }
+      const faculdade = this.options.length === 1 ? this.options : "";
+      console.log(faculdade);
+    },
     filterFn(val, update, abort) {
       if (val.length < 2) {
         abort();

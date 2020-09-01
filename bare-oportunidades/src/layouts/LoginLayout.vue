@@ -38,7 +38,6 @@
           filled
           v-model="senha"
           label="Senha"
-          hint="No mínimo 6 caractéres"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Campo senha não pode ser nulo'

@@ -185,6 +185,6 @@ export default {
 }
 
 .form-qinput-faculdade {
-  margin-bottom: 2px;
+  margin-bottom: 6px;
 }
 </style>
