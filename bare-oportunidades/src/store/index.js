@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 import usuario from "./modulo-usuario";
 
@@ -19,7 +20,15 @@ export default function(/* { ssrContext } */) {
     modules: {
       usuario
     },
-
+    plugins: [
+      createPersistedState({
+        storage: {
+          getItem: key => localStorage.getItem(key),
+          setItem: (key, value) => localStorage.setItem(key, value),
+          removeItem: () => ""
+        }
+      })
+    ],
     // enable strict mode (adds overhead!)
     // for dev mode only
     strict: process.env.DEV

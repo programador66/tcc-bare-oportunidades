@@ -77,29 +77,11 @@
         />
       </template>
     </q-input>
-    <q-input
-      class="form-qinput-faculdade"
-      outlined
-      v-model="faculdade.confirmar_senha"
-      label="confirmar Senha"
-      label-color="orange"
-      ref="confirmar_senha"
-      lazy-rules
-      :rules="ruleSenha"
-      :type="isPwd2 ? 'password' : 'text'"
-    >
-      <template v-slot:append>
-        <q-icon
-          :name="isPwd2 ? 'visibility_off' : 'visibility'"
-          class="cursor-pointer"
-          @click="isPwd2 = !isPwd2"
-        />
-      </template>
-    </q-input>
+
     <q-btn
       label="Entrar"
       type="button"
-      style="background: #e65100; color: white; width: 100%;height: 50px;border-radius: 8px;  text-decoration: none;"
+      style="background: #e65100; color: white; width: 100%;height: 50px;border-radius: 8px;  text-decoration: none;margin-top:2px;"
       @click="novoCadastro"
     />
   </q-form>
@@ -115,7 +97,6 @@ export default {
   data() {
     return {
       isPwd1: true,
-      isPwd2: true,
       nome: "",
       cnpj: "",
       email: "",
@@ -149,7 +130,6 @@ export default {
       this.$refs.email.validate();
       this.$refs.telefone.validate();
       this.$refs.senha.validate();
-      this.$refs.confirmar_senha.validate();
       this.$refs.endereco.validate();
 
       if (
@@ -158,7 +138,6 @@ export default {
         this.$refs.email.hasError ||
         this.$refs.telefone.hasError ||
         this.$refs.senha.hasError ||
-        this.$refs.confirmar_senha.hasError ||
         this.$refs.endereco.hasError
       ) {
         return true;

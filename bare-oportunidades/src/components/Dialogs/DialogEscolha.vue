@@ -48,16 +48,37 @@
   </q-dialog>
 </template>
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   props: ["escolha"],
   name: "DialogEscolha",
   data() {
     return {
       opcao: false,
-      usuario: "Aluno"
+      usuario: "Aluno",
+      tp_usuario: [
+        {
+          title: "Nova Instituiçao",
+          tipo: "F",
+          paragrafo: `Faça o cadastro da instituição, entre na plataforma e ajude os alunos
+          a encontrarem oportunidades.`
+        },
+        {
+          title: "Novo(a) Aluno(a)",
+          tipo: "A",
+          paragrafo: `Faça o seu cadastro, entre na plataforma e encontre mais oportunidades.`
+        },
+        {
+          title: "Nova Empresa",
+          tipo: "E",
+          paragrafo: `Faça o Cadastro da empresa, entre na plataforma e ajude alunos a encontrarem uma boa oportunidade na vida profissional.`
+        }
+      ]
     };
   },
   methods: {
+    ...mapMutations("usuario", ["setTipoUsuarioForm"]),
     fechaModal() {
       this.opcao = false;
       this.$emit("escolha", false);
@@ -66,8 +87,14 @@ export default {
       this.fechaModal();
 
       if (this.usuario === "faculdade") {
-        this.$router.push("/register");
+        this.setTipoUsuarioForm(this.tp_usuario[0]);
+      } else if (this.usuario === "aluno") {
+        this.setTipoUsuarioForm(this.tp_usuario[1]);
+      } else if (this.usuario === "empresa") {
+        this.setTipoUsuarioForm(this.tp_usuario[2]);
       }
+
+      this.$router.push("/register");
     }
   },
   watch: {

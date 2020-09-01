@@ -1,5 +1,10 @@
-export default function() {
+export default function () {
   return {
-    usuario: []
+    usuario: [],
+    tp_usuario: {
+      tipo: "",
+      title: "",
+      paragrafo: "",
+    }
   };
 }

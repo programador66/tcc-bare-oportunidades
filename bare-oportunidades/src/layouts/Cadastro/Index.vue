@@ -2,10 +2,9 @@
   <div class="container">
     <div class="content">
       <section>
-        <h4>Nova Instituiçao</h4>
+        <h4>{{ getterTp_usuario.title }}</h4>
         <p>
-          Faça o cadastro da instituição, entre na plataforma e ajude os alunos
-          a encontrarem oportunidades.
+          {{ getterTp_usuario.paragrafo }}
         </p>
         <img
           alt="Students logo"
@@ -21,19 +20,25 @@
           @click="home"
         />
       </section>
-      <form-faculdade />
+      <FormFaculdade v-if="getterTp_usuario.tipo == 'F'" />
+      <FormAluno v-if="getterTp_usuario.tipo == 'A'" />
     </div>
   </div>
 </template>
 
 <script>
 import FormFaculdade from "../../components/Forms/FormFaculdade";
+import FormAluno from "../../components/Forms/FormAluno";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Cadastro",
-  components: { FormFaculdade },
+  components: { FormFaculdade, FormAluno },
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters("usuario", ["getterTp_usuario"])
   },
   methods: {
     home() {
