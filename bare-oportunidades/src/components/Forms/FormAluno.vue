@@ -115,20 +115,14 @@
 </template>
 
 <script>
-const stringOptions = [
-  "Faculdade Fucapi",
-  "Fametro",
-  "Ufam",
-  "Unip",
-  "Estacio"
-];
+import FaculdadeService from "../../services/faculdade/index";
 
 export default {
   name: "FormAluno",
   data() {
     return {
       model: null,
-      options: stringOptions,
+      options: [],
       isPwd: true,
       nome: "",
       rule: [val => (val && val.length > 0) || "Campo obrigatório"],
@@ -145,8 +139,12 @@ export default {
         ra: "",
         email: "",
         senha: ""
-      }
+      },
+      faculdades: []
     };
+  },
+  mounted() {
+    this.getFaculdades();
   },
   methods: {
     validateForm() {
@@ -191,10 +189,19 @@ export default {
 
       update(() => {
         const needle = val.toLowerCase();
-        this.options = stringOptions.filter(
+        this.options = this.faculdades.filter(
           v => v.toLowerCase().indexOf(needle) > -1
         );
       });
+    },
+    getFaculdades() {
+      FaculdadeService.getFaculdades()
+        .then(response => {
+          this.faculdades = response.data.data.map(f => f.nome);
+        })
+        .catch(e => {
+          console.log(e.resonse);
+        });
     }
   }
 };

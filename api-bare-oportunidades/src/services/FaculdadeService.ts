@@ -11,6 +11,12 @@ class FaculdadeService {
 
     return { success: true, faculdade: newFaculdade[0] };
   }
+
+  async getFaculdades() {
+    const faculdade = await knex("faculdade").select("nome", "id");
+
+    return faculdade;
+  }
 }
 
 export default FaculdadeService;
