@@ -9,7 +9,7 @@ class FaculdadeStrategy implements ICadastro {
       return { success: false, error: "Existem campos Nulos" };
     }
 
-    const faculdade = new FaculdadeService().insert({
+    const faculdade = await new FaculdadeService().insert({
       nome,
       endereco,
       cnpj,

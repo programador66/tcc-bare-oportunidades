@@ -8,6 +8,7 @@
       ref="nome"
       :rules="rule"
       v-model="aluno.nome"
+      color="orange"
     />
     <q-input
       class="form-qinput-faculdade"
@@ -19,6 +20,7 @@
       v-model="aluno.cpf"
       mask="###.###.###-##"
       hint="somente números"
+      color="orange"
     />
     <q-input
       class="form-qinput-faculdade"
@@ -28,18 +30,36 @@
       ref="email"
       :rules="rule"
       v-model="aluno.email"
+      color="orange"
     />
-    <q-input
-      class="form-qinput-faculdade"
-      outlined
-      label="Telefone"
-      label-color="orange"
-      ref="telefone"
-      :rules="rule"
-      v-model="aluno.telefone"
-      mask="(##) ####-####"
-      hint="Somente Números"
-    />
+
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <q-input
+        class="form-qinput-faculdade"
+        outlined
+        label="Telefone"
+        label-color="orange"
+        ref="telefone"
+        :rules="rule"
+        v-model="aluno.telefone"
+        mask="(##) ####-####"
+        hint="Somente Números"
+        color="orange"
+        style="width:48%"
+      />
+      <q-select
+        class="form-qinput-faculdade"
+        outlined
+        clearable
+        label-color="orange"
+        color="orange"
+        v-model="aluno.sexo"
+        :options="optSexo"
+        label="Sexo"
+        style="width:48%"
+        hint="Selecione uma opção"
+      />
+    </div>
     <q-input
       class="form-qinput-faculdade"
       outlined
@@ -49,16 +69,18 @@
       :rules="rule"
       v-model="aluno.endereco"
       hint="Av/Rua número"
+      color="orange"
     />
     <q-input
       class="form-qinput-faculdade"
       outlined
       label="Registro Acadêmico"
       label-color="orange"
-      ref="ra"
+      ref="registro_academico"
       :rules="rule"
-      v-model="aluno.ra"
+      v-model="aluno.registro_academico"
       hint="Somente Números"
+      color="orange"
     />
     <q-select
       class="form-qinput-faculdade"
@@ -75,6 +97,7 @@
       :options="options"
       @filter="filterFn"
       hint="no min 2 caracteres"
+      color="orange"
     >
       <template v-slot:no-option>
         <q-item>
@@ -136,11 +159,14 @@ export default {
         cpf: "",
         telefone: "",
         endereco: "",
-        ra: "",
+        registro_academico: "",
         email: "",
-        senha: ""
+        senha: "",
+        sexo: ""
       },
-      faculdades: []
+      faculdades: [],
+      dadosFaculdades: [],
+      optSexo: ["Masculino", "Feminino"]
     };
   },
   mounted() {
@@ -154,7 +180,7 @@ export default {
       this.$refs.telefone.validate();
       this.$refs.endereco.validate();
       this.$refs.senha.validate();
-      this.$refs.ra.validate();
+      this.$refs.registro_academico.validate();
       this.$refs.faculdade.validate();
 
       if (
@@ -163,7 +189,7 @@ export default {
         this.$refs.email.hasError ||
         this.$refs.telefone.hasError ||
         this.$refs.senha.hasError ||
-        this.$refs.ra.hasError ||
+        this.$refs.registro_academico.hasError ||
         this.$refs.endereco.hasError ||
         this.$refs.faculdade.hasError
       ) {
@@ -178,8 +204,16 @@ export default {
       if (validate) {
         return (this.formHasError = true);
       }
-      const faculdade = this.options.length === 1 ? this.options : "";
-      console.log(faculdade);
+      const faculdade = this.options.length === 1 ? this.options[0] : "";
+
+      const index = this.dadosFaculdades.findIndex(
+        facul => facul.nome === faculdade
+      );
+
+      const id_faculdade = this.dadosFaculdades[index].id;
+
+      const request = { ...this.aluno, id_faculdade, tp_usuario: "A" };
+      console.log(this.aluno.sexo);
     },
     filterFn(val, update, abort) {
       if (val.length < 2) {
@@ -198,6 +232,7 @@ export default {
       FaculdadeService.getFaculdades()
         .then(response => {
           this.faculdades = response.data.data.map(f => f.nome);
+          this.dadosFaculdades = response.data.data;
         })
         .catch(e => {
           console.log(e.resonse);
