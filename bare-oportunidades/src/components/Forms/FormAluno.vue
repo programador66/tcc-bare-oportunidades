@@ -58,6 +58,8 @@
         label="Sexo"
         style="width:48%"
         hint="Selecione uma opção"
+        ref="sexo"
+        :rules="rule"
       />
     </div>
     <q-input
@@ -85,7 +87,7 @@
     <q-select
       class="form-qinput-faculdade"
       outlined
-      v-model="model"
+      v-model="facul"
       use-input
       hide-selected
       fill-input
@@ -144,7 +146,7 @@ export default {
   name: "FormAluno",
   data() {
     return {
-      model: null,
+      facul: null,
       options: [],
       isPwd: true,
       nome: "",
@@ -182,6 +184,7 @@ export default {
       this.$refs.senha.validate();
       this.$refs.registro_academico.validate();
       this.$refs.faculdade.validate();
+      this.$refs.sexo.validate();
 
       if (
         this.$refs.nome.hasError ||
@@ -191,7 +194,8 @@ export default {
         this.$refs.senha.hasError ||
         this.$refs.registro_academico.hasError ||
         this.$refs.endereco.hasError ||
-        this.$refs.faculdade.hasError
+        this.$refs.faculdade.hasError ||
+        this.$refs.sexo.hasError
       ) {
         return true;
       }
@@ -204,16 +208,15 @@ export default {
       if (validate) {
         return (this.formHasError = true);
       }
-      const faculdade = this.options.length === 1 ? this.options[0] : "";
 
       const index = this.dadosFaculdades.findIndex(
-        facul => facul.nome === faculdade
+        facul => facul.nome === this.facul
       );
 
       const id_faculdade = this.dadosFaculdades[index].id;
 
       const request = { ...this.aluno, id_faculdade, tp_usuario: "A" };
-      console.log(this.aluno.sexo);
+      console.log(request);
     },
     filterFn(val, update, abort) {
       if (val.length < 2) {
