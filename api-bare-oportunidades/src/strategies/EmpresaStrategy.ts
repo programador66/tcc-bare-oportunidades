@@ -4,13 +4,24 @@ import EmpresaService from "../services/EmpresaService";
 
 class EmpresaStrategy implements ICadastro {
   async cadastrar(request: Request, id_usuario: Number): Promise<any> {
-    
-    const {cnpj, logradouro, razao_social, nome_fantasia, numero, uf, cep, fone, bairro } = request.body;
+    const {
+      cnpj,
+      logradouro,
+      razao_social,
+      nome_fantasia,
+      fone,
+    } = request.body;
 
-    const empresa = new EmpresaService().insert({cnpj, logradouro, razao_social, nome_fantasia, numero, uf, cep, fone, bairro, id_usuario});
+    const empresa = new EmpresaService().insert({
+      cnpj,
+      logradouro,
+      razao_social,
+      nome_fantasia,
+      fone,
+      id_usuario,
+    });
 
     return empresa;
-
   }
   render(): void {
     console.log("renderizando... aluno");

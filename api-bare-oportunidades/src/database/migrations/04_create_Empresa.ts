@@ -7,11 +7,7 @@ export async function up(knex: Knex) {
     table.string("razao_social").notNullable();
     table.string("logradouro").notNullable();
     table.string("nome_fantasia");
-    table.string("numero").notNullable();
-    table.string("uf").notNullable();
     table.string("fone").notNullable();
-    table.string("bairro").notNullable();
-    table.string("cep").notNullable();
     table
       .integer("id_usuario")
       .notNullable()

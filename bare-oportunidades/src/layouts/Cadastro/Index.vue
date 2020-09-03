@@ -22,6 +22,7 @@
       </section>
       <FormFaculdade v-if="getterTp_usuario.tipo == 'F'" />
       <FormAluno v-if="getterTp_usuario.tipo == 'A'" />
+      <FormEmpresa v-if="getterTp_usuario.tipo == 'E'" />
     </div>
   </div>
 </template>
@@ -29,11 +30,13 @@
 <script>
 import FormFaculdade from "../../components/Forms/FormFaculdade";
 import FormAluno from "../../components/Forms/FormAluno";
+import FormEmpresa from "../../components/Forms/FormEmpresa";
+
 import { mapGetters } from "vuex";
 
 export default {
   name: "Cadastro",
-  components: { FormFaculdade, FormAluno },
+  components: { FormFaculdade, FormAluno, FormEmpresa },
   data() {
     return {};
   },

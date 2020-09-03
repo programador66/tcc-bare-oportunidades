@@ -1,12 +1,12 @@
 <template>
-  <q-form class="form-faculdade" ref="formFaculdade">
+  <q-form class="form-faculdade" ref="formEmpresa">
     <q-input
       class="form-qinput-faculdade"
       outlined
-      v-model="faculdade.nome"
-      label="Faculdade"
+      v-model="empresa.razao_social"
+      label="Razão Social"
       label-color="orange"
-      ref="nome"
+      ref="razao_social"
       lazy-rules
       :rules="rule"
       hint="razão social"
@@ -14,7 +14,18 @@
     <q-input
       class="form-qinput-faculdade"
       outlined
-      v-model="faculdade.cnpj"
+      v-model="empresa.nome_fantasia"
+      label="Nome Fantasia"
+      label-color="orange"
+      ref="nome_fantasia"
+      lazy-rules
+      :rules="rule"
+      hint="razão social"
+    />
+    <q-input
+      class="form-qinput-faculdade"
+      outlined
+      v-model="empresa.cnpj"
       label="CNPJ"
       label-color="orange"
       ref="cnpj"
@@ -26,7 +37,7 @@
     <q-input
       class="form-qinput-faculdade"
       outlined
-      v-model="faculdade.email"
+      v-model="empresa.email"
       label="E-Mail"
       label-color="orange"
       ref="email"
@@ -37,10 +48,10 @@
     <q-input
       class="form-qinput-faculdade"
       outlined
-      v-model="faculdade.endereco"
+      v-model="empresa.logradouro"
       label="Endereço"
       label-color="orange"
-      ref="endereco"
+      ref="logradouro"
       lazy-rules
       :rules="rule"
       hint="Rua/Av n°"
@@ -48,10 +59,10 @@
     <q-input
       class="form-qinput-faculdade"
       outlined
-      v-model="faculdade.telefone"
+      v-model="empresa.fone"
       label="Telefone"
       label-color="orange"
-      ref="telefone"
+      ref="fone"
       lazy-rules
       :rules="rule"
       mask="(##) ####-####"
@@ -60,7 +71,7 @@
     <q-input
       class="form-qinput-faculdade"
       outlined
-      v-model="faculdade.senha"
+      v-model="empresa.senha"
       label="Senha"
       label-color="orange"
       ref="senha"
@@ -92,51 +103,55 @@ import usuario from "../../services/usuario/login";
 import SnackBarMixins from "../../mixins/SnackBarMixins";
 
 export default {
-  name: "FormFaculdade",
+  name: "FormEmpresa",
   mixins: [SnackBarMixins],
   data() {
     return {
       isPwd1: true,
-      nome: "",
+      razao_social: "",
+      nome_fantasia: "",
       cnpj: "",
       email: "",
-      telefone: "",
+      fone: "",
       senha: "",
-      endereco: "",
+      logradouro: "",
       rule: [val => (val && val.length > 0) || "Campo obrigatório"],
       ruleSenha: [
         val =>
           (val && val.length > 7) ||
           "Campo senha deve conter no Mínimo 8 caracteres"
       ],
-      faculdade: {
-        nome: "",
+      empresa: {
+        razao_social: "",
+        nome_fantasia: "",
         cnpj: "",
         email: "",
-        telefone: "",
+        fone: "",
         senha: "",
-        endereco: "",
-        tp_usuario: "F"
+        logradouro: "",
+        tp_usuario: "E"
       }
     };
   },
 
   methods: {
     validateForm() {
-      this.$refs.nome.validate();
+      this.$refs.razao_social.validate();
+      this.$refs.nome_fantasia.validate();
       this.$refs.cnpj.validate();
       this.$refs.email.validate();
-      this.$refs.telefone.validate();
+      this.$refs.fone.validate();
       this.$refs.senha.validate();
-      this.$refs.endereco.validate();
+      this.$refs.logradouro.validate();
 
       if (
-        this.$refs.nome.hasError ||
+        this.$refs.razao_social.hasError ||
         this.$refs.cnpj.hasError ||
         this.$refs.email.hasError ||
-        this.$refs.telefone.hasError ||
+        this.$refs.fone.hasError ||
         this.$refs.senha.hasError ||
-        this.$refs.endereco.hasError
+        this.$refs.logradouro.hasError ||
+        this.$refs.nome_fantasia.hasError
       ) {
         return true;
       }
@@ -154,14 +169,14 @@ export default {
       });
 
       usuario
-        .criarNovoUsuario(this.faculdade)
+        .criarNovoUsuario(this.empresa)
         .then(response => {
           this.snackBarPositive(response.data.msg);
 
           this.timer = setTimeout(() => {
             this.$q.loading.hide();
             this.timer = void 0;
-            this.login(this.faculdade.email, this.faculdade.senha, "F");
+            this.login(this.empresa.email, this.empresa.senha, "E");
           }, 2000);
         })
         .catch(e => {
