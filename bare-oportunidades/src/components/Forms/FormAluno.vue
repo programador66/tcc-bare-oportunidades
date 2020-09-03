@@ -141,9 +141,12 @@
 
 <script>
 import FaculdadeService from "../../services/faculdade/index";
+import usuario from "../../services/usuario/login";
+import SnackBarMixins from "../../mixins/SnackBarMixins";
 
 export default {
   name: "FormAluno",
+  mixins: [SnackBarMixins],
   data() {
     return {
       facul: null,
@@ -215,8 +218,32 @@ export default {
 
       const id_faculdade = this.dadosFaculdades[index].id;
 
+      this.aluno.sexo = this.aluno.sexo === "Masculino" ? "M" : "F";
+
       const request = { ...this.aluno, id_faculdade, tp_usuario: "A" };
-      console.log(request);
+
+      this.$q.loading.show({
+        message: "Validando dados Aguarde ..."
+      });
+
+      usuario
+        .criarNovoUsuario(request)
+        .then(response => {
+          console.log(response.data);
+          this.snackBarPositive(response.data.msg);
+
+          this.timer = setTimeout(() => {
+            this.$q.loading.hide();
+            this.timer = void 0;
+            this.login(this.aluno.email, this.aluno.senha, "A");
+          }, 2000);
+        })
+        .catch(e => {
+          this.$q.loading.hide();
+          this.snackBarNegative(
+            e.response.msg ? e.response.msg : "Favor Verificar seus dados!"
+          );
+        });
     },
     filterFn(val, update, abort) {
       if (val.length < 2) {

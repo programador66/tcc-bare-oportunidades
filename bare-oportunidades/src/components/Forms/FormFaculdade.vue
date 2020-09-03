@@ -167,10 +167,10 @@ export default {
           }, 2000);
         })
         .catch(e => {
+          this.$q.loading.hide();
           this.snackBarNegative(
             e.response.msg ? e.response.msg : "Favor Verificar seus dados!"
           );
-          this.$q.loading.hide();
         });
     }
   }
