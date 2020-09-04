@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf" id="container">
     <img
+      id="logo-bare"
       alt="Quasar logo"
       src="~assets/img/imagens-bare-01.svg"
       width="400px"
@@ -163,5 +164,18 @@ export default {
 
 #ntc label:hover {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 1200px) {
+  #container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #img-02,
+  #img-03,
+  #logo-bare {
+    display: none;
+  }
 }
 </style>
