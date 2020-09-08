@@ -1,7 +1,10 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header>
-      <Toolbar />
+      <Toolbar>
+        <q-tab name="tab1" label="Vagas Disponíveis" />
+        <q-tab name="tab2" label="Minhas Oportunidades" />
+      </Toolbar>
     </q-header>
 
     <q-page-container>

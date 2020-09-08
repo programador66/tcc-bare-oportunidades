@@ -9,8 +9,7 @@
       />
       <q-space />
       <q-tabs v-model="tab" shrink>
-        <q-tab name="tab1" label="Vagas Disponíveis" />
-        <q-tab name="tab2" label="Minhas Oportunidades" />
+        <slot />
       </q-tabs>
       <q-avatar size="60px" @click="drawer = !drawer">
         <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
