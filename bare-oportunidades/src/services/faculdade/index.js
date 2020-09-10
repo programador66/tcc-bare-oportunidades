@@ -6,6 +6,14 @@ class Faculdade extends api {
 
     return response;
   }
+  async getInfoFaculdades(id) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/getInfoFaculdades`, id, {
+      ...config
+    });
+
+    return response;
+  }
 }
 
 export default new Faculdade();

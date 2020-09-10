@@ -4,6 +4,7 @@ export async function up(knex: Knex) {
   return await knex.schema.createTable("aprova_aluno", (table) => {
     table.increments("id").primary();
     table.string("status", 1).notNullable();
+    table.string("observacao");
     table
       .integer("id_faculdade")
       .notNullable()

@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header>
       <Toolbar>
-        <q-tab name="tab1" label="Faculdade Fucapi" />
+        <q-tab name="tab1" :label="nome" />
       </Toolbar>
     </q-header>
 
@@ -17,11 +17,11 @@
       </div>
       <div
         class=" bg-grey-3 rounded-borders card-lis-aluno"
-        v-for="(c, index) in 8"
+        v-for="(al, index) in alunos"
         :key="index"
       >
-        <label><strong>Aluno:</strong> Caio César Lacerda</label>
-        <label><strong>RA:</strong> 101280</label>
+        <label><strong>Aluno:</strong> {{ al.nome }}</label>
+        <label><strong>RA:</strong> {{ al.registro_academico }}</label>
         <div id="btn-aprova-reprova">
           <q-btn
             label="Reprovar"
@@ -45,6 +45,8 @@
 
 <script>
 import Toolbar from "components/Toolbar.vue";
+import faculdade from "../../services/faculdade/index";
+import aluno from "../../services/aluno/index";
 
 export default {
   name: "MainLayout",
@@ -52,8 +54,40 @@ export default {
   data() {
     return {
       current: 1,
-      max: 10
+      max: 10,
+      nome: "",
+      alunos: []
     };
+  },
+  mounted() {
+    this.buscarDadosFaculdade();
+  },
+  methods: {
+    async buscarDadosFaculdade() {
+      const id = await JSON.parse(sessionStorage.getItem("usuario")).id;
+
+      await faculdade
+        .getInfoFaculdades({ id })
+        .then(response => {
+          this.nome = response.data.data[0].nome;
+          const id_faculdade = response.data.data[0].id;
+          this.buscarAlunos(id_faculdade);
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
+    async buscarAlunos(id_faculdade) {
+      await aluno
+        .getAlunoByCollege({ id_faculdade })
+        .then(response => {
+          this.alunos = response.data.data;
+          console.log(this.alunos);
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    }
   }
 };
 </script>
