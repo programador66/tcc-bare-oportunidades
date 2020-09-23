@@ -36,7 +36,14 @@ const SnackBarMixins = {
           this.timer = setTimeout(() => {
             this.$q.loading.hide();
             this.timer = void 0;
-            this.$router.push("/home-students");
+            if (tp_usuario === "A") {
+              this.$router.push("/home-students");
+            } else if (tp_usuario === "F") {
+              this.$router.push("/home-college");
+            } else {
+              this.$router.push("/home-company");
+            }
+           
           }, 2000);
         })
         .catch(e => {

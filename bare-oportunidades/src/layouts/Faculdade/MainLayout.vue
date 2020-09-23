@@ -20,8 +20,15 @@
         v-for="(al, index) in alunos"
         :key="index"
       >
-        <label><strong>Aluno:</strong> {{ al.nome }}</label>
-        <label><strong>RA:</strong> {{ al.registro_academico }}</label>
+        <div id="td1"> 
+          <label><strong>Aluno:</strong> {{ al.nome }}</label>
+        </div>
+
+        <div id="td2">
+        <label>
+          <strong>RA:</strong> {{ al.registro_academico }}</label>
+        </div>
+
         <div id="btn-aprova-reprova">
           <q-btn
             label="Reprovar"
@@ -61,6 +68,7 @@ export default {
   },
   mounted() {
     this.buscarDadosFaculdade();
+    this.buscarAlunos();
   },
   methods: {
     async buscarDadosFaculdade() {
@@ -71,13 +79,15 @@ export default {
         .then(response => {
           this.nome = response.data.data[0].nome;
           const id_faculdade = response.data.data[0].id;
-          this.buscarAlunos(id_faculdade);
+         
         })
         .catch(e => {
           console.log(e.response);
         });
     },
-    async buscarAlunos(id_faculdade) {
+    async buscarAlunos() {
+        const id_faculdade = await JSON.parse(sessionStorage.getItem("usuario")).id;
+
       await aluno
         .getAlunoByCollege({ id_faculdade })
         .then(response => {
@@ -110,12 +120,21 @@ export default {
 }
 #btn-aprova-reprova {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  flex-grow: 1;
 }
 #header-faculdade {
   width: 90%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+}
+#td1 {
+  margin-left: 2%;
+  flex-grow: 2;
+  width: 100px;
+}
+#td2 {
+flex-grow: 1;
 }
 </style>

@@ -23,9 +23,8 @@ class AlunoService {
   }
 
   async getStudentByCollege(id_faculdade: Number) {
-    const begintransaction = await knex.transaction();
 
-    const aluno = begintransaction
+    const aluno = await  knex
       .from("aprova_aluno")
       .innerJoin("aluno", "aprova_aluno.id_aluno", "aluno.id")
       .where("aprova_aluno.id_faculdade", "=", id_faculdade);

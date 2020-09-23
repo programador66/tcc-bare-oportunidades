@@ -19,6 +19,7 @@ class FaculdadeController {
   async getFaculdadeByIdUser(request: Request, response: Response) {
     try {
       const { id } = request.body;
+     
       const faculdade = await new FaculdadeService().getFaculdadesByIdUser(
         Number(id)
       );

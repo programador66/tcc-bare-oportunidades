@@ -19,13 +19,18 @@ class FaculdadeService {
   }
 
   async getFaculdadesByIdUser(id: Number) {
-    const faculdade = await knex
+    try {
+      const faculdade = await knex
       .select("faculdade.id", "faculdade.nome", "usuario.email")
       .from("faculdade")
       .innerJoin("usuario", "faculdade.id_usuario", "usuario.id")
       .where("usuario.id", "=", id);
-
+   
     return faculdade;
+    } catch(err) {
+      return false;
+    }
+
   }
 }
 
