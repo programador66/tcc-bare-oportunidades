@@ -6,10 +6,10 @@ services:
     restart: unless-stopped
     build: ./bare-oportunidades
     ports:
-      - '8088:8080'
+      - '8080:8080'
     networks: 
       - cd-network
-    command: npm install node-sass --sass-binary-name=linux-x64-57 && quasar dev
+    command: "quasar dev"
    
 
   backend:
