@@ -1,0 +1,27 @@
+version: '3'
+
+services:  
+  frontend:
+    container_name: bare-oportunidades
+    restart: unless-stopped
+    build: ./bare-oportunidades
+    ports:
+      - '8088:8080'
+    networks: 
+      - cd-network
+    command: npm install node-sass --sass-binary-name=linux-x64-57 && quasar dev
+   
+
+  backend:
+    container_name: api-bare-oportunidades
+    restart: unless-stopped
+    build: ./api-bare-oportunidades
+    ports:
+      - '3333:3333'
+    networks: 
+      - cd-network
+    command: "npm run dev"
+  
+networks: 
+  cd-network: 
+    driver: bridge
