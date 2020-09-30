@@ -22,6 +22,8 @@ routes.get("/faculdades", faculdadeController.index);
 
 routes.use(auth);
 routes.post("/getInfoFaculdades", faculdadeController.getFaculdadeByIdUser);
+routes.post("/createEvent", faculdadeController.createEvent);
+routes.post("/aproveStudents", faculdadeController.aproveStudents);
 
 /** Route:Aluno */
 routes.post("/alunos", alunoController.getStudentByCollege);

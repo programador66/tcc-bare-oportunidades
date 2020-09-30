@@ -1,6 +1,7 @@
 import knex from "../database/connection";
 import IModelFaculdade from "../interfaces/IModelFaculdade";
-
+import IModelEventos from "../interfaces/IModelEventos";
+import IModelAprovaAluno from "../interfaces/IModelAprovaAluno";
 class FaculdadeService {
   async insert(faculdade: IModelFaculdade) {
     const newFaculdade = await knex("faculdade").insert(faculdade);
@@ -30,6 +31,35 @@ class FaculdadeService {
     } catch(err) {
       return false;
     }
+
+  }
+
+  async createEvent(eventos: IModelEventos) {
+    const newEvent = await knex("eventos").insert(eventos);
+
+    if (!newEvent) {
+      return { success: false, error: newEvent };
+    }
+
+    return { success: true, evento: newEvent[0] };
+  }
+
+  async aproveStudents(aprovacao: IModelAprovaAluno) {
+    const newAprov = await knex("aprova_aluno").insert(aprovacao);
+
+    if (!newAprov) {
+      return { success: false, error: newAprov };
+    }
+
+    return { success: true, msg: "Aprovação Realizada!" };
+  }
+
+  async getAprovacoesById(id_faculdade:Number, id_aluno:Number) {
+    
+    const aprovacao = await knex("aprova_aluno").where("id_faculdade", id_faculdade)
+    .where("id_aluno", id_aluno);
+    
+    return aprovacao;
 
   }
 }
