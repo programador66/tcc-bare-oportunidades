@@ -218,8 +218,6 @@ export default {
 
       const id_faculdade = this.dadosFaculdades[index].id;
 
-      this.aluno.sexo = this.aluno.sexo === "Masculino" ? "M" : "F";
-
       const request = { ...this.aluno, id_faculdade, tp_usuario: "A" };
 
       this.$q.loading.show({
