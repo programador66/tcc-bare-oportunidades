@@ -59,16 +59,13 @@ class FaculdadeController {
 
   async aproveStudents(request: Request, response: Response) {
     try {
-      
       const { status, id_aluno, observacao, id_faculdade } = request.body;
-      const faculdadeService =  new FaculdadeService();
-      const aprovados = await faculdadeService.getAprovacoesById(id_faculdade, id_aluno);
-      console.log(aprovados);
-      // const aprov = await new FaculdadeService().aproveStudents({ status, id_aluno, observacao, id_faculdade });
 
-      // return response.status(200).json({
-      //   data: aprov,
-      // });
+      const aprov = await new FaculdadeService().aproveStudents({ status, id_aluno, observacao, id_faculdade });
+
+      return response.status(200).json({
+        data: aprov,
+      });
     } catch (error) {
       return response.status(406).json({
         success: false,

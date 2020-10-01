@@ -22,16 +22,15 @@ class FaculdadeService {
   async getFaculdadesByIdUser(id: Number) {
     try {
       const faculdade = await knex
-      .select("faculdade.id", "faculdade.nome", "usuario.email")
-      .from("faculdade")
-      .innerJoin("usuario", "faculdade.id_usuario", "usuario.id")
-      .where("usuario.id", "=", id);
-   
-    return faculdade;
-    } catch(err) {
+        .select("faculdade.id", "faculdade.nome", "usuario.email")
+        .from("faculdade")
+        .innerJoin("usuario", "faculdade.id_usuario", "usuario.id")
+        .where("usuario.id", "=", id);
+
+      return faculdade;
+    } catch (err) {
       return false;
     }
-
   }
 
   async createEvent(eventos: IModelEventos) {
@@ -45,7 +44,10 @@ class FaculdadeService {
   }
 
   async aproveStudents(aprovacao: IModelAprovaAluno) {
-    const newAprov = await knex("aprova_aluno").insert(aprovacao);
+    const newAprov = await knex("aprova_aluno")
+      .where("id_faculdade",'=', aprovacao.id_faculdade)
+      .andWhere("id_aluno",'=', aprovacao.id_aluno)
+      .update(aprovacao);
 
     if (!newAprov) {
       return { success: false, error: newAprov };
@@ -54,14 +56,6 @@ class FaculdadeService {
     return { success: true, msg: "Aprovação Realizada!" };
   }
 
-  async getAprovacoesById(id_faculdade:Number, id_aluno:Number) {
-    
-    const aprovacao = await knex("aprova_aluno").where("id_faculdade", id_faculdade)
-    .where("id_aluno", id_aluno);
-    
-    return aprovacao;
-
-  }
 }
 
 export default FaculdadeService;
