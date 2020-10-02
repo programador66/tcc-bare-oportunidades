@@ -13,6 +13,7 @@
           style="background:white; color: #e65100;"
           label="Novo Evento/Curso"
           outline
+          @click="dialog = true"
         />
       </div>
       <div
@@ -20,13 +21,12 @@
         v-for="(al, index) in alunos"
         :key="index"
       >
-        <div id="td1"> 
+        <div id="td1">
           <label><strong>Aluno:</strong> {{ al.nome }}</label>
         </div>
 
         <div id="td2">
-        <label>
-          <strong>RA:</strong> {{ al.registro_academico }}</label>
+          <label> <strong>RA:</strong> {{ al.registro_academico }}</label>
         </div>
 
         <div id="btn-aprova-reprova">
@@ -46,6 +46,7 @@
         <q-pagination v-model="current" :max="max" color="deep-orange">
         </q-pagination>
       </div>
+      <dialogEventos :modal="dialog" @evento="dialog = $event" />
     </main>
   </q-layout>
 </template>
@@ -54,16 +55,18 @@
 import Toolbar from "components/Toolbar.vue";
 import faculdade from "../../services/faculdade/index";
 import aluno from "../../services/aluno/index";
+import dialogEventos from "./Dialogs/DialogEventos";
 
 export default {
   name: "MainLayout",
-  components: { Toolbar },
+  components: { Toolbar, dialogEventos },
   data() {
     return {
       current: 1,
       max: 10,
       nome: "",
-      alunos: []
+      alunos: [],
+      dialog: false
     };
   },
   mounted() {
@@ -79,14 +82,14 @@ export default {
         .then(response => {
           this.nome = response.data.data[0].nome;
           const id_faculdade = response.data.data[0].id;
-         
         })
         .catch(e => {
           console.log(e.response);
         });
     },
     async buscarAlunos() {
-        const id_faculdade = await JSON.parse(sessionStorage.getItem("usuario")).id;
+      const id_faculdade = await JSON.parse(sessionStorage.getItem("usuario"))
+        .id;
 
       await aluno
         .getAlunoByCollege({ id_faculdade })
@@ -135,6 +138,6 @@ export default {
   width: 100px;
 }
 #td2 {
-flex-grow: 1;
+  flex-grow: 1;
 }
 </style>
