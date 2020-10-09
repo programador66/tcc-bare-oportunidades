@@ -6,6 +6,7 @@ class Faculdade extends api {
 
     return response;
   }
+
   async getInfoFaculdades(id) {
     const config = this.headerToken();
     const response = await this.api.post(`/getInfoFaculdades`, id, {
@@ -14,6 +15,16 @@ class Faculdade extends api {
 
     return response;
   }
+
+  async createEvent(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/createEvent`, obj, {
+      ...config
+    });
+
+    return response;
+  }
+
 }
 
 export default new Faculdade();

@@ -42,10 +42,11 @@
           />
         </div>
       </div>
-      <div class="q-pa-lg flex flex-center">
+<!--      <div class="q-pa-lg flex flex-center">
         <q-pagination v-model="current" :max="max" color="deep-orange">
-        </q-pagination>
+        </q-pagination>      
       </div>
+-->        
       <dialogEventos :modal="dialog" @evento="dialog = $event" />
     </main>
   </q-layout>
@@ -75,7 +76,7 @@ export default {
   },
   methods: {
     async buscarDadosFaculdade() {
-      const id = await JSON.parse(sessionStorage.getItem("usuario")).id;
+      const id = JSON.parse(sessionStorage.getItem("usuario")).id;
 
       await faculdade
         .getInfoFaculdades({ id })
