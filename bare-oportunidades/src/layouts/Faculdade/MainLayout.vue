@@ -90,12 +90,7 @@
                 style="background: #e65100; color: white;width:140px"
               />
             </div>
-          </div>
-    <!--      <div class="q-pa-lg flex flex-center">
-            <q-pagination v-model="current" :max="max" color="deep-orange">
-            </q-pagination>      
-          </div>
-    -->        
+          </div>       
           <dialogEventos :modal="dialog" @evento="dialog = $event" />
         </main>
       </q-tab-panel>

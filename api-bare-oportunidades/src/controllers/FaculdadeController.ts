@@ -57,6 +57,24 @@ class FaculdadeController {
     }
   }
 
+  async getEventByIdFaculdade(request: Request, response: Response) {
+    try {
+      const { id_faculdade } = request.body;
+
+      const event = await new FaculdadeService().getEventByIdFaculdade(Number(id_faculdade));
+
+      return response.status(200).json({
+        data: event,
+      });
+    } catch (error) {
+      return response.status(406).json({
+        success: false,
+        error: error.getMessage,
+      });
+    }
+  }
+
+
   async aproveStudents(request: Request, response: Response) {
     try {
       const { status, id_aluno, observacao, id_faculdade } = request.body;

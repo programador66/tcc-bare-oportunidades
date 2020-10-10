@@ -43,6 +43,13 @@ class FaculdadeService {
     return { success: true, evento: newEvent[0] };
   }
 
+  async getEventByIdFaculdade(id_faculdade: Number) {
+
+    const eventos = await knex("eventos").select("*").where("id_faculdade",'=', id_faculdade);
+
+    return eventos;
+  }
+
   async aproveStudents(aprovacao: IModelAprovaAluno) {
     const newAprov = await knex("aprova_aluno")
       .where("id_faculdade",'=', aprovacao.id_faculdade)
