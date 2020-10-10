@@ -1,54 +1,107 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header>
-      <Toolbar>
+      <Toolbar @tabHeader="tab = $event">
         <q-tab name="tab1" :label="nome" />
+         <q-tab name="tab2" label="Eventos" />
       </Toolbar>
     </q-header>
 
-    <main id="body-faculdade">
-      <div id="header-faculdade">
-        <h5>Aprovar Alunos</h5>
-        <q-btn
-          style="background:white; color: #e65100;"
-          label="Novo Evento/Curso"
-          outline
-          @click="dialog = true"
-        />
-      </div>
-      <div
-        class=" bg-grey-3 rounded-borders card-lis-aluno"
-        v-for="(al, index) in alunos"
-        :key="index"
-      >
-        <div id="td1">
-          <label><strong>Aluno:</strong> {{ al.nome }}</label>
-        </div>
 
-        <div id="td2">
-          <label> <strong>RA:</strong> {{ al.registro_academico }}</label>
-        </div>
+    <q-tab-panels v-model="tab" animated>
+      <q-tab-panel name="tab1">
+        <main id="body-faculdade">
+          <div id="header-faculdade">
+            <h5>Aprovar Alunos</h5>
+            <q-btn
+              style="background:white; color: #e65100;"
+              label="Novo Evento/Curso"
+              outline
+              @click="dialog = true"
+            />
+          </div>
+          <div
+            class=" bg-grey-3 rounded-borders card-lis-aluno"
+            v-for="(al, index) in alunos"
+            :key="index"
+          >
+            <div id="td1">
+              <label><strong>Aluno:</strong> {{ al.nome }}</label>
+            </div>
 
-        <div id="btn-aprova-reprova">
-          <q-btn
-            label="Reprovar"
-            type="button"
-            style="background: white; color: #e65100;width:140px;margin-right:2%;"
-          />
-          <q-btn
-            label="Aprovar"
-            type="button"
-            style="background: #e65100; color: white;width:140px"
-          />
-        </div>
-      </div>
-<!--      <div class="q-pa-lg flex flex-center">
-        <q-pagination v-model="current" :max="max" color="deep-orange">
-        </q-pagination>      
-      </div>
--->        
-      <dialogEventos :modal="dialog" @evento="dialog = $event" />
-    </main>
+            <div id="td2">
+              <label> <strong>RA:</strong> {{ al.registro_academico }}</label>
+            </div>
+
+            <div id="btn-aprova-reprova">
+              <q-btn
+                label="Reprovar"
+                type="button"
+                style="background: white; color: #e65100;width:140px;margin-right:2%;"
+              />
+              <q-btn
+                label="Aprovar"
+                type="button"
+                style="background: #e65100; color: white;width:140px"
+              />
+            </div>
+          </div>
+    <!--      <div class="q-pa-lg flex flex-center">
+            <q-pagination v-model="current" :max="max" color="deep-orange">
+            </q-pagination>      
+          </div>
+    -->        
+          <dialogEventos :modal="dialog" @evento="dialog = $event" />
+        </main>
+      </q-tab-panel>
+      <q-tab-panel name="tab2">
+         <main id="body-faculdade">
+          <div id="header-faculdade">
+            <h5>Lista de Eventos</h5>
+            <q-btn
+              style="background:white; color: #e65100;"
+              label="Novo Evento/Curso"
+              outline
+              @click="dialog = true"
+            />
+          </div>
+          <div
+            class=" bg-grey-3 rounded-borders card-lis-aluno"
+            v-for="(al, index) in alunos"
+            :key="index"
+          >
+            <div id="td1">
+              <label><strong>Evento:</strong> Teste</label>
+            </div>
+
+            <div id="td2">
+              <label> <strong>Data Inicial</strong> 01/02/2020</label>
+            </div>
+
+            <div id="btn-aprova-reprova">
+              <q-btn
+                label="Editar"
+                type="button"
+                style="background: white; color: #e65100;width:140px;margin-right:2%;"
+              />
+              <q-btn
+                label="Excluir"
+                type="button"
+                style="background: #e65100; color: white;width:140px"
+              />
+            </div>
+          </div>
+    <!--      <div class="q-pa-lg flex flex-center">
+            <q-pagination v-model="current" :max="max" color="deep-orange">
+            </q-pagination>      
+          </div>
+    -->        
+          <dialogEventos :modal="dialog" @evento="dialog = $event" />
+        </main>
+      </q-tab-panel>
+    </q-tab-panels>
+
+    
   </q-layout>
 </template>
 
@@ -61,8 +114,10 @@ import dialogEventos from "./Dialogs/DialogEventos";
 export default {
   name: "MainLayout",
   components: { Toolbar, dialogEventos },
+  props:['tabHeader'],
   data() {
     return {
+      tab:"tab1",
       current: 1,
       max: 10,
       nome: "",
@@ -73,6 +128,7 @@ export default {
   mounted() {
     this.buscarDadosFaculdade();
     this.buscarAlunos();
+  
   },
   methods: {
     async buscarDadosFaculdade() {
@@ -130,7 +186,7 @@ export default {
 #header-faculdade {
   width: 90%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
 }
 #td1 {
