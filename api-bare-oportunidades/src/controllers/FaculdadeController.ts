@@ -74,7 +74,44 @@ class FaculdadeController {
     }
   }
 
+  async deleteEvent(request: Request, response: Response) {
+    try {
+      
+      const { id } = request.body;
 
+      const event = await new FaculdadeService().deleteEvent(Number(id));
+
+      return response.status(200).json({
+        data: event,
+      });
+
+    } catch (error) {
+       return response.status(406).json({
+        success: false,
+        error: error.getMessage,
+      });
+    }
+  }
+
+  async updateEvent(request: Request, response: Response) {
+  try {
+    
+    const { id,id_faculdade, descricao, data_inicial, data_final } = request.body;
+
+    const event = await new FaculdadeService().updateEvent(Number(id), {id_faculdade, descricao, data_inicial, data_final});
+
+    return response.status(200).json({
+      data: event,
+    });
+
+  } catch (error) {
+      return response.status(406).json({
+      success: false,
+      error: error.getMessage,
+    });
+  }
+  }
+  
   async aproveStudents(request: Request, response: Response) {
     try {
       const { status, id_aluno, observacao, id_faculdade } = request.body;

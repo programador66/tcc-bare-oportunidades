@@ -43,6 +43,20 @@ class FaculdadeService {
     return { success: true, evento: newEvent[0] };
   }
 
+  async deleteEvent(id: Number) {
+    const event = await knex("eventos").where("id", '=', id).del();
+
+    return { success: true, data: event == 1 ? "Evento excluido!": "nenhum evento foi excluído!" };
+  }
+
+  async updateEvent(id:Number, eventos: IModelEventos) {
+    
+    const event = await knex("eventos").where("id", "=", id).update(eventos);
+
+    return { success: true, data: event == 1 ? "Evento atualizado!": "nenhum evento foi atualizado!" };
+
+  }
+
   async getEventByIdFaculdade(id_faculdade: Number) {
 
     const eventos = await knex("eventos").select("*").where("id_faculdade",'=', id_faculdade);
