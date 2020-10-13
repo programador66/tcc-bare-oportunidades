@@ -34,6 +34,23 @@ class Faculdade extends api {
     return response;
   }
 
+  async updateEvent(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/updateEvent`, obj, {
+      ...config
+    });
+
+    return response;
+  }
+
+  async deleteEvent(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/deleteEvent`, obj, {
+      ...config
+    });
+
+    return response;
+  }
 }
 
 export default new Faculdade();

@@ -12,12 +12,6 @@
         <main id="body-faculdade">
           <div id="header-faculdade">
             <h5>Aprovar Alunos</h5>
-            <q-btn
-              style="background:white; color: #e65100;"
-              label="Novo Evento/Curso"
-              outline
-              @click="dialog = true"
-            />
           </div>
           <div
             class=" bg-grey-3 rounded-borders card-lis-aluno"
@@ -45,7 +39,7 @@
               />
             </div>
           </div>
-          <!--      <div class="q-pa-lg flex flex-center">
+          <!--  <div class="q-pa-lg flex flex-center">
             <q-pagination v-model="current" :max="max" color="deep-orange">
             </q-pagination>      
           </div>
@@ -89,15 +83,22 @@
                 label="Editar"
                 type="button"
                 style="background: white; color: #e65100;width:140px;margin-right:2%;"
+                @click="changeDialogForUpdate(event)"
               />
               <q-btn
                 label="Excluir"
                 type="button"
                 style="background: #e65100; color: white;width:140px"
+                @click="confirmDelete(event)"
               />
             </div>
           </div>
-          <dialogEventos :modal="dialog" @evento="dialog = $event" />
+          <dialogEventos
+            :modal="dialog"
+            @evento="dialog = $event"
+            @atualizaLista="atualiza = $event"
+            :update="eventosAtualizar"
+          />
         </main>
       </q-tab-panel>
     </q-tab-panels>
@@ -122,13 +123,22 @@ export default {
       nome: "",
       alunos: [],
       dialog: false,
-      eventos: []
+      eventos: [],
+      atualiza: false, //variavel responsavel por camar o endPoint caso for inserido um novo evento
+      eventosAtualizar: []
     };
   },
   mounted() {
     this.buscarDadosFaculdade();
     this.buscarAlunos();
     this.buscarEventos();
+  },
+  watch: {
+    atualiza(e) {
+      if (e) {
+        this.buscarEventos();
+      }
+    }
   },
   methods: {
     async buscarDadosFaculdade() {
@@ -152,7 +162,6 @@ export default {
         .getAlunoByCollege({ id_faculdade })
         .then(response => {
           this.alunos = response.data.data;
-          console.log(this.alunos);
         })
         .catch(e => {
           console.log(e.response);
@@ -165,8 +174,43 @@ export default {
       await faculdade
         .getEventByIdFaculdade({ id_faculdade })
         .then(response => {
-          console.log(response);
           this.eventos = response.data.data;
+          this.atualiza = false;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
+    changeDialogForUpdate(evento) {
+      this.eventosAtualizar = evento;
+    },
+    confirmDelete(evento) {
+      this.$q
+        .dialog({
+          title: "Confirmar Exclusão",
+          message: "Tem certeza que deseja excluir o evento?",
+          cancel: true,
+          persistent: true
+        })
+        .onOk(() => {
+          this.delete(evento.id);
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        });
+    },
+    async delete(id) {
+      await faculdade
+        .deleteEvent({ id })
+        .then(response => {
+          const params = response.data.data.data;
+          this.$q.notify({
+            type: "positive",
+            message: `${params}`,
+            timeout: 1500
+          });
+
+          this.buscarEventos();
         })
         .catch(e => {
           console.log(e.response);
