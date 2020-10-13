@@ -3,10 +3,9 @@
     <q-header>
       <Toolbar @tabHeader="tab = $event">
         <q-tab name="tab1" :label="nome" />
-         <q-tab name="tab2" label="Eventos" />
+        <q-tab name="tab2" label="Eventos" />
       </Toolbar>
     </q-header>
-
 
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="tab1">
@@ -46,16 +45,17 @@
               />
             </div>
           </div>
-    <!--      <div class="q-pa-lg flex flex-center">
+          <!--      <div class="q-pa-lg flex flex-center">
             <q-pagination v-model="current" :max="max" color="deep-orange">
             </q-pagination>      
           </div>
-    -->        
+    -->
           <dialogEventos :modal="dialog" @evento="dialog = $event" />
         </main>
       </q-tab-panel>
+
       <q-tab-panel name="tab2">
-         <main id="body-faculdade">
+        <main id="body-faculdade">
           <div id="header-faculdade">
             <h5>Lista de Eventos</h5>
             <q-btn
@@ -67,15 +67,21 @@
           </div>
           <div
             class=" bg-grey-3 rounded-borders card-lis-aluno"
-            v-for="(al, index) in alunos"
+            v-for="(event, index) in eventos"
             :key="index"
           >
             <div id="td1">
-              <label><strong>Evento:</strong> Teste</label>
+              <label><strong>Evento:</strong> {{ event.descricao }}</label>
             </div>
 
             <div id="td2">
-              <label> <strong>Data Inicial</strong> 01/02/2020</label>
+              <label>
+                <strong>Data Inicial</strong> {{ event.data_inicial }}</label
+              >
+            </div>
+
+            <div id="td2">
+              <label> <strong>Data Final</strong> {{ event.data_final }}</label>
             </div>
 
             <div id="btn-aprova-reprova">
@@ -90,13 +96,11 @@
                 style="background: #e65100; color: white;width:140px"
               />
             </div>
-          </div>       
+          </div>
           <dialogEventos :modal="dialog" @evento="dialog = $event" />
         </main>
       </q-tab-panel>
     </q-tab-panels>
-
-    
   </q-layout>
 </template>
 
@@ -109,21 +113,22 @@ import dialogEventos from "./Dialogs/DialogEventos";
 export default {
   name: "MainLayout",
   components: { Toolbar, dialogEventos },
-  props:['tabHeader'],
+  props: ["tabHeader"],
   data() {
     return {
-      tab:"tab1",
+      tab: "tab1",
       current: 1,
       max: 10,
       nome: "",
       alunos: [],
-      dialog: false
+      dialog: false,
+      eventos: []
     };
   },
   mounted() {
     this.buscarDadosFaculdade();
     this.buscarAlunos();
-  
+    this.buscarEventos();
   },
   methods: {
     async buscarDadosFaculdade() {
@@ -148,6 +153,20 @@ export default {
         .then(response => {
           this.alunos = response.data.data;
           console.log(this.alunos);
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
+    async buscarEventos() {
+      const id_faculdade = await JSON.parse(sessionStorage.getItem("usuario"))
+        .id;
+
+      await faculdade
+        .getEventByIdFaculdade({ id_faculdade })
+        .then(response => {
+          console.log(response);
+          this.eventos = response.data.data;
         })
         .catch(e => {
           console.log(e.response);

@@ -25,6 +25,15 @@ class Faculdade extends api {
     return response;
   }
 
+  async getEventByIdFaculdade(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/getEventsByIdFaculdade`, obj, {
+      ...config
+    });
+
+    return response;
+  }
+
 }
 
 export default new Faculdade();
