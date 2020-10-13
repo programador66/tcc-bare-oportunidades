@@ -51,6 +51,15 @@ class Faculdade extends api {
 
     return response;
   }
+
+    async aproveStudents(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/aproveStudents`, obj, {
+      ...config
+    });
+
+    return response;
+  }
 }
 
 export default new Faculdade();

@@ -36,6 +36,7 @@
                 label="Aprovar"
                 type="button"
                 style="background: #e65100; color: white;width:140px"
+                @click="aprovarAluno(al)"
               />
             </div>
           </div>
@@ -214,6 +215,32 @@ export default {
         })
         .catch(e => {
           console.log(e.response);
+        });
+    },
+    aprovarAluno(alun) {
+      const obj = {
+        status: "A",
+        observacao: "",
+        id_aluno: alun.id,
+        id_faculdade: alun.id_faculdade
+      };
+
+      faculdade
+        .aproveStudents(obj)
+        .then(response => {
+          this.$q.notify({
+            type: "positive",
+            message: response.data.data.msg,
+            timeout: 1500
+          });
+        })
+        .catch(e => {
+          console.log(e.response);
+          this.$q.notify({
+            type: "negative",
+            message: "Não foi possível realizar a aprovação!",
+            timeout: 1500
+          });
         });
     }
   }
