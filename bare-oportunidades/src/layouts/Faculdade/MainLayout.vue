@@ -25,12 +25,35 @@
             <div id="td2">
               <label> <strong>RA:</strong> {{ al.registro_academico }}</label>
             </div>
-
+            <q-icon
+              name="warning"
+              class="text-red"
+              style="font-size: 2rem;"
+              v-if="al.status == 'I'"
+            >
+              <q-tooltip
+                content-class="bg-red"
+                content-style="font-size: 16px"
+                :offset="[10, 10]"
+              >
+                {{ al.observacao }}
+              </q-tooltip>
+            </q-icon>
             <div id="btn-aprova-reprova">
               <q-btn
+                v-if="al.status == 'I'"
+                disabled
                 label="Reprovar"
                 type="button"
                 style="background: white; color: #e65100;width:140px;margin-right:2%;"
+                @click="reprovarAluno(al)"
+              />
+              <q-btn
+                v-else
+                label="Reprovar"
+                type="button"
+                style="background: white; color: #e65100;width:140px;margin-right:2%;"
+                @click="reprovarAluno(al)"
               />
               <q-btn
                 v-if="al.status == 'A'"
@@ -242,6 +265,7 @@ export default {
             message: response.data.data.msg,
             timeout: 1500
           });
+          this.buscarAlunos();
         })
         .catch(e => {
           console.log(e.response);
@@ -250,6 +274,52 @@ export default {
             message: "Não foi possível realizar a aprovação!",
             timeout: 1500
           });
+        });
+    },
+    reprovarAluno(alun) {
+      this.$q
+        .dialog({
+          title: "Reprovar aluno",
+          message: "Motivo da reprovação?",
+          prompt: {
+            model: "",
+            type: "text" // optional
+          },
+          cancel: true,
+          persistent: true
+        })
+        .onOk(data => {
+          const obj = {
+            status: "I",
+            observacao: data,
+            id_aluno: alun.id,
+            id_faculdade: alun.id_faculdade
+          };
+
+          faculdade
+            .aproveStudents(obj)
+            .then(response => {
+              this.$q.notify({
+                type: "positive",
+                message: response.data.data.msg,
+                timeout: 1500
+              });
+              this.buscarAlunos();
+            })
+            .catch(e => {
+              console.log(e.response);
+              this.$q.notify({
+                type: "negative",
+                message: "Não foi possível realizar a aprovação!",
+                timeout: 1500
+              });
+            });
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
         });
     }
   }
