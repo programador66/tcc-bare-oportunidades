@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import FaculdadeService from "../../services/faculdade/index";
+import faculdadeService from "../../services/faculdade/index";
 import usuario from "../../services/usuario/login";
 import SnackBarMixins from "../../mixins/SnackBarMixins";
 
@@ -257,14 +257,28 @@ export default {
       });
     },
     getFaculdades() {
-      FaculdadeService.getFaculdades()
+      faculdadeService
+        .getFaculdades()
         .then(response => {
+          if (response.data.data.length == 0) {
+            this.goTohome();
+          }
           this.faculdades = response.data.data.map(f => f.nome);
           this.dadosFaculdades = response.data.data;
         })
         .catch(e => {
           console.log(e.resonse);
         });
+    },
+    goTohome() {
+      this.$q.loading.show({
+        message:
+          "Nenhuma faculdade encontrada no momento, favor tentar mais tarde ou entre em contato com sua instituição ..."
+      });
+      setTimeout(() => {
+        this.$q.loading.hide();
+        this.$router.push("/");
+      }, 5000);
     }
   }
 };

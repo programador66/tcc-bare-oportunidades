@@ -33,6 +33,15 @@
                 style="background: white; color: #e65100;width:140px;margin-right:2%;"
               />
               <q-btn
+                v-if="al.status == 'A'"
+                disabled
+                label="Aprovar"
+                type="button"
+                style="background: #e65100; color: white;width:140px"
+                @click="aprovarAluno(al)"
+              />
+              <q-btn
+                v-else
                 label="Aprovar"
                 type="button"
                 style="background: #e65100; color: white;width:140px"

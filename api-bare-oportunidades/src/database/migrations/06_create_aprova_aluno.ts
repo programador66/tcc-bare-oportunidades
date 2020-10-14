@@ -8,7 +8,7 @@ export async function up(knex: Knex) {
       .integer("id_faculdade")
       .notNullable()
       .references("id")
-      .inTable("faculdade").primary();
+      .inTable("faculdade");
     table.integer("id_aluno").notNullable().references("id").inTable("aluno").primary();
   });
 }
