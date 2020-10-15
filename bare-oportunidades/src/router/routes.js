@@ -14,6 +14,10 @@ const routes = [{
     path: "/home-college",
     component: () => import("layouts/Faculdade/MainLayout.vue")
   },
+    {
+    path: "/home-company",
+    component: () => import("layouts/Empresa/MainLayout.vue")
+  },
   {
     path: "/register",
     component: () => import("layouts/Cadastro/Index.vue")
