@@ -69,6 +69,16 @@
       hint="(00) 0000-0000"
     />
     <q-input
+      :rules="rule"
+      ref="descricao_empresa"
+      v-model="empresa.descricao_empresa"
+      filled
+      type="textarea"
+      label-color="orange"
+      label="Descricao da Empresa"
+      hint="Breve descrição sobre a empresa"
+    />
+    <q-input
       class="form-qinput-faculdade"
       outlined
       v-model="empresa.senha"
@@ -79,6 +89,7 @@
       :rules="ruleSenha"
       :type="isPwd1 ? 'password' : 'text'"
       hint="min 8 caracteres"
+      style="margin-top:4px"
     >
       <template v-slot:append>
         <q-icon
@@ -115,6 +126,7 @@ export default {
       fone: "",
       senha: "",
       logradouro: "",
+      descricao_empresa: "",
       rule: [val => (val && val.length > 0) || "Campo obrigatório"],
       ruleSenha: [
         val =>
@@ -129,7 +141,8 @@ export default {
         fone: "",
         senha: "",
         logradouro: "",
-        tp_usuario: "E"
+        tp_usuario: "E",
+        descricao_empresa: ""
       }
     };
   },
@@ -143,6 +156,7 @@ export default {
       this.$refs.fone.validate();
       this.$refs.senha.validate();
       this.$refs.logradouro.validate();
+      this.$refs.descricao_empresa.validate();
 
       if (
         this.$refs.razao_social.hasError ||
@@ -151,7 +165,8 @@ export default {
         this.$refs.fone.hasError ||
         this.$refs.senha.hasError ||
         this.$refs.logradouro.hasError ||
-        this.$refs.nome_fantasia.hasError
+        this.$refs.nome_fantasia.hasError ||
+        this.$refs.descricao_empresa.hasError
       ) {
         return true;
       }

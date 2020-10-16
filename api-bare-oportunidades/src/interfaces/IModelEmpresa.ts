@@ -5,4 +5,5 @@ export default interface IModelEmpresa {
   nome_fantasia: String;
   fone: String;
   id_usuario: Number;
+  descricao_empresa: String
 }
