@@ -14,6 +14,7 @@
           label="Nova Oportunidade"
           outline
           icon="work_outline"
+          @click="dialogVagas = true"
         />
       </div>
       <q-list bordered class="rounded-borders">
@@ -61,7 +62,7 @@
                 <section id="body-cont-candidatos">
                   <q-btn
                     style="background:white; color: #e65100; margin-right:2px"
-                    label="Avaliar Cadidatos"
+                    label="Avaliar Candidatos"
                     outline
                     icon="person_add"
                   />
@@ -96,15 +97,25 @@
         </q-expansion-item>
       </q-list>
     </main>
+    <DialogOportunidade
+      :dialogVagas="dialogVagas"
+      @dialogOportunidade="dialogVagas = $event"
+    />
   </q-layout>
 </template>
 
 <script>
 import Toolbar from "components/Toolbar.vue";
+import DialogOportunidade from "./Dialogs/DialogOportunidade";
 
 export default {
   name: "MainLayout",
-  components: { Toolbar }
+  components: { Toolbar, DialogOportunidade },
+  data() {
+    return {
+      dialogVagas: false
+    };
+  }
 };
 </script>
 <style scoped>
