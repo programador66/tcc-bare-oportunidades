@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header>
       <Toolbar>
-        <q-tab name="tab1" label="Pemaza Peças e Pneus" />
+        <q-tab name="tab1" :label="empresa.razao_social" />
       </Toolbar>
     </q-header>
 
@@ -23,40 +23,21 @@
           expand-separator
           :header-style="{ color: '#e65100' }"
           icon="work"
-          label="Desenvolvedor PHP"
+          :label="oportunidade.titulo"
+          v-for="oportunidade in oportunidades" :key="oportunidade.id"
         >
           <q-card>
             <q-card-section>
               <article id="body-vagas-empresa">
                 <section id="body-cont-vaga">
-                  <strong>Descrição da vaga</strong>
+                  <strong>Atividades e Responsabilidades</strong>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quidem, eius reprehenderit eos corrupti commodi magni
-                    quaerat ex numquam, dolorum officiis modi facere maiores
-                    architecto suscipit iste eveniet doloribus ullam aliquid.
+                    {{oportunidade.atividades_responsabilidades}}
                   </p>
 
-                  <strong>Atributos</strong>
+                  <strong>Requisitos</strong>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quidem, eius reprehenderit eos corrupti commodi magni
-                    quaerat ex numquam, dolorum officiis modi facere maiores
-                    architecto suscipit iste eveniet doloribus ullam aliquid.
-                  </p>
-                  <strong>Atributos</strong>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quidem, eius reprehenderit eos corrupti commodi magni
-                    quaerat ex numquam, dolorum officiis modi facere maiores
-                    architecto suscipit iste eveniet doloribus ullam aliquid.
-                  </p>
-                  <strong>Atributos</strong>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quidem, eius reprehenderit eos corrupti commodi magni
-                    quaerat ex numquam, dolorum officiis modi facere maiores
-                    architecto suscipit iste eveniet doloribus ullam aliquid.
+                    {{oportunidade.requisitos}}
                   </p>
                 </section>
                 <section id="body-cont-candidatos">
@@ -78,23 +59,6 @@
             </q-card-section>
           </q-card>
         </q-expansion-item>
-
-        <q-expansion-item
-          switch-toggle-side
-          expand-separator
-          :header-style="{ color: '#e65100' }"
-          icon="work"
-          label="Desenvolvedor SPRINGBOOT"
-        >
-          <q-card>
-            <q-card-section>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
-              eius reprehenderit eos corrupti commodi magni quaerat ex numquam,
-              dolorum officiis modi facere maiores architecto suscipit iste
-              eveniet doloribus ullam aliquid.
-            </q-card-section>
-          </q-card>
-        </q-expansion-item>
       </q-list>
     </main>
     <DialogOportunidade
@@ -107,14 +71,44 @@
 <script>
 import Toolbar from "components/Toolbar.vue";
 import DialogOportunidade from "./Dialogs/DialogOportunidade";
+import EmpresaService from "../../services/empresa/index";
 
 export default {
   name: "MainLayout",
   components: { Toolbar, DialogOportunidade },
   data() {
     return {
-      dialogVagas: false
+      dialogVagas: false,
+      empresa:{},
+      oportunidades:[]
     };
+  },
+  mounted(){
+    this.getEmpresaByUsuario();
+  },
+  methods: {
+    getEmpresaByUsuario() {
+      const id_usuario = JSON.parse(sessionStorage.getItem("usuario")).id;
+
+      EmpresaService.getEmpresaByUsuario({id_usuario})
+      .then(response => {
+        this.empresa = response.data.data[0] ?? [];
+        console.log(Object.keys(this.empresa).length == 0);
+
+        if(Object.keys(this.empresa).length){
+          EmpresaService.getOportunidades({id_empresa:this.empresa.id})
+          .then(response => {
+            this.oportunidades = response.data.data;
+
+          }).catch(e => {
+            console.log(e.response);
+          })
+        }
+
+      }).catch(e => {
+        console.log(e.response);
+      })
+    }
   }
 };
 </script>

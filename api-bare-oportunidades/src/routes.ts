@@ -6,12 +6,14 @@ import { UserControllerValidate } from "./RequestValidate/ControllerValidate";
 import FaculdadeController from "./controllers/FaculdadeController";
 import UserController from "./controllers/UserController";
 import AlunoController from "./controllers/AlunoController";
+import EmpresaController from "./controllers/EmpresaController";
 
 const routes = express.Router();
 
 const userController = new UserController();
 const faculdadeController = new FaculdadeController();
 const alunoController = new AlunoController();
+const empresaController = new EmpresaController();
 
 /** Route:Users */
 routes.post("/user", UserControllerValidate.validations, userController.create);
@@ -30,5 +32,11 @@ routes.post("/aproveStudents", faculdadeController.aproveStudents);
 
 /** Route:Aluno */
 routes.post("/alunos", alunoController.getStudentByCollege);
+
+/** Route:Empresa */
+routes.post("/oportunity",empresaController.insertNovaOportunidade);
+routes.post("/get-oportunity-by-empresa",empresaController.getOportunidadesByEmpresa);
+routes.post("/get-empresa-by-id-usuario",empresaController.getEmpresaById_Usuario);
+
 
 export default routes;
