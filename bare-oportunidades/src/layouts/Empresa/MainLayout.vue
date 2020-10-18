@@ -64,6 +64,8 @@
     <DialogOportunidade
       :dialogVagas="dialogVagas"
       @dialogOportunidade="dialogVagas = $event"
+      :id="empresa.id"
+      @loadingVagas="loadingVagas = $event"
     />
   </q-layout>
 </template>
@@ -80,7 +82,8 @@ export default {
     return {
       dialogVagas: false,
       empresa:{},
-      oportunidades:[]
+      oportunidades:[],
+      loadingVagas:false
     };
   },
   mounted(){
@@ -93,12 +96,12 @@ export default {
       EmpresaService.getEmpresaByUsuario({id_usuario})
       .then(response => {
         this.empresa = response.data.data[0] ?? [];
-        console.log(Object.keys(this.empresa).length == 0);
 
         if(Object.keys(this.empresa).length){
           EmpresaService.getOportunidades({id_empresa:this.empresa.id})
           .then(response => {
             this.oportunidades = response.data.data;
+            this.loadingVagas = false;
 
           }).catch(e => {
             console.log(e.response);
@@ -108,6 +111,13 @@ export default {
       }).catch(e => {
         console.log(e.response);
       })
+    }
+  },
+  watch: {
+    loadingVagas(val) {
+      if(val) {
+        this.getEmpresaByUsuario();
+      }
     }
   }
 };

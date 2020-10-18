@@ -19,16 +19,6 @@
           :rules="rule"
           ref="tituloRule"
         />
-        <q-input
-          class="form_oportunidade"
-          outlined
-          label="Descrição da vaga"
-          label-color="orange"
-          v-model="vagas.descricao"
-          color="orange"
-          :rules="rule"
-          ref="descricaoRule"
-        />
 
         <q-input
          class="form_oportunidade"
@@ -64,36 +54,35 @@
 </template>
 
 <script>
-import SnackBarMixins from '../../../mixins/SnackBarMixins'
+import SnackBarMixins from '../../../mixins/SnackBarMixins';
+import EmpresaService from '../../../services/empresa/index';
 
 export default {
   name: "DialogOportunidade",
-  props: ["dialogVagas"],
+  props: ["dialogVagas","id"],
   mixins: [SnackBarMixins],
   data() {
     return {
       dialog: false,
-      vagas: { titulo: "", descricao: "", atividades_responsabilidades:"", requisitos:"" },
+      vagas: { titulo: "", atividades_responsabilidades:"", requisitos:"" },
       rule: [val => (val && val.length > 0) || "Campo obrigatório"],
       tituloRule:"",
-      descricaoRule:"",
       ativi_responRule:"",
-      requisitoRule: ""
+      requisitoRule: "",
+      id_empresa:"",
 
     };
   },
   methods: {
     validateForm() {
       this.$refs.tituloRule.validate();
-      this.$refs.descricaoRule.validate();
       this.$refs.ativi_responRule.validate();
       this.$refs.requisitoRule.validate();
 
       if (
         this.$refs.tituloRule.hasError ||
-        this.$refs.descricaoRule.hasError ||
         this.$refs.ativi_responRule.hasError ||
-        this.$refs.requisitoRule 
+        this.$refs.requisitoRule.hasError 
       ) {
         return true;
       }
@@ -101,16 +90,30 @@ export default {
       return false;
     },
     novaOportunidade() {
+   
      const validate = this.validateForm();
-
+  
       if (validate) {
         return (this.formHasError = true);
       }
+      
+      EmpresaService.insertOportunidade({id_empresa:this.id_empresa,...this.vagas})
+      .then(response => {
+        console.log(response);
 
-      this.snackBarPositive("so vai faltar o back!");
+        if(response.data.success){
+          this.snackBarPositive("Oportunidade cadastrada com sucesso!");
+          this.closeModal();
+          this.$emit("loadingVagas", true);
+        }
+
+      }).catch(e => {
+        console.log(e.response);
+        this.snackBarNegative("Não foi possivel realizar o cadastro! Tente novamente!")
+      })
     },
     closeModal() {
-      console.log("alou");
+      this.vagas = {}
       this.dialog = false;
       this.$emit("dialogOportunidade", false);
     }
@@ -118,6 +121,9 @@ export default {
   watch: {
     dialogVagas(e) {
       this.dialog = e;
+    },
+    id(e) {
+      this.id_empresa = e;
     }
   }
 };
