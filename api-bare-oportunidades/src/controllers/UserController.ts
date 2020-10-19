@@ -31,7 +31,7 @@ class UserController {
 
       if (!resNovoCadastro.success) {
         const del = await userService.deleteUserById(Number(usuario));
-        console.log(del);
+   
         throw new Error("Erro na inserção de um novo cadastro!");
       }
 

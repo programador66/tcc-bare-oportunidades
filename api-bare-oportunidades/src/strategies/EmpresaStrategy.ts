@@ -10,6 +10,7 @@ class EmpresaStrategy implements ICadastro {
       razao_social,
       nome_fantasia,
       fone,
+      descricao_empresa
     } = request.body;
 
     const empresa = new EmpresaService().insert({
@@ -19,6 +20,7 @@ class EmpresaStrategy implements ICadastro {
       nome_fantasia,
       fone,
       id_usuario,
+      descricao_empresa
     });
 
     return empresa;
