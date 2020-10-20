@@ -3,7 +3,7 @@
     <q-card style="width: 700px; max-width: 80vw;">
       <q-card-section>
         <div class="text-h6" style="color: #e65100;font-weight:bold;">
-          Nova Oportunidade
+          {{this.editVagas ? 'Editar Oportunidade' : 'Nova Oportunidade'}}
         </div>
       </q-card-section>
 
@@ -21,7 +21,7 @@
         />
 
         <q-input
-         class="form_oportunidade"
+          class="form_oportunidade"
           :rules="rule"
           ref="ativi_responRule"
           v-model="vagas.atividades_responsabilidades"
@@ -47,7 +47,8 @@
 
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn flat style="color: red" label="Cancelar" @click="closeModal" />
-        <q-btn flat label="Salvar" @click="novaOportunidade" />
+         <q-btn flat label="Salvar" v-if="editVagas" @click="updateOportunidade" />
+        <q-btn flat label="Salvar" v-else @click="novaOportunidade" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -59,7 +60,7 @@ import EmpresaService from '../../../services/empresa/index';
 
 export default {
   name: "DialogOportunidade",
-  props: ["dialogVagas","id"],
+  props: ["dialogVagas","id","vagaAtualizada","editVagas"],
   mixins: [SnackBarMixins],
   data() {
     return {
@@ -112,10 +113,30 @@ export default {
         this.snackBarNegative("Não foi possivel realizar o cadastro! Tente novamente!")
       })
     },
+    updateOportunidade() {
+    
+      const obj = {
+        id: this.vagaAtualizada.id,
+        status:this.vagaAtualizada.status,
+        id_empresa:this.id,
+        atividades_responsabilidades: this.vagas.atividades_responsabilidades,
+        titulo:this.vagas.titulo,
+        requisitos: this.vagas.requisitos
+      }
+
+      EmpresaService.updateOportunidade(obj)
+      .then(response => {
+        this.snackBarPositive(response.data.msg);
+         this.$emit("loadingVagas", true);
+         this.closeModal();
+      }).catch(e => this.snackBarNegative("Não foi possivel realziar a atualização!"));
+
+    },
     closeModal() {
       this.vagas = {}
       this.dialog = false;
       this.$emit("dialogOportunidade", false);
+      this.$emit("editVagas",false);
     }
   },
   watch: {
@@ -124,6 +145,15 @@ export default {
     },
     id(e) {
       this.id_empresa = e;
+    },
+    editVagas(e) {
+      if (e) {
+      this.vagas.titulo = this.vagaAtualizada.titulo;
+      this.vagas.atividades_responsabilidades = this.vagaAtualizada.atividades_responsabilidades;
+      this.vagas.requisitos = this.vagaAtualizada.requisitos;
+      this.dialog = e;
+      }
+ 
     }
   }
 };
