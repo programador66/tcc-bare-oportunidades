@@ -114,7 +114,11 @@ export default {
       })
     },
     updateOportunidade() {
-    
+     const validate = this.validateForm();
+  
+      if (validate) {
+        return (this.formHasError = true);
+      }
       const obj = {
         id: this.vagaAtualizada.id,
         status:this.vagaAtualizada.status,
