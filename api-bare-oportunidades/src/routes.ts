@@ -35,6 +35,7 @@ routes.post("/alunos", alunoController.getStudentByCollege);
 
 /** Route:Empresa */
 routes.post("/oportunity",empresaController.insertNovaOportunidade);
+routes.put("/oportunity",empresaController.updateOportunidade);
 routes.post("/get-oportunity-by-empresa",empresaController.getOportunidadesByEmpresa);
 routes.post("/get-empresa-by-id-usuario",empresaController.getEmpresaById_Usuario);
 

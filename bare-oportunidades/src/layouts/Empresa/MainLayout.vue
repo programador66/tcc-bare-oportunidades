@@ -53,6 +53,7 @@
                     label="Editar Oportunidade"
                     outline
                     icon="edit"
+                    @click="editarOportunidade(oportunidade)"
                   />
                 </section>
               </article>
@@ -66,6 +67,9 @@
       @dialogOportunidade="dialogVagas = $event"
       :id="empresa.id"
       @loadingVagas="loadingVagas = $event"
+      :editVagas="editVagas"
+      @editVagas="editVagas = $event"
+      :vagaAtualizada="vagaAtualizada"
     />
   </q-layout>
 </template>
@@ -83,7 +87,9 @@ export default {
       dialogVagas: false,
       empresa:{},
       oportunidades:[],
-      loadingVagas:false
+      loadingVagas:false,
+      editVagas:false,
+      vagaAtualizada:{}
     };
   },
   mounted(){
@@ -111,6 +117,10 @@ export default {
       }).catch(e => {
         console.log(e.response);
       })
+    },
+    editarOportunidade(vaga) {
+      this.editVagas = true;
+      this.vagaAtualizada = vaga;
     }
   },
   watch: {

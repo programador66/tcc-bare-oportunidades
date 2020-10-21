@@ -28,6 +28,15 @@ class Empresa extends api {
  
     return response;
   }
+  
+  async updateOportunidade(obj ){
+    const config = this.headerToken();
+    const response = await this.api.put(`/oportunity`, obj, {
+      ...config
+    });
+ 
+    return response;
+  }
 }
 
 export default new Empresa();

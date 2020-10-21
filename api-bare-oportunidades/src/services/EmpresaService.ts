@@ -59,6 +59,19 @@ class EmpresaService {
       return false;
     }
   }
+
+  async updateOportunidade(id: Number,vagas: IModelVagas) {
+    const response = await knex("vagas")
+      .where("id_empresa", '=', vagas.id_empresa)
+      .where("id", '=', id)
+      .update(vagas);
+    
+    if (!response) {
+      return {success:false, error:response}
+    }
+
+    return {success: true, msg: "Atualização realizada!"}
+  }
 }
 
 export default EmpresaService;
