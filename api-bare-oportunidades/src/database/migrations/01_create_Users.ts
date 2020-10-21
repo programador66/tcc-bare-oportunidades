@@ -6,6 +6,8 @@ export async function up(knex: Knex) {
     table.string("email").notNullable().unique();
     table.string("senha").notNullable();
     table.string("tp_usuario").notNullable();
+    table.string('passwordResetToken');
+    table.date('passwordResetExpires');
   });
 }
 

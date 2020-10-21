@@ -29,6 +29,23 @@ class UserService {
     return client;
   }
 
+  async getUserEmail(email: String){
+    const client = await knex('usuario')
+                    .select("*")
+                    .where("email", email).first();
+    return client;
+  }
+
+  async findByIdAndUpdate(id: Number, token: any, date: Date){
+      const user = await knex('usuario').where({id}).update( { passwordResetToken: token, passwordResetExpires: date } );
+      return user;
+  }
+
+  async updateUserId(id: Number, user: IModelUser){
+    const usuario = await knex('usuario').where({id}).update( { senha: user.senha } )
+    return usuario;
+  }
+
   async deleteUserById(id: Number) {
     const response = await knex("usuario").where("id", id).del();
 
