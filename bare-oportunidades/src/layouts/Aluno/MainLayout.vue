@@ -18,7 +18,14 @@
       </div>
     </q-page-container>
 
-    <q-page-container v-else>
+    <q-page-container v-else id="container-aluno-body">
+      <span id="buscar"
+        ><q-input rounded outlined label="BUSQUE SUA OPORTUNIDADE">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </span>
       <q-carousel
         id="carrosel-1"
         v-model="slide"
@@ -37,47 +44,18 @@
           <div
             class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
           >
-            <q-card class="rounded-borders col-4 full-height">
-              <q-card-section>
-                {{ lorem }}
-              </q-card-section>
-            </q-card>
-            <q-card class="rounded-borders col-4 full-height">
-              <q-card-section>
-                {{ lorem }}
-              </q-card-section>
-            </q-card>
-            <q-card class="rounded-borders col-4 full-height">
-              <q-card-section>
-                <q-avatar size="60px">
-                  <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-                </q-avatar>
-                <label>Desenvolvedor PHP</label>
-                <q-toggle v-model="inscrever" />
-                <label>Grupo PMZ Manaus - Amazonas</label>
-              </q-card-section>
-            </q-card>
+            <card-vagas />
+            <card-vagas />
+            <card-vagas />
           </div>
         </q-carousel-slide>
         <q-carousel-slide :name="2" class="column no-wrap">
           <div
             class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
           >
-            <q-card class="rounded-borders col-4 full-height">
-              <q-card-section>
-                {{ lorem }}
-              </q-card-section>
-            </q-card>
-            <q-card class="rounded-borders col-4 full-height">
-              <q-card-section>
-                {{ lorem }}
-              </q-card-section>
-            </q-card>
-            <q-card class="rounded-borders col-4 full-height">
-              <q-card-section>
-                {{ lorem }}
-              </q-card-section>
-            </q-card>
+            <card-vagas />
+            <card-vagas />
+            <card-vagas />
           </div>
         </q-carousel-slide>
       </q-carousel>
@@ -88,13 +66,14 @@
 <script>
 import Toolbar from "components/Toolbar.vue";
 import Alerta from "./Alerta";
+import CardVagas from "./Cards/CardVagas";
 
 export default {
   name: "MainLayout",
-  components: { Toolbar, Alerta },
+  components: { Toolbar, Alerta, CardVagas },
   data() {
     return {
-      inscrever: false,
+      inscrever: true,
       cadastro: true,
       slide: 1,
       lorem:
@@ -104,6 +83,17 @@ export default {
 };
 </script>
 <style>
+#container-aluno-body {
+  margin-top: 1%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#buscar {
+  width: 60%;
+}
+
 #container-aluno {
   margin-top: 12%;
   display: flex;
@@ -112,6 +102,7 @@ export default {
 }
 #carrosel-1 {
   margin-top: 2%;
+  width: 100%;
 }
 
 .q-carousel__navigation--bottom {
@@ -125,6 +116,14 @@ export default {
 }
 .q-carousel__slide,
 .q-carousel .q-carousel--padding {
-  padding: 40px;
+  padding: 45px;
+}
+
+.q-field--outlined .q-field__control {
+  border-radius: 4px;
+  padding: 4px 65px;
+}
+.q-field__marginal {
+  height: 40px;
 }
 </style>
