@@ -101,7 +101,7 @@ class UserController {
         to: email,
         from: 'bareoportunidades@suport.com.br',
         html: `<p>Esqueceu sua senha? Utilize este token para recuperar: ${token} </p>`,
-      }, err => {
+      }, (err: any) => {
         if(err){
           return response.status(400).send( {message: 'Erro ao enviar email'})
         }
