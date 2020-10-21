@@ -18,6 +18,10 @@ const empresaController = new EmpresaController();
 /** Route:Users */
 routes.post("/user", UserControllerValidate.validations, userController.create);
 routes.post("/login", userController.login);
+routes.post('/forgot_password', userController.forgotPassword)
+routes.post('/reset_password', userController.reset_password)
+/** Route:Users */
+
 
 /** Route:Faculdade */
 routes.get("/faculdades", faculdadeController.index);
