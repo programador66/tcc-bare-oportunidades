@@ -26,39 +26,81 @@
           </template>
         </q-input>
       </span>
-      <q-carousel
-        id="carrosel-1"
-        v-model="slide"
-        transition-prev="slide-right"
-        transition-next="slide-left"
-        swipeable
-        animated
-        control-color="black"
-        navigation
-        padding
-        arrows
-        height="200px"
-        class="bg-grey-1"
-      >
-        <q-carousel-slide :name="1" class="">
-          <div
-            class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-          >
-            <card-vagas />
-            <card-vagas />
-            <card-vagas />
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide :name="2" class="column no-wrap">
-          <div
-            class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-          >
-            <card-vagas />
-            <card-vagas />
-            <card-vagas />
-          </div>
-        </q-carousel-slide>
-      </q-carousel>
+      <div id="container-carrossel1">
+        <label class="title-carrosel">AS MELHORES VAGAS</label>
+        <q-carousel
+          id="carrosel-1"
+          v-model="slide"
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          swipeable
+          animated
+          control-color="black"
+          navigation
+          padding
+          arrows
+          height="200px"
+          class="bg-grey-1"
+        >
+          <q-carousel-slide :name="1" class="">
+            <div
+              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+            >
+              <card-vagas />
+              <card-vagas />
+              <card-vagas />
+            </div>
+          </q-carousel-slide>
+          <q-carousel-slide :name="2" class="column no-wrap">
+            <div
+              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+            >
+              <card-vagas />
+              <card-vagas />
+              <card-vagas />
+            </div>
+          </q-carousel-slide>
+        </q-carousel>
+      </div>
+
+      <div id="container-carrossel1">
+        <label class="title-carrosel">CURSOS E EVENTOS</label>
+        <q-carousel
+          id="carrosel-1"
+          v-model="slide2"
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          swipeable
+          animated
+          control-color="black"
+          navigation
+          padding
+          arrows
+          height="200px"
+          class="bg-grey-1"
+        >
+          <q-carousel-slide :name="1" class="">
+            <div
+              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+            >
+              <card-eventos />
+              <card-eventos />
+              <card-eventos />
+              <card-eventos />
+            </div>
+          </q-carousel-slide>
+          <q-carousel-slide :name="2" class="column no-wrap">
+            <div
+              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+            >
+              <card-eventos />
+              <card-eventos />
+              <card-eventos />
+              <card-eventos />
+            </div>
+          </q-carousel-slide>
+        </q-carousel>
+      </div>
     </q-page-container>
   </q-layout>
 </template>
@@ -67,15 +109,17 @@
 import Toolbar from "components/Toolbar.vue";
 import Alerta from "./Alerta";
 import CardVagas from "./Cards/CardVagas";
+import CardEventos from "./Cards/CardEventos";
 
 export default {
   name: "MainLayout",
-  components: { Toolbar, Alerta, CardVagas },
+  components: { Toolbar, Alerta, CardVagas, CardEventos },
   data() {
     return {
       inscrever: true,
       cadastro: true,
       slide: 1,
+      slide2: 1,
       lorem:
         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam."
     };
@@ -83,6 +127,14 @@ export default {
 };
 </script>
 <style>
+#container-carrossel1 {
+  width: 100%;
+}
+.title-carrosel {
+  color: #676767;
+  margin-bottom: 0;
+  margin-left: 4%;
+}
 #container-aluno-body {
   margin-top: 1%;
   display: flex;
