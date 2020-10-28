@@ -1,6 +1,7 @@
 import knex from "../database/connection";
 import IModelEmpresa from "../interfaces/IModelEmpresa";
 import IModelVagas from "../interfaces/IModelVagas";
+import { separarArray } from "../helpers/index"
 
 class EmpresaService {
   async insert(empresa: IModelEmpresa) {
@@ -71,6 +72,11 @@ class EmpresaService {
     }
 
     return {success: true, msg: "Atualização realizada!"}
+  }
+
+  async getEmpresas(){
+    const empresa = await knex('empresa').select('*');
+    return separarArray(empresa,3)
   }
 }
 
