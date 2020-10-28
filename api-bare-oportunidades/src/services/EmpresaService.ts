@@ -85,8 +85,10 @@ class EmpresaService {
 
   async getVagas(){
     try {
-      const vagas =  await knex('vagas').select('*').innerJoin('empresa','empresa.id','vagas.id_empresa')
-                                                    .orderBy([{column: 'vagas.data_post',order:'desc'},{ column: 'vagas.hora_post',order: 'desc'}]);                               
+      const vagas = await knex('vagas')
+        .select('*')
+        .innerJoin('empresa', 'empresa.id', 'vagas.id_empresa')
+        .orderBy([{column: 'vagas.data_post',order:'desc'},{ column: 'vagas.hora_post',order: 'desc'}]);                               
       return vagas;
     } catch (error) {
       throw new Error(error.message)

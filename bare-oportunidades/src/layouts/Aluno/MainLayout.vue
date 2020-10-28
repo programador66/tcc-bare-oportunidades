@@ -168,23 +168,36 @@ export default {
     };
   },
   mounted() {
-    this.getAllEmpresas();
     this.getAllVagas();
   },
   methods: {
+    getAllVagas() {
+      this.$q.loading.show({
+        message: "Carregando informações aguarde..."
+      });
+
+      EmpresaService.getAllVagas()
+        .then(response => {
+          this.vagas = response.data;
+          this.getAllEmpresas();
+        })
+        .catch(e => {
+          this.$q.loading.hide();
+          if (e.response == undefined) console.log("Sem internet");
+          console.log(e.response);
+        });
+    },
     getAllEmpresas() {
       EmpresaService.getAllEmpresas()
         .then(response => {
           this.empresas = response.data;
+          this.$q.loading.hide();
         })
-        .catch(e => console.log(e.response));
-    },
-    getAllVagas() {
-      EmpresaService.getAllVagas()
-        .then(response => {
-          this.vagas = response.data;
-        })
-        .catch(e => console.log(e.response));
+        .catch(e => {
+          this.$q.loading.hide();
+          if (e.response == undefined) console.log("Sem internet");
+          console.log(e.response);
+        });
     }
   }
 };

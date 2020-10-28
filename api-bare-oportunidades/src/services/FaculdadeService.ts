@@ -79,7 +79,8 @@ class FaculdadeService {
 
   async getEvents(){
     try {
-      const eventos =  await knex.select("faculdade.nome",'eventos.descricao').from('faculdade').innerJoin('eventos','faculdade.id','eventos.id_faculdade');                            
+      const eventos = await knex.select("faculdade.*","eventos.*").from("eventos").join("faculdade", "eventos.id_faculdade","faculdade.id"); 
+      
       return eventos;
     } catch (error) {
       throw new Error(error.message)
