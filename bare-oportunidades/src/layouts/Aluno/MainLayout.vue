@@ -101,6 +101,45 @@
           </q-carousel-slide>
         </q-carousel>
       </div>
+
+      <div id="container-carrossel1">
+        <label class="title-carrosel">EMPRESAS PARA SEGUIR</label>
+        <q-carousel
+          id="carrosel-1"
+          v-model="slide3"
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          swipeable
+          animated
+          control-color="black"
+          navigation
+          padding
+          arrows
+          height="200px"
+          class="bg-grey-1"
+        >
+          <q-carousel-slide :name="1" class="">
+            <div
+              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+            >
+              <card-seguir />
+              <card-seguir />
+              <card-seguir />
+              <card-seguir />
+            </div>
+          </q-carousel-slide>
+          <q-carousel-slide :name="2" class="column no-wrap">
+            <div
+              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+            >
+              <card-seguir />
+              <card-seguir />
+              <card-seguir />
+              <card-seguir />
+            </div>
+          </q-carousel-slide>
+        </q-carousel>
+      </div>
     </q-page-container>
   </q-layout>
 </template>
@@ -110,16 +149,18 @@ import Toolbar from "components/Toolbar.vue";
 import Alerta from "./Alerta";
 import CardVagas from "./Cards/CardVagas";
 import CardEventos from "./Cards/CardEventos";
+import CardSeguir from "./Cards/CardSeguir";
 
 export default {
   name: "MainLayout",
-  components: { Toolbar, Alerta, CardVagas, CardEventos },
+  components: { Toolbar, Alerta, CardVagas, CardEventos, CardSeguir },
   data() {
     return {
       inscrever: true,
       cadastro: true,
       slide: 1,
       slide2: 1,
+      slide3: 1,
       lorem:
         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam."
     };

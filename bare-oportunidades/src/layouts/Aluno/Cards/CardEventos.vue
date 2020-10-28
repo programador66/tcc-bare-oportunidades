@@ -9,7 +9,8 @@
           <div><label id="subtitle">Aplicaçoes com laravel</label></div>
         </div>
         <div>
-          s
+          <q-icon name="today" class="text-grey" style="font-size: 2em;" />
+          <label style="color:#e65100;font-weight:bold;">22/09</label>
         </div>
       </div>
     </q-card-section>
