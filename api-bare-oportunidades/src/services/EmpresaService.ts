@@ -76,7 +76,7 @@ class EmpresaService {
 
   async getEmpresas(){
     const empresa = await knex('empresa').select('*');
-    return separarArray(empresa,3)
+    return separarArray(empresa,4)
   }
 }
 

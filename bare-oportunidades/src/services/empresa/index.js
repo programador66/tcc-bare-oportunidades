@@ -37,6 +37,11 @@ class Empresa extends api {
  
     return response;
   }
+
+  async getAllOportunidades() {
+    const response = await this.api.get("/empresas");
+    return response;
+  }
 }
 
 export default new Empresa();
