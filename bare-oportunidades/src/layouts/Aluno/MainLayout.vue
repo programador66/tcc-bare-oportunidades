@@ -42,22 +42,20 @@
           height="200px"
           class="bg-grey-1"
         >
-          <q-carousel-slide :name="1" class="">
+          <q-carousel-slide
+            v-for="(empresa, index) in empresas"
+            :key="index"
+            :name="index + 1"
+            class=""
+          >
             <div
               class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
             >
-              <card-vagas />
-              <card-vagas />
-              <card-vagas />
-            </div>
-          </q-carousel-slide>
-          <q-carousel-slide :name="2" class="column no-wrap">
-            <div
-              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-            >
-              <card-vagas />
-              <card-vagas />
-              <card-vagas />
+              <card-vagas
+                v-for="(emp, index) in empresa"
+                :key="index"
+                :vaga="emp"
+              />
             </div>
           </q-carousel-slide>
         </q-carousel>
@@ -118,24 +116,20 @@
           height="200px"
           class="bg-grey-1"
         >
-          <q-carousel-slide :name="1" class="">
+          <q-carousel-slide
+            v-for="(empresa, index) in empresas"
+            :key="index"
+            :name="index + 1"
+            class=""
+          >
             <div
               class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
             >
-              <card-seguir />
-              <card-seguir />
-              <card-seguir />
-              <card-seguir />
-            </div>
-          </q-carousel-slide>
-          <q-carousel-slide :name="2" class="column no-wrap">
-            <div
-              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-            >
-              <card-seguir />
-              <card-seguir />
-              <card-seguir />
-              <card-seguir />
+              <card-seguir
+                v-for="(emp, index) in empresa"
+                :key="index"
+                :empresa="emp"
+              />
             </div>
           </q-carousel-slide>
         </q-carousel>
@@ -150,9 +144,10 @@ import Alerta from "./Alerta";
 import CardVagas from "./Cards/CardVagas";
 import CardEventos from "./Cards/CardEventos";
 import CardSeguir from "./Cards/CardSeguir";
+import EmpresaService from "../../services/empresa/index";
 
 export default {
-  name: "MainLayout",
+  name: "MainLayoutaluno",
   components: { Toolbar, Alerta, CardVagas, CardEventos, CardSeguir },
   data() {
     return {
@@ -161,12 +156,24 @@ export default {
       slide: 1,
       slide2: 1,
       slide3: 1,
-      lorem:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam."
+      empresas: []
     };
+  },
+  mounted() {
+    this.getAllOportunidades();
+  },
+  methods: {
+    getAllOportunidades() {
+      EmpresaService.getAllOportunidades()
+        .then(response => {
+          this.empresas = response.data;
+        })
+        .catch(e => console.log(e.response));
+    }
   }
 };
 </script>
+
 <style>
 #container-carrossel1 {
   width: 100%;

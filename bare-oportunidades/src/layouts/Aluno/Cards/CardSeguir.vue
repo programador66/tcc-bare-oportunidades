@@ -5,7 +5,7 @@
         <q-avatar size="60px" color="primary" text-color="white" id="avatar">
           GP
         </q-avatar>
-        <label id="title">Grupo PMZ</label>
+        <label id="title">{{ empresa.razao_social }}</label>
         <q-rating
           v-model="seguir"
           max="1"
@@ -25,9 +25,10 @@
 <script>
 export default {
   name: "CardSeguir",
+  props: ["empresa"],
   data() {
     return {
-      seguir: false
+      seguir: 0
     };
   }
 };
