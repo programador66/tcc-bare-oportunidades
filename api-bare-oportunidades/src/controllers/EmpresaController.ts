@@ -97,6 +97,19 @@ class EmpresaController {
 
   }
 
+  async getVagas(request: Request, response: Response) {
+    try {
+      const empresas = await   new EmpresaService().getEmpresas();
+      return response.status(200).json(empresas);
+    } catch (error) {
+     return response.status(406).json({
+       success: false,
+       error: error.message
+     })
+    }
+    
+  }
+
 }
 
 export default EmpresaController;
