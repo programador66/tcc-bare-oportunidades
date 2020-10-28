@@ -1,140 +1,146 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header>
-      <Toolbar>
+      <Toolbar @tabHeader="tab = $event">
         <q-tab name="tab1" label="Vagas Disponíveis" />
         <q-tab name="tab2" label="Minhas Oportunidades" />
       </Toolbar>
     </q-header>
+    <q-tab-panels v-model="tab" animated>
+      <q-tab-panel name="tab1">
+        <q-page-container v-if="!cadastro">
+          <Alerta />
+          <div id="container-aluno">
+            <img
+              alt="Quasar logo"
+              src="~assets/img/marca-bare.oportunidades-02.svg"
+              width="400px"
+            />
+          </div>
+        </q-page-container>
 
-    <q-page-container v-if="!cadastro">
-      <Alerta />
-      <div id="container-aluno">
-        <img
-          alt="Quasar logo"
-          src="~assets/img/marca-bare.oportunidades-02.svg"
-          width="400px"
-        />
-      </div>
-    </q-page-container>
-
-    <q-page-container v-else id="container-aluno-body">
-      <span id="buscar"
-        ><q-input rounded outlined label="BUSQUE SUA OPORTUNIDADE">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </span>
-      <div id="container-carrossel1">
-        <label class="title-carrosel">AS MELHORES VAGAS</label>
-        <q-carousel
-          id="carrosel-1"
-          v-model="slide"
-          transition-prev="slide-right"
-          transition-next="slide-left"
-          swipeable
-          animated
-          control-color="black"
-          navigation
-          padding
-          arrows
-          height="200px"
-          class="bg-grey-1"
-        >
-          <q-carousel-slide
-            v-for="(empresa, index) in empresas"
-            :key="index"
-            :name="index + 1"
-            class=""
-          >
-            <div
-              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+        <q-page-container v-else id="container-aluno-body">
+          <span id="buscar"
+            ><q-input rounded outlined label="BUSQUE SUA OPORTUNIDADE">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </span>
+          <div id="container-carrossel1">
+            <label class="title-carrosel">AS MELHORES VAGAS</label>
+            <q-carousel
+              id="carrosel-1"
+              v-model="slide"
+              transition-prev="slide-right"
+              transition-next="slide-left"
+              swipeable
+              animated
+              control-color="black"
+              navigation
+              padding
+              arrows
+              height="200px"
+              class="bg-grey-1"
             >
-              <card-vagas
-                v-for="(emp, index) in empresa"
+              <q-carousel-slide
+                v-for="(vaga, index) in vagas"
                 :key="index"
-                :vaga="emp"
-              />
-            </div>
-          </q-carousel-slide>
-        </q-carousel>
-      </div>
+                :name="index + 1"
+                class=""
+              >
+                <div
+                  class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+                >
+                  <card-vagas
+                    v-for="(vag, index) in vaga"
+                    :key="index"
+                    :vaga="vag"
+                  />
+                </div>
+              </q-carousel-slide>
+            </q-carousel>
+          </div>
 
-      <div id="container-carrossel1">
-        <label class="title-carrosel">CURSOS E EVENTOS</label>
-        <q-carousel
-          id="carrosel-1"
-          v-model="slide2"
-          transition-prev="slide-right"
-          transition-next="slide-left"
-          swipeable
-          animated
-          control-color="black"
-          navigation
-          padding
-          arrows
-          height="200px"
-          class="bg-grey-1"
-        >
-          <q-carousel-slide :name="1" class="">
-            <div
-              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+          <div id="container-carrossel1">
+            <label class="title-carrosel">CURSOS E EVENTOS</label>
+            <q-carousel
+              id="carrosel-1"
+              v-model="slide2"
+              transition-prev="slide-right"
+              transition-next="slide-left"
+              swipeable
+              animated
+              control-color="black"
+              navigation
+              padding
+              arrows
+              height="200px"
+              class="bg-grey-1"
             >
-              <card-eventos />
-              <card-eventos />
-              <card-eventos />
-              <card-eventos />
-            </div>
-          </q-carousel-slide>
-          <q-carousel-slide :name="2" class="column no-wrap">
-            <div
-              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-            >
-              <card-eventos />
-              <card-eventos />
-              <card-eventos />
-              <card-eventos />
-            </div>
-          </q-carousel-slide>
-        </q-carousel>
-      </div>
+              <q-carousel-slide :name="1" class="">
+                <div
+                  class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+                >
+                  <card-eventos />
+                  <card-eventos />
+                  <card-eventos />
+                  <card-eventos />
+                </div>
+              </q-carousel-slide>
+              <q-carousel-slide :name="2" class="column no-wrap">
+                <div
+                  class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+                >
+                  <card-eventos />
+                  <card-eventos />
+                  <card-eventos />
+                  <card-eventos />
+                </div>
+              </q-carousel-slide>
+            </q-carousel>
+          </div>
 
-      <div id="container-carrossel1">
-        <label class="title-carrosel">EMPRESAS PARA SEGUIR</label>
-        <q-carousel
-          id="carrosel-1"
-          v-model="slide3"
-          transition-prev="slide-right"
-          transition-next="slide-left"
-          swipeable
-          animated
-          control-color="black"
-          navigation
-          padding
-          arrows
-          height="200px"
-          class="bg-grey-1"
-        >
-          <q-carousel-slide
-            v-for="(empresa, index) in empresas"
-            :key="index"
-            :name="index + 1"
-            class=""
-          >
-            <div
-              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+          <div id="container-carrossel1">
+            <label class="title-carrosel">EMPRESAS PARA SEGUIR</label>
+            <q-carousel
+              id="carrosel-1"
+              v-model="slide3"
+              transition-prev="slide-right"
+              transition-next="slide-left"
+              swipeable
+              animated
+              control-color="black"
+              navigation
+              padding
+              arrows
+              height="200px"
+              class="bg-grey-1"
             >
-              <card-seguir
-                v-for="(emp, index) in empresa"
+              <q-carousel-slide
+                v-for="(empresa, index) in empresas"
                 :key="index"
-                :empresa="emp"
-              />
-            </div>
-          </q-carousel-slide>
-        </q-carousel>
-      </div>
-    </q-page-container>
+                :name="index + 1"
+                class=""
+              >
+                <div
+                  class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+                >
+                  <card-seguir
+                    v-for="(emp, index) in empresa"
+                    :key="index"
+                    :empresa="emp"
+                  />
+                </div>
+              </q-carousel-slide>
+            </q-carousel>
+          </div>
+        </q-page-container>
+      </q-tab-panel>
+      <q-tab-panel name="tab2">
+        teste
+      </q-tab-panel>
+    </q-tab-panels>
   </q-layout>
 </template>
 
@@ -151,22 +157,32 @@ export default {
   components: { Toolbar, Alerta, CardVagas, CardEventos, CardSeguir },
   data() {
     return {
+      tab: "tab1",
       inscrever: true,
       cadastro: true,
       slide: 1,
       slide2: 1,
       slide3: 1,
-      empresas: []
+      empresas: [],
+      vagas: []
     };
   },
   mounted() {
-    this.getAllOportunidades();
+    this.getAllEmpresas();
+    this.getAllVagas();
   },
   methods: {
-    getAllOportunidades() {
-      EmpresaService.getAllOportunidades()
+    getAllEmpresas() {
+      EmpresaService.getAllEmpresas()
         .then(response => {
           this.empresas = response.data;
+        })
+        .catch(e => console.log(e.response));
+    },
+    getAllVagas() {
+      EmpresaService.getAllVagas()
+        .then(response => {
+          this.vagas = response.data;
         })
         .catch(e => console.log(e.response));
     }
