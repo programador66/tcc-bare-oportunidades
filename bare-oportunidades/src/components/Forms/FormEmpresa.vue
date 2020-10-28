@@ -48,13 +48,14 @@
     <q-input
       class="form-qinput-faculdade"
       outlined
-      v-model="empresa.logradouro"
-      label="Endereço"
+      v-model="empresa.cep"
+      mask="########"
+      label="CEP"
       label-color="orange"
-      ref="logradouro"
+      ref="cep"
       lazy-rules
       :rules="rule"
-      hint="Rua/Av n°"
+      hint="somente numeros"
     />
     <q-input
       class="form-qinput-faculdade"
@@ -125,7 +126,7 @@ export default {
       email: "",
       fone: "",
       senha: "",
-      logradouro: "",
+      cep: "",
       descricao_empresa: "",
       rule: [val => (val && val.length > 0) || "Campo obrigatório"],
       ruleSenha: [
@@ -140,7 +141,7 @@ export default {
         email: "",
         fone: "",
         senha: "",
-        logradouro: "",
+        cep: "",
         tp_usuario: "E",
         descricao_empresa: ""
       }
@@ -155,7 +156,7 @@ export default {
       this.$refs.email.validate();
       this.$refs.fone.validate();
       this.$refs.senha.validate();
-      this.$refs.logradouro.validate();
+      this.$refs.cep.validate();
       this.$refs.descricao_empresa.validate();
 
       if (
@@ -164,7 +165,7 @@ export default {
         this.$refs.email.hasError ||
         this.$refs.fone.hasError ||
         this.$refs.senha.hasError ||
-        this.$refs.logradouro.hasError ||
+        this.$refs.cep.hasError ||
         this.$refs.nome_fantasia.hasError ||
         this.$refs.descricao_empresa.hasError
       ) {

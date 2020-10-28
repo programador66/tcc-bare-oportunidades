@@ -4,6 +4,8 @@ import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import NovoCadastroFactory from "../factories/NovoCadastroFactory";
+import crypto from 'crypto'
+import mailer from '../modules/mailer'
 
 class UserController {
   async create(request: Request, response: Response) {
@@ -78,6 +80,68 @@ class UserController {
     }
 
     response.status(404).json({ message: "Usuario ou senha inválido!" });
+  }
+
+  async forgotPassword(request: Request, response: Response){
+    const { email } = request.body
+    const usuario = await new UserService().getUserEmail(email);
+
+    try {
+      if(!usuario)
+        return response.status(404).json({ message: 'Usuário não encontrado'})
+
+      const token = crypto.randomBytes(20).toString('hex')
+
+      const now = new Date()
+      now.setHours(now.getHours() + 1)
+      
+      await new UserService().findByIdAndUpdate(usuario.id,token,now);
+      
+     await mailer.sendMail({
+        to: email,
+        from: 'bareoportunidades@suport.com.br',
+        html: `<p>Esqueceu sua senha? Utilize este token para recuperar: ${token} </p>`,
+      }, (err: any) => {
+        if(err){
+          return response.status(400).send( {message: 'Erro ao enviar email'})
+        }
+        return response.status(204).send( { message: 'confira sua caixa de entrada' } )
+      })
+
+    } catch (error) {
+      response.status(400).json( { message: "Erro em esqueci a senha, tente novamente" })
+    }
+  }
+
+  async reset_password(request: Request, response: Response){
+        const { email, token, senha } = request.body;
+         
+        try{
+
+          const usuario = await new UserService().getUserEmail(email);
+
+          if(!usuario){
+            return response.status(400).send( { error: "usuário não encontrado" });
+          }
+
+          if(token !== usuario.passwordResetToken)
+            return response.status(400).send( { error: "token inválido" })
+          
+          const now  = new Date();
+
+          if(now > usuario.passwordResetExpires)
+            return response.status(400).send( { error: "token expirado" })
+            
+          const passwordHash = await bcrypt.hash(senha, 8);
+          usuario.senha = passwordHash
+
+          await new UserService().updateUserId(usuario.id, usuario).then(() =>{
+            return response.status(204).send( { message: "Senha alterada com sucesso"} ) 
+          })
+
+         }catch(e){
+          response.status(400).json({message: "resetar senha deu erro!!"})
+         }
   }
 }
 

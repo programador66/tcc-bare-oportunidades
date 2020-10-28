@@ -6,7 +6,7 @@ class EmpresaStrategy implements ICadastro {
   async cadastrar(request: Request, id_usuario: Number): Promise<any> {
     const {
       cnpj,
-      logradouro,
+      cep,
       razao_social,
       nome_fantasia,
       fone,
@@ -15,7 +15,7 @@ class EmpresaStrategy implements ICadastro {
 
     const empresa = new EmpresaService().insert({
       cnpj,
-      logradouro,
+      cep,
       razao_social,
       nome_fantasia,
       fone,

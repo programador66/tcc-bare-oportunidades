@@ -5,7 +5,7 @@ export async function up(knex: Knex) {
     table.increments("id").primary();
     table.string("cnpj").notNullable().unique();
     table.string("razao_social").notNullable();
-    table.string("logradouro").notNullable();
+    table.string("cep").notNullable();
     table.string("nome_fantasia");
     table.string("descricao_empresa");
     table.string("fone").notNullable();
