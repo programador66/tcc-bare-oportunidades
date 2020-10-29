@@ -1,16 +1,22 @@
 <template>
-  <q-card class="rounded-borders col-3 full-height">
+  <q-card class="rounded-borders col-4 full-height">
     <q-card-section>
       <div id="cardt2">
         <img src="~assets/img/card-image.png" width="130" />
 
         <div id="lb">
-          <div><label id="title-evento">Curso Desenvolvedor PHP</label></div>
-          <div><label id="subtitle">Aplicaçoes com laravel</label></div>
+          <div>
+            <label id="title-evento">{{ evento.descricao }}</label>
+          </div>
+          <div>
+            <label id="subtitle"> Por {{ evento.nome }}</label>
+          </div>
         </div>
         <div>
           <q-icon name="today" class="text-grey" style="font-size: 2em;" />
-          <label style="color:#e65100;font-weight:bold;">22/09</label>
+          <label style="color:#e65100;font-weight:bold;">{{
+            evento.data_inicial
+          }}</label>
         </div>
       </div>
     </q-card-section>
@@ -20,6 +26,7 @@
 <script>
 export default {
   name: "CardEventos",
+  props: ["evento"],
   data() {
     return {};
   }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import FaculdadeService from "../services/FaculdadeService";
-
+import  { separarArray } from "../helpers/index"
 class FaculdadeController {
   async index(request: Request, response: Response) {
     try {
@@ -121,6 +121,19 @@ class FaculdadeController {
       return response.status(200).json({
         data: aprov,
       });
+    } catch (error) {
+      return response.status(406).json({
+        success: false,
+        error: error.getMessage,
+      });
+    }
+  }
+
+  async getEvents(request: Request ,response: Response){
+    try {
+      const events = await new FaculdadeService().getEvents()
+      return response.status(200).json(separarArray(events, 3));
+
     } catch (error) {
       return response.status(406).json({
         success: false,

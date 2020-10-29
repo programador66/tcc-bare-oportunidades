@@ -2,6 +2,7 @@ import knex from "../database/connection";
 import IModelEmpresa from "../interfaces/IModelEmpresa";
 import IModelVagas from "../interfaces/IModelVagas";
 
+
 class EmpresaService {
   async insert(empresa: IModelEmpresa) {
     const begintransaction = await knex.transaction();
@@ -71,6 +72,28 @@ class EmpresaService {
     }
 
     return {success: true, msg: "Atualização realizada!"}
+  }
+
+  async getEmpresas(){
+    try {
+      const empresas = await knex('empresa').select('*');
+      return empresas;
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  }
+
+  async getVagas(){
+    try {
+      const vagas = await knex('vagas')
+        .select('*')
+        .innerJoin('empresa', 'empresa.id', 'vagas.id_empresa')
+        .orderBy([{column: 'vagas.data_post',order:'desc'},{ column: 'vagas.hora_post',order: 'desc'}]);                               
+      return vagas;
+    } catch (error) {
+      throw new Error(error.message)
+    }
+   
   }
 }
 

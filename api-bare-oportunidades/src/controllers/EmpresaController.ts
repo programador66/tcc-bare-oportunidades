@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import EmpresaService from "../services/EmpresaService";
 import moment from "moment";
-
+import { separarArray } from "../helpers/index"
 class EmpresaController {
   async insertNovaOportunidade(request: Request, response: Response) {
     try {
@@ -95,6 +95,30 @@ class EmpresaController {
       });
     }
 
+  }
+
+  async getEmpresas(request: Request, response: Response) {
+    try {
+      const empresas = await   new EmpresaService().getEmpresas();
+      return response.status(200).json(separarArray(empresas,4));
+    } catch (error) {
+     return response.status(406).json({
+       success: false,
+       error: error.message
+     })
+    }
+    
+  }
+  async getVagas(request: Request, response : Response){
+    try {
+      const vagas = await new EmpresaService().getVagas();
+      return response.status(200).json(separarArray(vagas,3))
+    } catch (error) {
+      return response.status(406).json({
+        success: false,
+        error: error.message
+      })
+    }
   }
 
 }

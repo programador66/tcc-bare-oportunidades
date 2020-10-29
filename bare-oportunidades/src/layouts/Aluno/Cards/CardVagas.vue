@@ -5,10 +5,14 @@
         <q-avatar size="60px" id="avatar">
           <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
         </q-avatar>
-        <label id="title">Desenvolvedor PHP</label>
-        <q-toggle v-model="inscrever" />
+        <label id="title">{{ vaga.titulo }}</label>
+        <label>Ativo</label
+        ><q-toggle :value="vaga.status == 'A' ? true : false" disable />
       </div>
-      <label id="empresa">Grupo PMZ Manaus - Amazonas</label>
+      <div id="card1-bottom">
+        <label id="empresa">{{ vaga.razao_social }} - Amazonas</label>
+        <q-btn size="sm" color="primary" label="Detalhes" />
+      </div>
     </q-card-section>
   </q-card>
 </template>
@@ -16,6 +20,7 @@
 <script>
 export default {
   name: "CardVagas",
+  props: ["vaga"],
   data() {
     return {
       inscrever: true
@@ -48,5 +53,9 @@ export default {
   flex-grow: 1;
   color: #e65100;
   font-weight: bold;
+}
+#card1-bottom {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

@@ -77,6 +77,17 @@ class FaculdadeService {
     return { success: true, msg: "Aprovação Realizada!" };
   }
 
+  async getEvents(){
+    try {
+      const eventos = await knex.select("faculdade.*","eventos.*").from("eventos").join("faculdade", "eventos.id_faculdade","faculdade.id"); 
+      
+      return eventos;
+    } catch (error) {
+      throw new Error(error.message)
+    }
+   
+  }
+
 }
 
 export default FaculdadeService;

@@ -25,6 +25,9 @@ routes.post('/reset_password', userController.reset_password)
 
 /** Route:Faculdade */
 routes.get("/faculdades", faculdadeController.index);
+routes.get('/empresas', empresaController.getEmpresas)
+routes.get('/vagas',empresaController.getVagas)
+routes.get('/eventos', faculdadeController.getEvents)
 
 routes.use(auth);
 routes.post("/getEventsByIdFaculdade", faculdadeController.getEventByIdFaculdade);

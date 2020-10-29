@@ -37,6 +37,16 @@ class Empresa extends api {
  
     return response;
   }
+
+  async getAllEmpresas() {
+    const response = await this.api.get("/empresas");
+    return response;
+  }
+
+    async getAllVagas() {
+    const response = await this.api.get("/vagas");
+    return response;
+  }
 }
 
 export default new Empresa();
