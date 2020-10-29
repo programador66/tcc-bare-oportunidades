@@ -35,7 +35,7 @@ export default {
   mounted() {
     const empresa = this.empresa.razao_social.split(" ");
     const arr1 = empresa[0].split("");
-    const arr2 = empresa[1].split("");
+    const arr2 = empresa.length == 2 ? empresa[1].split("") : "";
     this.nomeLogo = arr2.length
       ? `${arr1[0]}${arr2[0]}`.toUpperCase()
       : `${arr1[0]}`.toUpperCase();

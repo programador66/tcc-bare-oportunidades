@@ -9,7 +9,10 @@
         <label>Ativo</label
         ><q-toggle :value="vaga.status == 'A' ? true : false" disable />
       </div>
-      <label id="empresa">{{ vaga.razao_social }} - Amazonas</label>
+      <div id="card1-bottom">
+        <label id="empresa">{{ vaga.razao_social }} - Amazonas</label>
+        <q-btn size="sm" color="primary" label="Detalhes" />
+      </div>
     </q-card-section>
   </q-card>
 </template>
@@ -50,5 +53,9 @@ export default {
   flex-grow: 1;
   color: #e65100;
   font-weight: bold;
+}
+#card1-bottom {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
