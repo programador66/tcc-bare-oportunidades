@@ -78,24 +78,20 @@
               height="200px"
               class="bg-grey-1"
             >
-              <q-carousel-slide :name="1" class="">
+              <q-carousel-slide
+                v-for="(evento, index) in eventos"
+                :key="index"
+                :name="index + 1"
+                class=""
+              >
                 <div
                   class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
                 >
-                  <card-eventos />
-                  <card-eventos />
-                  <card-eventos />
-                  <card-eventos />
-                </div>
-              </q-carousel-slide>
-              <q-carousel-slide :name="2" class="column no-wrap">
-                <div
-                  class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-                >
-                  <card-eventos />
-                  <card-eventos />
-                  <card-eventos />
-                  <card-eventos />
+                  <card-eventos
+                    v-for="(even, index) in evento"
+                    :key="index"
+                    :evento="even"
+                  />
                 </div>
               </q-carousel-slide>
             </q-carousel>
@@ -151,6 +147,7 @@ import CardVagas from "./Cards/CardVagas";
 import CardEventos from "./Cards/CardEventos";
 import CardSeguir from "./Cards/CardSeguir";
 import EmpresaService from "../../services/empresa/index";
+import FaculdadeService from "../../services/faculdade";
 
 export default {
   name: "MainLayoutaluno",
@@ -164,7 +161,8 @@ export default {
       slide2: 1,
       slide3: 1,
       empresas: [],
-      vagas: []
+      vagas: [],
+      eventos: []
     };
   },
   mounted() {
@@ -191,6 +189,18 @@ export default {
       EmpresaService.getAllEmpresas()
         .then(response => {
           this.empresas = response.data;
+          this.getAllEventos();
+        })
+        .catch(e => {
+          this.$q.loading.hide();
+          if (e.response == undefined) console.log("Sem internet");
+          console.log(e.response);
+        });
+    },
+    getAllEventos() {
+      FaculdadeService.getAllEventos()
+        .then(response => {
+          this.eventos = response.data;
           this.$q.loading.hide();
         })
         .catch(e => {

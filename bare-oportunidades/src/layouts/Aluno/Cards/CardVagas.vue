@@ -1,5 +1,5 @@
 <template>
-  <q-card class="rounded-borders col-3 full-height">
+  <q-card class="rounded-borders col-4 full-height">
     <q-card-section>
       <div id="cardt1">
         <q-avatar size="60px" id="avatar">

@@ -112,7 +112,7 @@ class EmpresaController {
   async getVagas(request: Request, response : Response){
     try {
       const vagas = await new EmpresaService().getVagas();
-      return response.status(200).json(separarArray(vagas,4))
+      return response.status(200).json(separarArray(vagas,3))
     } catch (error) {
       return response.status(406).json({
         success: false,

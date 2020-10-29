@@ -132,7 +132,7 @@ class FaculdadeController {
   async getEvents(request: Request ,response: Response){
     try {
       const events = await new FaculdadeService().getEvents()
-      return response.status(200).json(separarArray(events, 2));
+      return response.status(200).json(separarArray(events, 3));
 
     } catch (error) {
       return response.status(406).json({
