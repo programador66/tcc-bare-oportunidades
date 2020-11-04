@@ -85,10 +85,9 @@ export default {
 
       AlunoService.applyOportunity({ id_usuario, id_vaga })
         .then(response => {
-          console.log(response);
+          const msg = response.data.msg;
           this.$q.notify({
-            message:
-              "Candidatura enviada favor aguardar o contanto da empresa!",
+            message: msg,
             color: "green",
             position: "top"
           });

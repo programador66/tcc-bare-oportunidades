@@ -95,6 +95,26 @@ class EmpresaService {
     }
    
   }
+  async getVagasById(id: number){
+    try {
+      const vagas = await knex('vagas')
+        .select('*').where({id}) .first()                              
+      return vagas;
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  }
+
+  async getStudentsByOportunity(id: number){
+      const vaga = await this.getVagasById(id);
+      
+      const candidaturas = await knex('aluno').select('aluno.nome', 'aluno.telefone','aluno.sexo','aluno.registro_academico','usuario.email')
+                                              .innerJoin('usuario','aluno.id_usuario','usuario.id')
+                                              .join('selecoes_candidato', 'aluno.id','selecoes_candidato.id_aluno')
+                                              .join('vagas','selecoes_candidato.id_vagas','vagas.id').where('vagas.id',id)
+      
+      return candidaturas;
+  }
 }
 
 export default EmpresaService;

@@ -31,8 +31,8 @@ class UserService {
 
   async getUserEmail(email: String){
     const client = await knex('usuario')
-                    .select("*")
-                    .where("email", email).first();
+      .select("*")
+      .where("email", email).first();
     return client;
   }
 

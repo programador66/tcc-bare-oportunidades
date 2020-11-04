@@ -1,6 +1,6 @@
 import knex from "../database/connection";
 import IModelAluno from "../interfaces/IModelAluno";
-
+import IModelSelecoesCandidato  from "../interfaces/IModelSelecoesCandidato"
 class AlunoService {
   async insert(aluno: IModelAluno, id_faculdade: Number) {
     const begintransaction = await knex.transaction();
@@ -31,6 +31,26 @@ class AlunoService {
 
     return aluno;
   }
+
+  async getStudentById(id: number) {
+    const aluno = await knex('aluno').select('*').where({id_usuario:id}).first();
+    return aluno;
+  }
+
+  async applyOportinity(selecao: IModelSelecoesCandidato){
+    const begintransaction = await knex.transaction();
+
+    let selecaoVaga = await begintransaction('selecoes_candidato').insert(selecao)
+
+    if(!selecaoVaga){
+      begintransaction.rollback();
+      return { success: false, error: "Erro na inserção da candidatura" };
+    }
+    begintransaction.commit();
+
+    return { success: true, msg: "Candidatura enviada favor aguardar o contanto da empresa!" };
+  }
+
 }
 
 export default AlunoService;
