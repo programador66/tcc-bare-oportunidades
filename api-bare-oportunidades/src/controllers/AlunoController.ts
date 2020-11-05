@@ -44,6 +44,25 @@ class AlunoController {
     }
 
   }
+
+  async getAlunoByIdUsuario(request: Request, response : Response) {
+    const { id_usuario } = request.body;
+    
+    const aluno = await new AlunoService().getAlunoByIdUsuario(Number(id_usuario));
+
+    if (aluno.length == 0)
+      return response.status(200).json({ msg: "Nenhum dado retornado do bd!" });
+    
+    const vagasByAluno = await new AlunoService().getOportunitiesByIdAluno(Number(aluno[0].id));
+
+    const res = {
+      aluno,
+      vagasEscolhidas: vagasByAluno
+    }
+    return response.status(200).json({
+      data: res,
+    });
+  }
 }
 
 export default AlunoController;

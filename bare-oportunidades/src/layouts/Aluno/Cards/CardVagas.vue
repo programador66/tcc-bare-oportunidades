@@ -11,7 +11,12 @@
       </div>
       <div id="card1-bottom">
         <label id="empresa">{{ vaga.razao_social }} - Amazonas</label>
-        <q-btn size="sm" color="primary" label="Detalhes" @click="detalhesVaga(vaga)" />
+        <q-btn
+          size="sm"
+          color="primary"
+          label="Detalhes"
+          @click="detalhesVaga(vaga)"
+        />
       </div>
     </q-card-section>
   </q-card>
@@ -29,11 +34,10 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("vaga",{setVaga:"setVagaSelected"}),
+    ...mapMutations("vaga", { setVaga: "setVagaSelected" }),
     detalhesVaga(vaga) {
       this.setVaga(vaga);
       this.$router.push("/details");
-
     }
   }
 };

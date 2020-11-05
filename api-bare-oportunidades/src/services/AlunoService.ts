@@ -51,6 +51,24 @@ class AlunoService {
     return { success: true, msg: "Candidatura enviada favor aguardar o contanto da empresa!" };
   }
 
+  async getOportunitiesByIdAluno(id_aluno: Number) {
+    const vagasByAluno = await  knex.select("selecoes_candidato.*","vagas.*","empresa.razao_social","empresa.descricao_empresa","empresa.fone","empresa.cep","empresa.id as idemp")
+      .from("selecoes_candidato")
+      .innerJoin("vagas", "selecoes_candidato.id_aluno", "vagas.id")
+      .innerJoin("empresa","empresa.id","vagas.id_empresa")
+      .where("selecoes_candidato.id_aluno", "=", id_aluno);
+
+    return vagasByAluno;
+  }
+
+  async getAlunoByIdUsuario(id_usuario: Number) {
+    const aluno = await  knex.select("aluno.*")
+      .from("aluno")
+      .innerJoin("usuario", "aluno.id_usuario", "usuario.id")
+      .where("aluno.id_usuario", "=", id_usuario);
+
+    return aluno;
+  }
 }
 
 export default AlunoService;

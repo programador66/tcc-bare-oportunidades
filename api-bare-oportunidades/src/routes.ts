@@ -40,6 +40,7 @@ routes.post("/aproveStudents", faculdadeController.aproveStudents);
 /** Route:Aluno */
 routes.post("/alunos", alunoController.getStudentByCollege);
 routes.post("/applyOportunity", alunoController.applyOportunity);
+routes.post("/getAlunoById", alunoController.getAlunoByIdUsuario)
 
 /** Route:Empresa */
 routes.post("/oportunity",empresaController.insertNovaOportunidade);
