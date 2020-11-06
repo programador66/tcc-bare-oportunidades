@@ -1,5 +1,5 @@
 <template>
-  <q-card class="rounded-borders col-3 full-height">
+  <q-card class="rounded-borders col-4 full-height">
     <q-card-section>
       <div id="cardt1">
         <q-avatar size="60px" id="avatar">
@@ -9,12 +9,22 @@
         <label>Ativo</label
         ><q-toggle :value="vaga.status == 'A' ? true : false" disable />
       </div>
-      <label id="empresa">{{ vaga.razao_social }} - Amazonas</label>
+      <div id="card1-bottom">
+        <label id="empresa">{{ vaga.razao_social }} - Amazonas</label>
+        <q-btn
+          size="sm"
+          color="primary"
+          label="Detalhes"
+          @click="detalhesVaga(vaga)"
+        />
+      </div>
     </q-card-section>
   </q-card>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "CardVagas",
   props: ["vaga"],
@@ -22,6 +32,13 @@ export default {
     return {
       inscrever: true
     };
+  },
+  methods: {
+    ...mapMutations("vaga", { setVaga: "setVagaSelected" }),
+    detalhesVaga(vaga) {
+      this.setVaga(vaga);
+      this.$router.push("/details");
+    }
   }
 };
 </script>
@@ -50,5 +67,9 @@ export default {
   flex-grow: 1;
   color: #e65100;
   font-weight: bold;
+}
+#card1-bottom {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

@@ -3,7 +3,11 @@
     <q-header>
       <Toolbar @tabHeader="tab = $event">
         <q-tab name="tab1" label="Vagas Disponíveis" />
-        <q-tab name="tab2" label="Minhas Oportunidades" />
+        <q-tab
+          name="tab2"
+          label="Minhas Oportunidades"
+          @click="getInfoAlunoByUser"
+        />
       </Toolbar>
     </q-header>
     <q-tab-panels v-model="tab" animated>
@@ -78,24 +82,20 @@
               height="200px"
               class="bg-grey-1"
             >
-              <q-carousel-slide :name="1" class="">
+              <q-carousel-slide
+                v-for="(evento, index) in eventos"
+                :key="index"
+                :name="index + 1"
+                class=""
+              >
                 <div
                   class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
                 >
-                  <card-eventos />
-                  <card-eventos />
-                  <card-eventos />
-                  <card-eventos />
-                </div>
-              </q-carousel-slide>
-              <q-carousel-slide :name="2" class="column no-wrap">
-                <div
-                  class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-                >
-                  <card-eventos />
-                  <card-eventos />
-                  <card-eventos />
-                  <card-eventos />
+                  <card-eventos
+                    v-for="(even, index) in evento"
+                    :key="index"
+                    :evento="even"
+                  />
                 </div>
               </q-carousel-slide>
             </q-carousel>
@@ -138,7 +138,35 @@
         </q-page-container>
       </q-tab-panel>
       <q-tab-panel name="tab2">
-        teste
+        <div
+          class=" bg-grey-3 rounded-borders card-aluno-vagas"
+          v-for="selecoes in selecoes_escritas"
+          :key="selecoes.id"
+        >
+          <div id="td1">
+            <label><strong>Vaga: </strong>{{ selecoes.titulo }}</label>
+          </div>
+
+          <div id="td2">
+            <label>
+              <strong>Empresa: </strong> {{ selecoes.razao_social }}</label
+            >
+          </div>
+
+          <div id="div-aprova-reprova">
+            <q-btn
+              label="Desistir"
+              type="button"
+              style="background: white; color: #e65100;width:140px;margin-right:2%;"
+            />
+
+            <q-btn
+              label="Detalhes"
+              type="button"
+              style="background: #e65100; color: white;width:140px"
+            />
+          </div>
+        </div>
       </q-tab-panel>
     </q-tab-panels>
   </q-layout>
@@ -151,6 +179,8 @@ import CardVagas from "./Cards/CardVagas";
 import CardEventos from "./Cards/CardEventos";
 import CardSeguir from "./Cards/CardSeguir";
 import EmpresaService from "../../services/empresa/index";
+import FaculdadeService from "../../services/faculdade";
+import AlunoService from "../../services/aluno";
 
 export default {
   name: "MainLayoutaluno",
@@ -164,33 +194,93 @@ export default {
       slide2: 1,
       slide3: 1,
       empresas: [],
-      vagas: []
+      vagas: [],
+      eventos: [],
+      selecoes_escritas: []
     };
   },
   mounted() {
-    this.getAllEmpresas();
     this.getAllVagas();
+    this.getInfoAlunoByUser();
   },
   methods: {
+    getAllVagas() {
+      this.$q.loading.show({
+        message: "Carregando informações aguarde..."
+      });
+
+      EmpresaService.getAllVagas()
+        .then(response => {
+          this.vagas = response.data;
+          this.getAllEmpresas();
+        })
+        .catch(e => {
+          this.$q.loading.hide();
+          if (e.response == undefined) console.log("Sem internet");
+          console.log(e.response);
+        });
+    },
     getAllEmpresas() {
       EmpresaService.getAllEmpresas()
         .then(response => {
           this.empresas = response.data;
+          this.getAllEventos();
         })
-        .catch(e => console.log(e.response));
+        .catch(e => {
+          this.$q.loading.hide();
+          if (e.response == undefined) console.log("Sem internet");
+          console.log(e.response);
+        });
     },
-    getAllVagas() {
-      EmpresaService.getAllVagas()
+    getAllEventos() {
+      FaculdadeService.getAllEventos()
         .then(response => {
-          this.vagas = response.data;
+          this.eventos = response.data;
+          this.$q.loading.hide();
         })
-        .catch(e => console.log(e.response));
+        .catch(e => {
+          this.$q.loading.hide();
+          if (e.response == undefined) console.log("Sem internet");
+          console.log(e.response);
+        });
+    },
+    async getInfoAlunoByUser() {
+      this.$q.loading.show({
+        message: "Carregando informações aguarde..."
+      });
+
+      const id_usuario = await JSON.parse(sessionStorage.getItem("usuario")).id;
+
+      AlunoService.getOportunityByIdAluno({ id_usuario })
+        .then(response => {
+          console.log(response.data);
+          this.selecoes_escritas = response.data.data.vagasEscolhidas;
+          this.$q.loading.hide();
+        })
+        .catch(e => {
+          console.log("erro");
+          this.$q.loading.hide();
+        });
     }
   }
 };
 </script>
 
 <style>
+#div-aprova-reprova {
+  display: flex;
+  justify-content: center;
+}
+.card-aluno-vagas {
+  padding: 2%;
+  margin-top: 7%;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #container-carrossel1 {
   width: 100%;
 }
@@ -241,5 +331,15 @@ export default {
 }
 .q-field__marginal {
   height: 40px;
+}
+@media only screen and (max-width: 1100px) {
+  .card-aluno-vagas {
+    margin-top: 10%;
+  }
+}
+@media only screen and (max-width: 877px) {
+  .card-aluno-vagas {
+    margin-top: 15%;
+  }
 }
 </style>

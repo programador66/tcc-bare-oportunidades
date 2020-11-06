@@ -9,7 +9,7 @@
       />
       <q-space />
       <q-tabs v-model="tab" shrink @click="eventoTab">
-        <slot/>
+        <slot />
       </q-tabs>
       <q-avatar size="60px" @click="drawer = !drawer">
         <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
@@ -84,8 +84,8 @@ export default {
         window.location = "http://localhost:8080/";
       }
     },
-    eventoTab(){
-      this.$emit("tabHeader",this.tab)
+    eventoTab() {
+      this.$emit("tabHeader", this.tab);
     }
   }
 };
