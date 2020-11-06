@@ -58,7 +58,6 @@ class UserController {
     const { email, senha, tp_usuario } = request.body;
 
     const usuario = await new UserService().getUserByEmail(email, tp_usuario);
-
     if (usuario.length === 1) {
       if (await bcrypt.compare(senha, usuario[0].senha)) {
         const token = jwt.sign(

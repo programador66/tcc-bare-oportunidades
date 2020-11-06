@@ -121,6 +121,20 @@ class EmpresaController {
     }
   }
 
+  async getStudentsByVagas(request: Request, response:Response){
+    try {
+      const { id_vaga } = request.body;
+      const students = await new EmpresaService().getStudentsByOportunity(id_vaga);
+      if(students.length === 0) return response.status(200).json({message: 'sem resultados'})
+      return response.status(200).json(students);
+    } catch (error) {
+      return response.status(406).json({
+        success: false,
+        error: error.message
+      })
+    }
+  }
+
 }
 
 export default EmpresaController;

@@ -11,13 +11,20 @@
       </div>
       <div id="card1-bottom">
         <label id="empresa">{{ vaga.razao_social }} - Amazonas</label>
-        <q-btn size="sm" color="primary" label="Detalhes" />
+        <q-btn
+          size="sm"
+          color="primary"
+          label="Detalhes"
+          @click="detalhesVaga(vaga)"
+        />
       </div>
     </q-card-section>
   </q-card>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "CardVagas",
   props: ["vaga"],
@@ -25,6 +32,13 @@ export default {
     return {
       inscrever: true
     };
+  },
+  methods: {
+    ...mapMutations("vaga", { setVaga: "setVagaSelected" }),
+    detalhesVaga(vaga) {
+      this.setVaga(vaga);
+      this.$router.push("/details");
+    }
   }
 };
 </script>

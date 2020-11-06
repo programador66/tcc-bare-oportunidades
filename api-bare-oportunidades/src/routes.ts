@@ -39,12 +39,14 @@ routes.post("/aproveStudents", faculdadeController.aproveStudents);
 
 /** Route:Aluno */
 routes.post("/alunos", alunoController.getStudentByCollege);
+routes.post("/applyOportunity", alunoController.applyOportunity);
+routes.post("/getAlunoById", alunoController.getAlunoByIdUsuario)
 
 /** Route:Empresa */
 routes.post("/oportunity",empresaController.insertNovaOportunidade);
 routes.put("/oportunity",empresaController.updateOportunidade);
 routes.post("/get-oportunity-by-empresa",empresaController.getOportunidadesByEmpresa);
 routes.post("/get-empresa-by-id-usuario",empresaController.getEmpresaById_Usuario);
-
+routes.post("/students-oportunity", empresaController.getStudentsByVagas);
 
 export default routes;

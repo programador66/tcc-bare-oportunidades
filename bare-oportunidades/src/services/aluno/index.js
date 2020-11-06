@@ -9,6 +9,24 @@ class Aluno extends api {
 
     return response;
   }
+
+  async applyOportunity(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/applyOportunity`, obj, {
+      ...config
+    });
+
+    return response;
+  }
+
+  async getOportunityByIdAluno(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/getAlunoById`, obj, {
+      ...config
+    });
+
+    return response;
+  }
 }
 
 export default new Aluno();

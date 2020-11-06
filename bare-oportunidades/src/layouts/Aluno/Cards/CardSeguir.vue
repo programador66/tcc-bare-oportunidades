@@ -28,7 +28,7 @@ export default {
   props: ["empresa"],
   data() {
     return {
-      seguir: 0,
+      seguir: 1,
       nomeLogo: "BO"
     };
   },
