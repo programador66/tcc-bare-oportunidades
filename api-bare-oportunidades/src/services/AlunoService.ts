@@ -1,6 +1,7 @@
 import knex from "../database/connection";
 import IModelAluno from "../interfaces/IModelAluno";
 import IModelSelecoesCandidato  from "../interfaces/IModelSelecoesCandidato"
+import IModelVagaFavorita  from "../interfaces/IModelVagaFavorita"
 class AlunoService {
   async insert(aluno: IModelAluno, id_faculdade: Number) {
     const begintransaction = await knex.transaction();
@@ -59,6 +60,51 @@ class AlunoService {
       .where("selecoes_candidato.id_aluno", "=", id_aluno);
 
     return vagasByAluno;
+  }
+
+  /**
+   * params  - obj  { IModelVagaFavorita }
+   * salvar favorito
+   */ 
+  async  applyFavoriteCompany(favorite :  IModelVagaFavorita){
+      
+
+      const aluno = await knex('empresa_candidato_favorito').where({'id_empresa':favorite.id_empresa,'id_aluno':favorite.id_aluno}).first();
+      if(!aluno){
+        const begintransaction = await knex.transaction();
+        const favoriteEmpresa = await begintransaction('empresa_candidato_favorito').insert(favorite);
+        if(!favoriteEmpresa){
+          begintransaction.rollback();
+          return { success: false, error: "Erro na inserção do favorito" };
+        }
+
+        begintransaction.commit();
+
+        return { success: true, msg: "sucesso ao seguir Empresa!" };
+
+      }else{
+        return { success: false, error: "favorito já cadastrado!" }
+      }
+  }
+    /**
+   * params  - obj  { IModelVagaFavorita }
+   * deletar favorito
+   */ 
+  async deleteFavoriteCompany(id_empresa: any, id_usuario: any){
+
+      const aluno = await this.getAlunoByIdUsuario(id_usuario);
+      if(aluno.length == 0) {
+        return { success: false, error: "aluno não encontrado" }
+      }
+      const aux = await knex('empresa_candidato_favorito').where({'id_empresa':id_empresa,'id_aluno':aluno[0].id}).first()
+      
+       if(aux){
+        await knex('empresa_candidato_favorito').where({'id':aux.id}).delete() 
+          return { success: true, msg: "favorito excluído com sucesso" };;
+       } else{
+        return { success: false, error: "Erro ao excluir favorito" };
+       }
+      
   }
 
   async getAlunoByIdUsuario(id_usuario: Number) {

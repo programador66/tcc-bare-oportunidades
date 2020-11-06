@@ -115,6 +115,16 @@ class EmpresaService {
       
       return candidaturas;
   }
+
+  async getEmpresaByid (id: number){
+   
+     try {
+      const empresa =  await knex('empresa').select('*').where( { id } ).first();
+      return empresa;
+     } catch (error) {
+      throw new Error(error.message)
+     }
+  }
 }
 
 export default EmpresaService;
