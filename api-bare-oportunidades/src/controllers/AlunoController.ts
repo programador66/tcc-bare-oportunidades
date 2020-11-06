@@ -63,6 +63,39 @@ class AlunoController {
       data: res,
     });
   }
+
+  async favoriteEmpresa(request: Request, response: Response){
+    const { id_empresa, id_usuario } = request.body;
+
+    const aluno = await new AlunoService().getStudentById(id_usuario);
+    const empresa = await new EmpresaService().getEmpresaByid(id_empresa);
+    if(aluno && empresa){
+        const empresaFavorita = {
+          favorito: 'A',
+          id_empresa: empresa.id,
+          id_aluno: aluno.id
+        }
+
+        try {
+          const res = await new AlunoService().applyFavoriteCompany(empresaFavorita);
+          return response.status(200).json(res);
+        } catch (error) {
+          return response.status(406).json({
+            success: false,
+            error: error.getMessage,
+          });
+        }
+    
+     }else{
+        return response.status(404).json({message: 'usuário não encontrado'})
+     }
+  }
+
+  async deleteFavorite(request: Request, response: Response) {
+    const { id_empresa, id_usuario } = request.body;
+    const msg = await new AlunoService().deleteFavoriteCompany(id_empresa,id_usuario);
+    return response.status(200).json(msg);
+  }
 }
 
 export default AlunoController;
