@@ -141,13 +141,13 @@
         <div
           class=" bg-grey-3 rounded-borders card-aluno-vagas"
           v-for="selecoes in selecoes_escritas"
-          :key="selecoes.id"
+          :key="selecoes.id_vaga"
         >
           <div id="td1">
             <label><strong>Vaga: </strong>{{ selecoes.titulo }}</label>
           </div>
 
-          <div id="td2">
+          <div id="td2-alun">
             <label>
               <strong>Empresa: </strong> {{ selecoes.razao_social }}</label
             >
@@ -273,16 +273,28 @@ export default {
 }
 .card-aluno-vagas {
   padding: 2%;
-  margin-top: 7%;
   height: 80px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-grow: 2;
+}
+
+.card-aluno-vagas:first-child {
+  margin-top: 7%;
 }
 
 #container-carrossel1 {
   width: 100%;
+}
+#td1 {
+  margin-left: 2%;
+  flex-grow: 2;
+  width: 100px;
+}
+#td2-alun {
+  flex-grow: 1;
 }
 .title-carrosel {
   color: #676767;
@@ -333,12 +345,12 @@ export default {
   height: 40px;
 }
 @media only screen and (max-width: 1100px) {
-  .card-aluno-vagas {
+  .card-aluno-vagas:first-child {
     margin-top: 10%;
   }
 }
 @media only screen and (max-width: 877px) {
-  .card-aluno-vagas {
+  .card-aluno-vagas:first-child {
     margin-top: 15%;
   }
 }

@@ -86,7 +86,7 @@ class EmpresaService {
   async getVagas(){
     try {
       const vagas = await knex('vagas')
-        .select('*')
+        .select('empresa.*',"vagas.titulo", "vagas.id as id_vaga","vagas.atividades_responsabilidades","vagas.data_post", "vagas.requisitos","vagas.hora_post", "vagas.status")
         .innerJoin('empresa', 'empresa.id', 'vagas.id_empresa')
         .orderBy([{column: 'vagas.data_post',order:'desc'},{ column: 'vagas.hora_post',order: 'desc'}]);                               
       return vagas;
@@ -109,9 +109,9 @@ class EmpresaService {
       const vaga = await this.getVagasById(id);
       
       const candidaturas = await knex('aluno').select('aluno.nome', 'aluno.telefone','aluno.sexo','aluno.registro_academico','usuario.email')
-                                              .innerJoin('usuario','aluno.id_usuario','usuario.id')
-                                              .join('selecoes_candidato', 'aluno.id','selecoes_candidato.id_aluno')
-                                              .join('vagas','selecoes_candidato.id_vagas','vagas.id').where('vagas.id',id)
+        .innerJoin('usuario','aluno.id_usuario','usuario.id')
+        .join('selecoes_candidato', 'aluno.id','selecoes_candidato.id_aluno')
+        .join('vagas','selecoes_candidato.id_vagas','vagas.id').where('vagas.id',id)
       
       return candidaturas;
   }
