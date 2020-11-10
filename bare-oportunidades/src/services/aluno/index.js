@@ -27,6 +27,13 @@ class Aluno extends api {
 
     return response;
   }
+  async desistirVagaUsingPost(obj){
+    const config = this.headerToken();
+    const response = await this.api.post(`/desistir-vaga`, obj, {
+      ...config
+    });
+    return response;
+  }
 }
 
 export default new Aluno();

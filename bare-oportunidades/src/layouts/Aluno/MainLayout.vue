@@ -158,6 +158,7 @@
               label="Desistir"
               type="button"
               style="background: white; color: #e65100;width:140px;margin-right:2%;"
+              @click="confirmDesistencia(selecoes)"
             />
 
             <q-btn
@@ -261,6 +262,40 @@ export default {
           console.log("erro");
           this.$q.loading.hide();
         });
+    },
+    async confirmDesistencia(selecoes){
+      this.$q.
+          dialog({
+          title: "Confirmar Exclusão",
+          message: "Tem certeza que deseja desistir da vaga?",
+          cancel: true,
+          persistent: true
+        })
+        .onOk(() => {
+          this.desistirVagaUsingPost(selecoes)
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        });
+    },
+    async desistirVagaUsingPost(selecoes){
+      const id_usuario =  await JSON.parse(sessionStorage.getItem("usuario")).id;
+      const obj = {
+        id_vaga: selecoes.id__vagas,
+        id_usuario:id_usuario
+      }
+
+      AlunoService.desistirVagaUsingPost(obj).then(response => {
+         this.$q.notify({
+            type: "positive",
+            message: `${response.data.msg}`,
+            timeout: 1500
+          });
+         this.getInfoAlunoByUser();
+      }).catch(e => {
+         this.$q.loading.hide();
+          console.log(e)
+      })
     }
   }
 };
