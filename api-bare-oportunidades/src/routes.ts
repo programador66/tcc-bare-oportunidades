@@ -42,8 +42,8 @@ routes.post("/alunos", alunoController.getStudentByCollege);
 routes.post("/applyOportunity", alunoController.applyOportunity);
 routes.post("/getAlunoById", alunoController.getAlunoByIdUsuario)
 routes.post("/favorite-empresa",alunoController.favoriteEmpresa)
-routes.delete("/delete-favorite", alunoController.deleteFavorite)
-
+routes.post("/delete-favorite", alunoController.deleteFavorite)
+routes.post("/desistir-vaga", alunoController.desistirVaga)
 /** Route:Empresa */
 routes.post("/oportunity",empresaController.insertNovaOportunidade);
 routes.put("/oportunity",empresaController.updateOportunidade);

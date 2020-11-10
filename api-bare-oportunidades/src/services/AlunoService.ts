@@ -125,6 +125,11 @@ class AlunoService {
 
     return aluno;
   }
+
+  async desistirVaga(id:any){
+      await knex('selecoes_candidato').where({id}).delete();
+      return { success: true, msg: "favorito excluído com sucesso" };;
+  }
 }
 
 export default AlunoService;
