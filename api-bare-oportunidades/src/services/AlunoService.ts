@@ -62,6 +62,16 @@ class AlunoService {
     return vagasByAluno;
   }
 
+  async getExistStudentForVaga(id_aluno: Number, id_vaga: Number) {
+    const vagasByAluno = await  knex.select("selecoes_candidato.*","vagas.titulo","vagas.id as id__vagas","empresa.razao_social","empresa.descricao_empresa","empresa.fone","empresa.cep","empresa.id as idemp")
+      .from("selecoes_candidato")
+      .innerJoin("vagas", "selecoes_candidato.id_vagas", "vagas.id")
+      .innerJoin("empresa","empresa.id","vagas.id_empresa")
+      .where("selecoes_candidato.id_aluno", "=", id_aluno).and.where("selecoes_candidato.id_vagas", "=", id_vaga);
+
+    return vagasByAluno;
+  }
+
   /**
    * params  - obj  { IModelVagaFavorita }
    * salvar favorito
