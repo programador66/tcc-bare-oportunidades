@@ -81,7 +81,7 @@ export default {
   methods: {
     aplicarVaga() {
       const id_usuario = JSON.parse(sessionStorage.getItem("usuario")).id;
-      const id_vaga = this.vaga.id;
+      const id_vaga = this.vaga.id_vaga;
 
       AlunoService.applyOportunity({ id_usuario, id_vaga })
         .then(response => {

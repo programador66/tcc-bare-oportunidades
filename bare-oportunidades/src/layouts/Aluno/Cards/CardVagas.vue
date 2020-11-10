@@ -36,6 +36,7 @@ export default {
   methods: {
     ...mapMutations("vaga", { setVaga: "setVagaSelected" }),
     detalhesVaga(vaga) {
+      console.log(vaga);
       this.setVaga(vaga);
       this.$router.push("/details");
     }

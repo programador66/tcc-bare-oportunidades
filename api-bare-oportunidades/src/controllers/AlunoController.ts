@@ -21,7 +21,11 @@ class AlunoController {
 
     const aluno = await new AlunoService().getStudentById(id_usuario);
     const vaga = await new EmpresaService().getVagasById(id_vaga);
-    if(aluno && vaga){
+
+
+    const candidatura  = await new AlunoService().getExistStudentForVaga(aluno.id, vaga.id);
+    if(!candidatura){
+      if(aluno && vaga){
         const selecaoCandidato = {
           status_selecao: 'A',
           data_selecao: moment().locale("pt-br").format("L"),
@@ -39,10 +43,13 @@ class AlunoController {
           });
         }
         
-    }else{
+    }else
       return response.status(404).json({message: 'usuário não encontrado'})
-    }
-
+      
+    }else
+      return response.status(406).json({message: 'aluno já cadastrado nessa vaga!'})
+    
+  
   }
 
   async getAlunoByIdUsuario(request: Request, response : Response) {
