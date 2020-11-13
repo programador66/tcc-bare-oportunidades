@@ -140,7 +140,7 @@
       <q-tab-panel name="tab2">
         <div
           class=" bg-grey-3 rounded-borders card-aluno-vagas"
-          v-for="selecoes in selecoes_escritas"
+          v-for="selecoes in getterMyOportunitiesAndProfile.vagasEscolhidas"
           :key="selecoes.id_vaga"
         >
           <div id="td1">
@@ -182,6 +182,7 @@ import CardSeguir from "./Cards/CardSeguir";
 import EmpresaService from "../../services/empresa/index";
 import FaculdadeService from "../../services/faculdade";
 import AlunoService from "../../services/aluno";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "MainLayoutaluno",
@@ -196,15 +197,18 @@ export default {
       slide3: 1,
       empresas: [],
       vagas: [],
-      eventos: [],
-      selecoes_escritas: []
+      eventos: []
     };
   },
   mounted() {
     this.getAllVagas();
     this.getInfoAlunoByUser();
   },
+  computed: {
+    ...mapGetters("vaga", ["getterMyOportunitiesAndProfile"])
+  },
   methods: {
+    ...mapMutations("vaga", ["setOpotunitiesAndProfile"]),
     getAllVagas() {
       this.$q.loading.show({
         message: "Carregando informações aguarde..."
@@ -254,8 +258,7 @@ export default {
 
       AlunoService.getOportunityByIdAluno({ id_usuario })
         .then(response => {
-          console.log(response.data);
-          this.selecoes_escritas = response.data.data.vagasEscolhidas;
+          this.setOpotunitiesAndProfile(response.data.data);
           this.$q.loading.hide();
         })
         .catch(e => {
@@ -263,39 +266,41 @@ export default {
           this.$q.loading.hide();
         });
     },
-    async confirmDesistencia(selecoes){
-      this.$q.
-          dialog({
+    async confirmDesistencia(selecoes) {
+      this.$q
+        .dialog({
           title: "Confirmar Exclusão",
           message: "Tem certeza que deseja desistir da vaga?",
           cancel: true,
           persistent: true
         })
         .onOk(() => {
-          this.desistirVagaUsingPost(selecoes)
+          this.desistirVagaUsingPost(selecoes);
         })
         .onCancel(() => {
           // console.log('>>>> Cancel')
         });
     },
-    async desistirVagaUsingPost(selecoes){
-      const id_usuario =  await JSON.parse(sessionStorage.getItem("usuario")).id;
+    async desistirVagaUsingPost(selecoes) {
+      const id_usuario = await JSON.parse(sessionStorage.getItem("usuario")).id;
       const obj = {
         id_vaga: selecoes.id__vagas,
-        id_usuario:id_usuario
-      }
+        id_usuario: id_usuario
+      };
 
-      AlunoService.desistirVagaUsingPost(obj).then(response => {
-         this.$q.notify({
+      AlunoService.desistirVagaUsingPost(obj)
+        .then(response => {
+          this.$q.notify({
             type: "positive",
             message: `${response.data.msg}`,
             timeout: 1500
           });
-         this.getInfoAlunoByUser();
-      }).catch(e => {
-         this.$q.loading.hide();
-          console.log(e)
-      })
+          this.getInfoAlunoByUser();
+        })
+        .catch(e => {
+          this.$q.loading.hide();
+          console.log(e);
+        });
     }
   }
 };
