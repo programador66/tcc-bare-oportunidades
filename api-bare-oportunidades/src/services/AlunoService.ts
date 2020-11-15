@@ -78,7 +78,6 @@ class AlunoService {
    */ 
   async  applyFavoriteCompany(favorite :  IModelVagaFavorita){
       
-
       const aluno = await knex('empresa_candidato_favorito').where({'id_empresa':favorite.id_empresa,'id_aluno':favorite.id_aluno}).first();
       if(!aluno){
         const begintransaction = await knex.transaction();
@@ -90,7 +89,7 @@ class AlunoService {
 
         begintransaction.commit();
 
-        return { success: true, msg: "sucesso ao seguir Empresa!" };
+        return { success: true, msg: "Adicionado aos favoritos!" };
 
       }else{
         return { success: false, error: "favorito já cadastrado!" }
