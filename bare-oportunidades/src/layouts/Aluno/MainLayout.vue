@@ -266,6 +266,15 @@ export default {
           this.$q.loading.hide();
         });
     },
+    async getEmpresasFavoritas() {
+      const id_usuario = await JSON.parse(sessionStorage.getItem("usuario")).id;
+      AlunoService.getEmpresasFavoritas({ id_usuario });
+      then(response => {
+        console.log(response.data);
+      }).catch(e => {
+        console.log(e.response);
+      });
+    },
     async confirmDesistencia(selecoes) {
       this.$q
         .dialog({

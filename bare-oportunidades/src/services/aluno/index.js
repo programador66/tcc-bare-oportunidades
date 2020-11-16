@@ -49,6 +49,13 @@ class Aluno extends api {
 
     return response;
   }
+
+    async getEmpresasFavoritas(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/empresas-favoritas`,obj,{...config});
+
+    return response;
+  }
 }
 
 export default new Aluno();
