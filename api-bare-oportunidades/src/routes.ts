@@ -28,7 +28,7 @@ routes.get("/faculdades", faculdadeController.index);
 routes.get('/empresas', empresaController.getEmpresas)
 routes.get('/vagas',empresaController.getVagas)
 routes.get('/eventos', faculdadeController.getEvents)
-
+routes.post('/empresas-favoritas',empresaController.getStudentFavoriteEmpresa)
 routes.use(auth);
 routes.post("/getEventsByIdFaculdade", faculdadeController.getEventByIdFaculdade);
 routes.post("/createEvent", faculdadeController.createEvent);
