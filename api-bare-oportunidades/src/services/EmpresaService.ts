@@ -125,6 +125,17 @@ class EmpresaService {
       throw new Error(error.message)
      }
   }
+
+  async  getStudentFavoriteEmpresa(id_aluno: any){
+    try {
+      const empresasFavoritas = await knex('empresa').select('empresa.id as id_empresa')
+                                      .join('empresa_candidato_favorito','empresa.id','empresa_candidato_favorito.id_empresa')
+                                      .where('empresa_candidato_favorito.id_aluno','=',id_aluno).first();
+      return empresasFavoritas;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
 }
 
 export default EmpresaService;
