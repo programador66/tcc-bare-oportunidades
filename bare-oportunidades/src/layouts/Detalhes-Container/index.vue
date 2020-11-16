@@ -53,10 +53,12 @@
         </q-btn>
 
         <q-btn
+          v-if="!cadastrado"
           color="primary"
           label="Quero me Candidatar"
           @click="aplicarVaga"
         />
+        <q-btn v-else color="primary" label="Candidatura enviada" disabled />
       </span>
     </section>
   </q-layout>
@@ -73,10 +75,23 @@ export default {
   components: { Toolbar },
   mixins: [SnackBarMixins],
   data() {
-    return {};
+    return {
+      cadastrado: false
+    };
+  },
+  mounted() {
+    const id_vaga = this.vaga.id_vaga;
+    const index = this.getterMyOportunitiesAndProfile.vagasEscolhidas.findIndex(
+      e => e.id__vagas == id_vaga
+    );
+    console.log(index);
+    this.cadastrado = index >= 0 ? true : false;
   },
   computed: {
-    ...mapGetters("vaga", { vaga: "getterVagaSelected" })
+    ...mapGetters("vaga", {
+      vaga: "getterVagaSelected",
+      getterMyOportunitiesAndProfile: "getterMyOportunitiesAndProfile"
+    })
   },
   methods: {
     aplicarVaga() {
@@ -93,7 +108,6 @@ export default {
           });
         })
         .catch(e => {
-          console.log(e.response);
           this.$q.notify({
             message:
               "Erro ao enviar candidatura, favor entrar em contato com o suporte!",

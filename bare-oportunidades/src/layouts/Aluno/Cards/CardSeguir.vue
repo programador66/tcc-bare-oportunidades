@@ -16,6 +16,7 @@
           icon-selected="favorite"
           icon-half="favorite"
           no-dimming
+          @click="seguir == 1 ? favoritarEmpresa(empresa) : desfavoritarEmpresa(empresa)"
         />
       </div>
     </q-card-section>
@@ -23,12 +24,14 @@
 </template>
 
 <script>
+import AlunoService from "../../../services/aluno";
+
 export default {
   name: "CardSeguir",
   props: ["empresa"],
   data() {
     return {
-      seguir: 1,
+      seguir: 0,
       nomeLogo: "BO"
     };
   },
@@ -39,6 +42,62 @@ export default {
     this.nomeLogo = arr2.length
       ? `${arr1[0]}${arr2[0]}`.toUpperCase()
       : `${arr1[0]}`.toUpperCase();
+  },
+  methods: {
+   async favoritarEmpresa(empresa) {
+      const id_usuario = await JSON.parse(sessionStorage.getItem("usuario")).id;
+      const id_empresa = empresa.id;
+      
+      AlunoService.favoritarEmpresa({id_usuario,id_empresa})
+        .then(response => {
+          if(response.data.success) {
+            this.seguir = 1;
+
+             const msg = response.data.msg;
+              this.$q.notify({
+                type: "positive",
+                message: `${msg}`,
+                timeout: 1500
+              });
+          }
+         
+        }).catch(e => {
+          this.seguir = 0;
+          const msg = e.response.data.error;
+          this.$q.notify({
+            type: "negative",
+            message: `${msg}`,
+            timeout: 1500
+          });
+        });
+    },
+    async desfavoritarEmpresa(empresa) {
+      const id_usuario = await JSON.parse(sessionStorage.getItem("usuario")).id;
+      const id_empresa = empresa.id;
+      
+      AlunoService.desfavoritarEmpresa({id_usuario,id_empresa})
+        .then(response => {
+          if(response.data.success) {
+            this.seguir = 0;
+
+             const msg = response.data.msg;
+              this.$q.notify({
+                color:"orange",
+                message: `${msg}`,
+                timeout: 1500
+              });
+          }
+         
+        }).catch(e => {
+          this.seguir = 0;
+          const msg = e.response.data.error;
+          this.$q.notify({
+            type: "negative",
+            message: `${msg}`,
+            timeout: 1500
+          });
+        });
+    }
   }
 };
 </script>
