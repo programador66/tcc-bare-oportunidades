@@ -130,7 +130,7 @@ class EmpresaService {
     try {
       const empresasFavoritas = await knex('empresa').select('empresa.id as id_empresa')
                                       .join('empresa_candidato_favorito','empresa.id','empresa_candidato_favorito.id_empresa')
-                                      .where('empresa_candidato_favorito.id_aluno','=',id_aluno).first();
+                                      .where('empresa_candidato_favorito.id_aluno','=',id_aluno);
       return empresasFavoritas;
     } catch (error) {
       throw new Error(error.message);
