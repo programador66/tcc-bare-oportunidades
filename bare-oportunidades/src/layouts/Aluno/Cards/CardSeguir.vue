@@ -51,9 +51,10 @@ export default {
       ? `${arr1[0]}${arr2[0]}`.toUpperCase()
       : `${arr1[0]}`.toUpperCase();
 
-    console.log(this.getterFavorite);
-
-    // const index = this.getterFavorite.findIndex(f => f.id_empresa == )
+    const index = this.getterFavorite.findIndex(
+      f => f.id_empresa == this.empresa.id
+    );
+    this.seguir = index >= 0 ? 1 : 0;
   },
   methods: {
     async favoritarEmpresa(empresa) {
