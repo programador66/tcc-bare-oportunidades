@@ -24,7 +24,8 @@
           :header-style="{ color: '#e65100' }"
           icon="work"
           :label="oportunidade.titulo"
-          v-for="oportunidade in oportunidades" :key="oportunidade.id"
+          v-for="oportunidade in oportunidades"
+          :key="oportunidade.id"
         >
           <q-card>
             <q-card-section>
@@ -32,12 +33,12 @@
                 <section id="body-cont-vaga">
                   <strong>Atividades e Responsabilidades</strong>
                   <p>
-                    {{oportunidade.atividades_responsabilidades}}
+                    {{ oportunidade.atividades_responsabilidades }}
                   </p>
 
                   <strong>Requisitos</strong>
                   <p>
-                    {{oportunidade.requisitos}}
+                    {{ oportunidade.requisitos }}
                   </p>
                 </section>
                 <section id="body-cont-candidatos">
@@ -71,6 +72,8 @@
       @editVagas="editVagas = $event"
       :vagaAtualizada="vagaAtualizada"
     />
+
+    <DialogCandidatos />
   </q-layout>
 </template>
 
@@ -78,45 +81,46 @@
 import Toolbar from "components/Toolbar.vue";
 import DialogOportunidade from "./Dialogs/DialogOportunidade";
 import EmpresaService from "../../services/empresa/index";
+import DialogCandidatos from "./Dialogs/DialogCandidatos";
 
 export default {
   name: "MainLayout",
-  components: { Toolbar, DialogOportunidade },
+  components: { Toolbar, DialogOportunidade, DialogCandidatos },
   data() {
     return {
       dialogVagas: false,
-      empresa:{},
-      oportunidades:[],
-      loadingVagas:false,
-      editVagas:false,
-      vagaAtualizada:{}
+      empresa: {},
+      oportunidades: [],
+      loadingVagas: false,
+      editVagas: false,
+      vagaAtualizada: {}
     };
   },
-  mounted(){
+  mounted() {
     this.getEmpresaByUsuario();
   },
   methods: {
     getEmpresaByUsuario() {
       const id_usuario = JSON.parse(sessionStorage.getItem("usuario")).id;
 
-      EmpresaService.getEmpresaByUsuario({id_usuario})
-      .then(response => {
-        this.empresa = response.data.data[0] ?? [];
+      EmpresaService.getEmpresaByUsuario({ id_usuario })
+        .then(response => {
+          this.empresa = response.data.data[0] ?? [];
 
-        if(Object.keys(this.empresa).length){
-          EmpresaService.getOportunidades({id_empresa:this.empresa.id})
-          .then(response => {
-            this.oportunidades = response.data.data;
-            this.loadingVagas = false;
-
-          }).catch(e => {
-            console.log(e.response);
-          })
-        }
-
-      }).catch(e => {
-        console.log(e.response);
-      })
+          if (Object.keys(this.empresa).length) {
+            EmpresaService.getOportunidades({ id_empresa: this.empresa.id })
+              .then(response => {
+                this.oportunidades = response.data.data;
+                this.loadingVagas = false;
+              })
+              .catch(e => {
+                console.log(e.response);
+              });
+          }
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     },
     editarOportunidade(vaga) {
       this.editVagas = true;
@@ -125,7 +129,7 @@ export default {
   },
   watch: {
     loadingVagas(val) {
-      if(val) {
+      if (val) {
         this.getEmpresaByUsuario();
       }
     }
