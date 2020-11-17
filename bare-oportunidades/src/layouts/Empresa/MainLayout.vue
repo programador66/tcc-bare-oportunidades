@@ -130,7 +130,6 @@ export default {
       this.vagaAtualizada = vaga;
     },
     candidatosPorVaga(oportunidade) {
-      console.log(oportunidade);
       EmpresaService.getAllOportunidadesByIdVaga({ id_vaga: oportunidade.id })
         .then(response => {
           const candidatos = response.data.data;

@@ -259,6 +259,9 @@ export default {
 
       AlunoService.getOportunityByIdAluno({ id_usuario })
         .then(response => {
+          this.cadastro =
+            response.data.data.aluno[0].status_aluno == "A" ? true : false;
+
           this.setOpotunitiesAndProfile(response.data.data);
           this.$q.loading.hide();
         })
