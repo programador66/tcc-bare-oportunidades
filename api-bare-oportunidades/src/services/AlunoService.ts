@@ -117,9 +117,10 @@ class AlunoService {
   }
 
   async getAlunoByIdUsuario(id_usuario: Number) {
-    const aluno = await  knex.select("aluno.*")
+    const aluno = await  knex.select("aluno.*","aprova_aluno.status as status_aluno")
       .from("aluno")
       .innerJoin("usuario", "aluno.id_usuario", "usuario.id")
+      .innerJoin('aprova_aluno','aluno.id','aprova_aluno.id_aluno')
       .where("aluno.id_usuario", "=", id_usuario);
 
     return aluno;
