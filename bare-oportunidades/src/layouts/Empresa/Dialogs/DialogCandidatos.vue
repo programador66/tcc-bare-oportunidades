@@ -1,8 +1,10 @@
 <template>
-  <q-dialog v-model="open">
+  <q-dialog v-model="getModalCandidato" persistent>
     <q-card style="width:200vh">
       <q-card-section>
-        <div class="text-h6" style="color:#e65100">Desenvolvedor Android</div>
+        <div class="text-h6" style="color:#e65100">
+          {{ getCandidatosAndVaga.titulo }}
+        </div>
       </q-card-section>
 
       <q-separator />
@@ -13,7 +15,9 @@
           expand-separator
           :header-style="{ color: '#e65100' }"
           icon="person"
-          label="Caio Cesar Lacerda"
+          :label="candidatos.nome"
+          v-for="(candidatos, index) in getCandidatosAndVaga.candidatos"
+          :key="index"
         >
           <q-card>
             <q-card-section>
@@ -21,38 +25,12 @@
                 <section id="body-cont-vaga">
                   <strong>Email</strong>
                   <p>
-                    kaio.cesr@gmail.com
+                    {{ candidatos.email }}
                   </p>
 
                   <strong>Telefone</strong>
                   <p>
-                    (92) 9262-3012
-                  </p>
-                </section>
-              </article>
-            </q-card-section>
-          </q-card>
-        </q-expansion-item>
-
-        <q-expansion-item
-          switch-toggle-side
-          expand-separator
-          :header-style="{ color: '#e65100' }"
-          icon="person"
-          label="Caio Cesar Lacerda"
-        >
-          <q-card>
-            <q-card-section>
-              <article id="body-vagas-empresa">
-                <section id="body-cont-vaga">
-                  <strong>Email</strong>
-                  <p>
-                    kaio.cesr@gmail.com
-                  </p>
-
-                  <strong>Telefone</strong>
-                  <p>
-                    (92) 9262-3012
+                    {{ candidatos.telefone }}
                   </p>
                 </section>
               </article>
@@ -64,20 +42,29 @@
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn flat label="Decline" color="primary" v-close-popup />
-        <q-btn flat label="Accept" color="primary" v-close-popup />
+        <q-btn flat label="Fechar" color="primary" @click="closeModal" />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 export default {
+  props: ["openModal"],
   name: "DialogCandidatos",
   data() {
-    return {
-      open: true
-    };
+    return {};
+  },
+  computed: {
+    ...mapGetters("empresa", ["getModalCandidato", "getCandidatosAndVaga"])
+  },
+  methods: {
+    ...mapMutations("empresa", ["setModalCandidato"]),
+    closeModal() {
+      this.setModalCandidato(false);
+    }
   }
 };
 </script>

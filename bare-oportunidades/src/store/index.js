@@ -4,6 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 
 import usuario from "./modulo-usuario";
 import vaga from "./modulo-vagas";
+import empresa from "./modulo-empresa";
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       usuario,
-      vaga
+      vaga,
+      empresa
     },
     plugins: [
       createPersistedState({

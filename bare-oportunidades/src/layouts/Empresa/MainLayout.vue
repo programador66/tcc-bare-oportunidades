@@ -47,6 +47,7 @@
                     label="Avaliar Candidatos"
                     outline
                     icon="person_add"
+                    @click="candidatosPorVaga(oportunidade)"
                   />
 
                   <q-btn
@@ -82,6 +83,7 @@ import Toolbar from "components/Toolbar.vue";
 import DialogOportunidade from "./Dialogs/DialogOportunidade";
 import EmpresaService from "../../services/empresa/index";
 import DialogCandidatos from "./Dialogs/DialogCandidatos";
+import { mapMutations } from "vuex";
 
 export default {
   name: "MainLayout",
@@ -100,6 +102,7 @@ export default {
     this.getEmpresaByUsuario();
   },
   methods: {
+    ...mapMutations("empresa", ["setModalCandidato", "setCandidatosAndVaga"]),
     getEmpresaByUsuario() {
       const id_usuario = JSON.parse(sessionStorage.getItem("usuario")).id;
 
@@ -125,6 +128,41 @@ export default {
     editarOportunidade(vaga) {
       this.editVagas = true;
       this.vagaAtualizada = vaga;
+    },
+    candidatosPorVaga(oportunidade) {
+      console.log(oportunidade);
+      EmpresaService.getAllOportunidadesByIdVaga({ id_vaga: oportunidade.id })
+        .then(response => {
+          const candidatos = response.data.data;
+          const obj = {
+            ...oportunidade,
+            candidatos
+          };
+          console.log(obj);
+          if (candidatos.length) {
+            this.setCandidatosAndVaga(obj);
+            this.setModalCandidato(true);
+          } else {
+            this.$q
+              .dialog({
+                title: "Baré Alerta",
+                message:
+                  "Não há candidatos cadastrados para esta oportunidade no momento!"
+              })
+              .onOk(() => {
+                // console.log('OK')
+              })
+              .onCancel(() => {
+                // console.log('Cancel')
+              })
+              .onDismiss(() => {
+                // console.log('I am triggered on both OK and Cancel')
+              });
+          }
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     }
   },
   watch: {

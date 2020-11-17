@@ -40,7 +40,7 @@ class EmpresaService {
   async getOportunidadesByEmpresa(id: Number) {
     try {
       const oportunidades = await knex("vagas")
-      .select("*")
+        .select("*")
       .where('id_empresa', "=", id);
       
       return oportunidades;
@@ -132,6 +132,19 @@ class EmpresaService {
                                       .join('empresa_candidato_favorito','empresa.id','empresa_candidato_favorito.id_empresa')
                                       .where('empresa_candidato_favorito.id_aluno','=',id_aluno);
       return empresasFavoritas;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async  getAllStudentsByIdVaga(id_vaga: any){
+    try {
+      const alunosPorVagas = await knex('selecoes_candidato')
+        .select('*')
+        .join('aluno','aluno.id','selecoes_candidato.id_aluno')
+        .where('selecoes_candidato.id_vagas', '=', id_vaga);
+      
+      return alunosPorVagas;
     } catch (error) {
       throw new Error(error.message);
     }
