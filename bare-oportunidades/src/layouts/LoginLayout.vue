@@ -64,6 +64,10 @@
         <div id="ntc">
           <label @click="escolha = true">Não Tem Cadastro?</label>
         </div>
+
+        <div id="ntc">
+          <label @click="esqueciMinhaSenha">Esqueci minha senha</label>
+        </div>
       </q-form>
     </div>
     <span id="img-02">
@@ -116,6 +120,37 @@ export default {
       this.name = null;
       this.password = null;
       this.$refs.formLogin.resetValidation();
+    },
+    esqueciMinhaSenha() {
+      this.$q
+        .dialog({
+          title: "Esqueci minha Senha",
+          message: "Digite seu e-mail?",
+          prompt: {
+            model: "",
+            type: "text" // optional
+          },
+          cancel: true,
+          persistent: true
+        })
+        .onOk(data => {
+          this.snackBarPositive("Verifique sua caixa de entrada!");
+
+          usuario
+            .forgotPassword({ email: data })
+            .then(response => {
+              //this.snackBarPositive(response.data.message);
+            })
+            .catch(e => {
+              this.snackBarNegative(e.response.data.message);
+            });
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
     }
   }
 };
