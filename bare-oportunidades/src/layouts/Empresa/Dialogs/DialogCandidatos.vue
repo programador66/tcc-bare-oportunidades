@@ -32,6 +32,14 @@
                   <p>
                     {{ candidatos.telefone }}
                   </p>
+                  <strong>RA</strong>
+                  <p>
+                    {{ candidatos.registro_academico }}
+                  </p>
+                  <strong>Faculdade</strong>
+                  <p>
+                    {{ candidatos.faculdade }}
+                  </p>
                 </section>
               </article>
             </q-card-section>

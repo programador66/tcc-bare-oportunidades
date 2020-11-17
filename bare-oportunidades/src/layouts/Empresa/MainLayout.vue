@@ -138,7 +138,7 @@ export default {
             ...oportunidade,
             candidatos
           };
-          console.log(obj);
+
           if (candidatos.length) {
             this.setCandidatosAndVaga(obj);
             this.setModalCandidato(true);
