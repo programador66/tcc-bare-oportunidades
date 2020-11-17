@@ -98,7 +98,7 @@ class UserController {
       
      await mailer.sendMail({
         to: email,
-        from: 'bareoportunidades@suport.com.br',
+        from: 'bareoportunidades.suport@outlook.com',
         html: `<p>Esqueceu sua senha? Utilize este token para recuperar: ${token} </p>`,
       }, (err: any) => {
         if(err){
