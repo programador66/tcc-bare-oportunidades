@@ -203,12 +203,13 @@ export default {
   mounted() {
     this.getAllVagas();
     this.getInfoAlunoByUser();
+    this.getEmpresasFavoritas();
   },
   computed: {
     ...mapGetters("vaga", ["getterMyOportunitiesAndProfile"])
   },
   methods: {
-    ...mapMutations("vaga", ["setOpotunitiesAndProfile"]),
+    ...mapMutations("vaga", ["setOpotunitiesAndProfile", "setFavoriteVagas"]),
     getAllVagas() {
       this.$q.loading.show({
         message: "Carregando informações aguarde..."
@@ -264,6 +265,17 @@ export default {
         .catch(e => {
           console.log("erro");
           this.$q.loading.hide();
+        });
+    },
+    async getEmpresasFavoritas() {
+      const id_usuario = await JSON.parse(sessionStorage.getItem("usuario")).id;
+      AlunoService.getEmpresasFavoritas({ id_usuario })
+        .then(response => {
+          const dados = response.data.length ? response.data : [];
+          this.setFavoriteVagas(dados);
+        })
+        .catch(e => {
+          console.log(e.response);
         });
     },
     async confirmDesistencia(selecoes) {
