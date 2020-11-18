@@ -15,6 +15,11 @@ class usuario extends api {
     const response = await this.api.post('/forgot_password', parametros);
     return response;
   }
+
+  async resetPassword(parametros) {
+    const response = await this.api.post('/reset_password', parametros);
+    return response;
+  }
 }
 
 export default new usuario();

@@ -31,6 +31,11 @@ const routes = [{
   {
     path: "*",
     component: () => import("pages/Error404.vue")
+  },
+
+  {
+    path: "/token/:token",
+    component: () => import("layouts/ResetPassword.vue")
   }
 ];
 

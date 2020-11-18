@@ -122,22 +122,22 @@ class UserController {
         const usuario = await new UserService().getUserEmail(email);
 
         if(!usuario){
-          return response.status(400).send( { error: "usuário não encontrado" });
+          return response.status(400).send( { message: "usuário não encontrado" });
         }
 
         if(token !== usuario.passwordResetToken)
-          return response.status(400).send( { error: "token inválido" })
+          return response.status(400).send( { message: "token inválido" })
         
         const now  = new Date();
 
         if(now > usuario.passwordResetExpires)
-          return response.status(400).send( { error: "token expirado" })
+          return response.status(400).send( { message: "token expirado" })
           
         const passwordHash = await bcrypt.hash(senha, 8);
         usuario.senha = passwordHash
 
         await new UserService().updateUserId(usuario.id, usuario).then(() =>{
-          return response.status(204).send( { message: "Senha alterada com sucesso"} ) 
+          return response.status(200).send( { message: "Senha alterada com sucesso"} ) 
         })
 
       }catch(e){
