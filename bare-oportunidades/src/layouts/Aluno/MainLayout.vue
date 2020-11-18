@@ -140,14 +140,14 @@
       <q-tab-panel name="tab2">
         <div
           class=" bg-grey-3 rounded-borders card-aluno-vagas"
-          v-for="selecoes in selecoes_escritas"
-          :key="selecoes.id"
+          v-for="selecoes in getterMyOportunitiesAndProfile.vagasEscolhidas"
+          :key="selecoes.id_vaga"
         >
           <div id="td1">
             <label><strong>Vaga: </strong>{{ selecoes.titulo }}</label>
           </div>
 
-          <div id="td2">
+          <div id="td2-alun">
             <label>
               <strong>Empresa: </strong> {{ selecoes.razao_social }}</label
             >
@@ -158,6 +158,7 @@
               label="Desistir"
               type="button"
               style="background: white; color: #e65100;width:140px;margin-right:2%;"
+              @click="confirmDesistencia(selecoes)"
             />
 
             <q-btn
@@ -181,6 +182,7 @@ import CardSeguir from "./Cards/CardSeguir";
 import EmpresaService from "../../services/empresa/index";
 import FaculdadeService from "../../services/faculdade";
 import AlunoService from "../../services/aluno";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "MainLayoutaluno",
@@ -195,15 +197,19 @@ export default {
       slide3: 1,
       empresas: [],
       vagas: [],
-      eventos: [],
-      selecoes_escritas: []
+      eventos: []
     };
   },
   mounted() {
     this.getAllVagas();
     this.getInfoAlunoByUser();
+    this.getEmpresasFavoritas();
+  },
+  computed: {
+    ...mapGetters("vaga", ["getterMyOportunitiesAndProfile"])
   },
   methods: {
+    ...mapMutations("vaga", ["setOpotunitiesAndProfile", "setFavoriteVagas"]),
     getAllVagas() {
       this.$q.loading.show({
         message: "Carregando informações aguarde..."
@@ -253,13 +259,62 @@ export default {
 
       AlunoService.getOportunityByIdAluno({ id_usuario })
         .then(response => {
-          console.log(response.data);
-          this.selecoes_escritas = response.data.data.vagasEscolhidas;
+          this.cadastro =
+            response.data.data.aluno[0].status_aluno == "A" ? true : false;
+
+          this.setOpotunitiesAndProfile(response.data.data);
           this.$q.loading.hide();
         })
         .catch(e => {
           console.log("erro");
           this.$q.loading.hide();
+        });
+    },
+    async getEmpresasFavoritas() {
+      const id_usuario = await JSON.parse(sessionStorage.getItem("usuario")).id;
+      AlunoService.getEmpresasFavoritas({ id_usuario })
+        .then(response => {
+          const dados = response.data.length ? response.data : [];
+          this.setFavoriteVagas(dados);
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
+    async confirmDesistencia(selecoes) {
+      this.$q
+        .dialog({
+          title: "Confirmar Exclusão",
+          message: "Tem certeza que deseja desistir da vaga?",
+          cancel: true,
+          persistent: true
+        })
+        .onOk(() => {
+          this.desistirVagaUsingPost(selecoes);
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        });
+    },
+    async desistirVagaUsingPost(selecoes) {
+      const id_usuario = await JSON.parse(sessionStorage.getItem("usuario")).id;
+      const obj = {
+        id_vaga: selecoes.id__vagas,
+        id_usuario: id_usuario
+      };
+
+      AlunoService.desistirVagaUsingPost(obj)
+        .then(response => {
+          this.$q.notify({
+            type: "positive",
+            message: `${response.data.msg}`,
+            timeout: 1500
+          });
+          this.getInfoAlunoByUser();
+        })
+        .catch(e => {
+          this.$q.loading.hide();
+          console.log(e);
         });
     }
   }
@@ -273,16 +328,28 @@ export default {
 }
 .card-aluno-vagas {
   padding: 2%;
-  margin-top: 7%;
   height: 80px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-grow: 2;
+}
+
+.card-aluno-vagas:first-child {
+  margin-top: 7%;
 }
 
 #container-carrossel1 {
   width: 100%;
+}
+#td1 {
+  margin-left: 2%;
+  flex-grow: 2;
+  width: 100px;
+}
+#td2-alun {
+  flex-grow: 1;
 }
 .title-carrosel {
   color: #676767;
@@ -333,12 +400,12 @@ export default {
   height: 40px;
 }
 @media only screen and (max-width: 1100px) {
-  .card-aluno-vagas {
+  .card-aluno-vagas:first-child {
     margin-top: 10%;
   }
 }
 @media only screen and (max-width: 877px) {
-  .card-aluno-vagas {
+  .card-aluno-vagas:first-child {
     margin-top: 15%;
   }
 }

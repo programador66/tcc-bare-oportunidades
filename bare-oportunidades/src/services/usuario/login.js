@@ -10,11 +10,16 @@ class usuario extends api {
     const response = await this.api.post('/user', parametros);
     return response;
   }
-  // async getCurriculo(parametros) {
-  //     let config = this.headerToken();
-  //     const response = await this.api.post('candidato/getCurriculo', parametros, { ...config });
-  //     return response;
-  // }
+
+  async forgotPassword(parametros) {
+    const response = await this.api.post('/forgot_password', parametros);
+    return response;
+  }
+
+  async resetPassword(parametros) {
+    const response = await this.api.post('/reset_password', parametros);
+    return response;
+  }
 }
 
 export default new usuario();

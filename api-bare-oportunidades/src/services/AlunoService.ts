@@ -1,6 +1,7 @@
 import knex from "../database/connection";
 import IModelAluno from "../interfaces/IModelAluno";
 import IModelSelecoesCandidato  from "../interfaces/IModelSelecoesCandidato"
+import IModelVagaFavorita  from "../interfaces/IModelVagaFavorita"
 class AlunoService {
   async insert(aluno: IModelAluno, id_faculdade: Number) {
     const begintransaction = await knex.transaction();
@@ -52,22 +53,82 @@ class AlunoService {
   }
 
   async getOportunitiesByIdAluno(id_aluno: Number) {
-    const vagasByAluno = await  knex.select("selecoes_candidato.*","vagas.*","empresa.razao_social","empresa.descricao_empresa","empresa.fone","empresa.cep","empresa.id as idemp")
+    const vagasByAluno = await  knex.select("selecoes_candidato.*","vagas.titulo","vagas.id as id__vagas","empresa.razao_social","empresa.descricao_empresa","empresa.fone","empresa.cep","empresa.id as idemp")
       .from("selecoes_candidato")
-      .innerJoin("vagas", "selecoes_candidato.id_aluno", "vagas.id")
+      .innerJoin("vagas", "selecoes_candidato.id_vagas", "vagas.id")
       .innerJoin("empresa","empresa.id","vagas.id_empresa")
       .where("selecoes_candidato.id_aluno", "=", id_aluno);
 
     return vagasByAluno;
   }
 
+  async getExistStudentForVaga(id_aluno: Number, id_vaga: Number) {
+    const vagasByAluno = await  knex.select("selecoes_candidato.*","vagas.titulo","vagas.id as id__vagas","empresa.razao_social","empresa.descricao_empresa","empresa.fone","empresa.cep","empresa.id as idemp")
+      .from("selecoes_candidato")
+      .innerJoin("vagas", "selecoes_candidato.id_vagas", "vagas.id")
+      .innerJoin("empresa","empresa.id","vagas.id_empresa")
+      .where("selecoes_candidato.id_aluno", "=", id_aluno).and.where("selecoes_candidato.id_vagas", "=", id_vaga);
+
+    return vagasByAluno;
+  }
+
+  /**
+   * params  - obj  { IModelVagaFavorita }
+   * salvar favorito
+   */ 
+  async  applyFavoriteCompany(favorite :  IModelVagaFavorita){
+      
+      const aluno = await knex('empresa_candidato_favorito').where({'id_empresa':favorite.id_empresa,'id_aluno':favorite.id_aluno}).first();
+      if(!aluno){
+        const begintransaction = await knex.transaction();
+        const favoriteEmpresa = await begintransaction('empresa_candidato_favorito').insert(favorite);
+        if(!favoriteEmpresa){
+          begintransaction.rollback();
+          return { success: false, error: "Erro na inserção do favorito" };
+        }
+
+        begintransaction.commit();
+
+        return { success: true, msg: "Adicionado aos favoritos!" };
+
+      }else{
+        return { success: false, error: "favorito já cadastrado!" }
+      }
+  }
+    /**
+   * params  - obj  { IModelVagaFavorita }
+   * deletar favorito
+   */ 
+  async deleteFavoriteCompany(id_empresa: any, id_usuario: any){
+
+      const aluno = await this.getAlunoByIdUsuario(id_usuario);
+      if(aluno.length == 0) {
+        return { success: false, error: "aluno não encontrado" }
+      }
+      const aux = await knex('empresa_candidato_favorito').where({'id_empresa':id_empresa,'id_aluno':aluno[0].id}).first()
+      
+       if(aux){
+        await knex('empresa_candidato_favorito').where({'id':aux.id}).delete() 
+          return { success: true, msg: "favorito excluído com sucesso" };;
+       } else{
+        return { success: false, error: "Erro ao excluir favorito" };
+       }
+      
+  }
+
   async getAlunoByIdUsuario(id_usuario: Number) {
-    const aluno = await  knex.select("aluno.*")
+    const aluno = await  knex.select("aluno.*","aprova_aluno.status as status_aluno")
       .from("aluno")
       .innerJoin("usuario", "aluno.id_usuario", "usuario.id")
+      .innerJoin('aprova_aluno','aluno.id','aprova_aluno.id_aluno')
       .where("aluno.id_usuario", "=", id_usuario);
 
     return aluno;
+  }
+
+  async desistirVaga(id:any){
+      await knex('selecoes_candidato').where({id}).delete();
+      return { success: true, msg: "favorito excluído com sucesso" };;
   }
 }
 

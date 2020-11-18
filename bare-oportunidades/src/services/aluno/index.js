@@ -27,6 +27,35 @@ class Aluno extends api {
 
     return response;
   }
+  
+  async desistirVagaUsingPost(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/desistir-vaga`, obj, {
+      ...config
+    });
+    return response;
+  }
+
+  async favoritarEmpresa(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/favorite-empresa`,obj,{...config});
+
+    return response;
+  }
+
+  async desfavoritarEmpresa(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/delete-favorite`,obj,{...config});
+
+    return response;
+  }
+
+    async getEmpresasFavoritas(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post(`/empresas-favoritas`,obj,{...config});
+
+    return response;
+  }
 }
 
 export default new Aluno();

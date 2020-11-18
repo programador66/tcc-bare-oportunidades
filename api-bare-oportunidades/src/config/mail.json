@@ -1,6 +1,6 @@
 {
-    "host": "smtp.mailtrap.io",
-    "port": 2525,
-    "user": "8c76a3933736e4" ,
-    "pass": "08b6ff1384a4cf"
+    "host": "SMTP.office365.com",
+    "port": 587,
+    "user": "bareoportunidades.suport@outlook.com" ,
+    "pass": "!@Naoseibare"
 }

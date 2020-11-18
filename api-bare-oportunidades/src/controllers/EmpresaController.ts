@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import EmpresaService from "../services/EmpresaService";
 import moment from "moment";
 import { separarArray } from "../helpers/index"
+import AlunoService from "../services/AlunoService";
 class EmpresaController {
   async insertNovaOportunidade(request: Request, response: Response) {
     try {
@@ -134,6 +135,46 @@ class EmpresaController {
       })
     }
   }
+  async getStudentFavoriteEmpresa(request: Request, response: Response){
+
+    try {
+        const { id_usuario} = request.body;
+        const aluno = await new AlunoService().getAlunoByIdUsuario(id_usuario)
+        if(aluno.length == 0) {
+          return  response.status(200).json({ success: false, error: "aluno não encontrado" });
+        }
+        const empresasFavoritas  = await new EmpresaService().getStudentFavoriteEmpresa(aluno[0].id);                
+        return response.status(200).json(empresasFavoritas);
+    } catch (error) {
+      return response.status(406).json({
+        success: false,
+        error: error.message
+      })
+    }
+   
+       
+  } 
+
+    async getAllStudentsByIdVaga(request: Request, response: Response){
+
+    try {
+        const { id_vaga } = request.body;
+        const alunosPorVaga = await new EmpresaService().getAllStudentsByIdVaga(id_vaga)
+        if(alunosPorVaga.length == 0) {
+          return  response.status(200).json({ success: true, data: [] });
+        }
+        
+      return response.status(200).json({ success: true, data: alunosPorVaga});;
+      
+    } catch (error) {
+      return response.status(406).json({
+        success: false,
+        error: error.message
+      })
+    }
+   
+       
+  } 
 
 }
 

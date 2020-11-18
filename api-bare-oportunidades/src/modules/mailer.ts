@@ -4,9 +4,12 @@ import * as nodemailer from "nodemailer";
 const confgMail = require('../config/mail.json')
 
 const transport = nodemailer.createTransport({
-  host: confgMail.host,
-  port: confgMail.port,
-  secure: false,
+  // requireTLS: true,
+  host: 'smtp-mail.outlook.com',
+  port: 587,
+  tls: {
+    ciphers:'SSLv3'
+  },
   auth: {
       user: confgMail.user,
       pass: confgMail.pass

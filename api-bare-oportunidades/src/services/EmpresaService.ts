@@ -40,7 +40,7 @@ class EmpresaService {
   async getOportunidadesByEmpresa(id: Number) {
     try {
       const oportunidades = await knex("vagas")
-      .select("*")
+        .select("*")
       .where('id_empresa', "=", id);
       
       return oportunidades;
@@ -86,7 +86,7 @@ class EmpresaService {
   async getVagas(){
     try {
       const vagas = await knex('vagas')
-        .select('*')
+        .select('empresa.*',"vagas.titulo", "vagas.id as id_vaga","vagas.atividades_responsabilidades","vagas.data_post", "vagas.requisitos","vagas.hora_post", "vagas.status")
         .innerJoin('empresa', 'empresa.id', 'vagas.id_empresa')
         .orderBy([{column: 'vagas.data_post',order:'desc'},{ column: 'vagas.hora_post',order: 'desc'}]);                               
       return vagas;
@@ -109,11 +109,48 @@ class EmpresaService {
       const vaga = await this.getVagasById(id);
       
       const candidaturas = await knex('aluno').select('aluno.nome', 'aluno.telefone','aluno.sexo','aluno.registro_academico','usuario.email')
-                                              .innerJoin('usuario','aluno.id_usuario','usuario.id')
-                                              .join('selecoes_candidato', 'aluno.id','selecoes_candidato.id_aluno')
-                                              .join('vagas','selecoes_candidato.id_vagas','vagas.id').where('vagas.id',id)
+        .innerJoin('usuario','aluno.id_usuario','usuario.id')
+        .join('selecoes_candidato', 'aluno.id','selecoes_candidato.id_aluno')
+        .join('vagas','selecoes_candidato.id_vagas','vagas.id').where('vagas.id',id)
       
       return candidaturas;
+  }
+
+  async getEmpresaByid (id: number){
+   
+     try {
+      const empresa =  await knex('empresa').select('*').where( { id } ).first();
+      return empresa;
+     } catch (error) {
+      throw new Error(error.message)
+     }
+  }
+
+  async  getStudentFavoriteEmpresa(id_aluno: any){
+    try {
+      const empresasFavoritas = await knex('empresa').select('empresa.id as id_empresa')
+                                      .join('empresa_candidato_favorito','empresa.id','empresa_candidato_favorito.id_empresa')
+                                      .where('empresa_candidato_favorito.id_aluno','=',id_aluno);
+      return empresasFavoritas;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async  getAllStudentsByIdVaga(id_vaga: any){
+    try {
+      const alunosPorVagas = await knex('selecoes_candidato')
+        .select('selecoes_candidato.*','aluno.*','usuario.email','faculdade.nome as faculdade')
+        .join('aluno', 'aluno.id', 'selecoes_candidato.id_aluno')
+        .join('usuario', 'aluno.id_usuario', 'usuario.id')
+        .join('aprova_aluno', 'aluno.id', 'aprova_aluno.id_aluno')
+        .join('faculdade','aprova_aluno.id_faculdade','faculdade.id')
+        .where('selecoes_candidato.id_vagas', '=', id_vaga);
+      
+      return alunosPorVagas;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 }
 

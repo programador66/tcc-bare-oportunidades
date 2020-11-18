@@ -21,7 +21,12 @@ class AlunoController {
 
     const aluno = await new AlunoService().getStudentById(id_usuario);
     const vaga = await new EmpresaService().getVagasById(id_vaga);
-    if(aluno && vaga){
+
+
+    const candidatura  = await new AlunoService().getExistStudentForVaga(aluno.id, vaga.id);
+
+    if(candidatura.length == 0){
+      if(aluno && vaga){
         const selecaoCandidato = {
           status_selecao: 'A',
           data_selecao: moment().locale("pt-br").format("L"),
@@ -39,10 +44,13 @@ class AlunoController {
           });
         }
         
-    }else{
+    }else
       return response.status(404).json({message: 'usuário não encontrado'})
-    }
-
+      
+    }else
+      return response.status(406).json({message: 'aluno já cadastrado nessa vaga!'})
+    
+  
   }
 
   async getAlunoByIdUsuario(request: Request, response : Response) {
@@ -62,6 +70,54 @@ class AlunoController {
     return response.status(200).json({
       data: res,
     });
+  }
+
+  async favoriteEmpresa(request: Request, response: Response){
+    const { id_empresa, id_usuario } = request.body;
+
+    const aluno = await new AlunoService().getStudentById(id_usuario);
+    const empresa = await new EmpresaService().getEmpresaByid(id_empresa);
+    if(aluno && empresa){
+        const empresaFavorita = {
+          favorito: 'A',
+          id_empresa: empresa.id,
+          id_aluno: aluno.id
+        }
+
+        try {
+          const res = await new AlunoService().applyFavoriteCompany(empresaFavorita);
+          return response.status(200).json(res);
+        } catch (error) {
+          return response.status(406).json({
+            success: false,
+            error: error.getMessage,
+          });
+        }
+    
+     }else{
+        return response.status(404).json({message: 'usuário não encontrado'})
+     }
+  }
+
+  async deleteFavorite(request: Request, response: Response) {
+    const { id_empresa, id_usuario } = request.body;
+    const msg = await new AlunoService().deleteFavoriteCompany(id_empresa,id_usuario);
+    return response.status(200).json(msg);
+  }
+
+  async desistirVaga(request: Request, response: Response){
+    const { id_usuario , id_vaga  } = request.body;
+   
+    const aluno = await new AlunoService().getStudentById(id_usuario);
+    const vaga = await new EmpresaService().getVagasById(id_vaga);
+    const candidatura  = aluno && vaga ? await new AlunoService().getExistStudentForVaga(aluno.id, vaga.id): [];
+
+    if(candidatura?.length > 0){
+        const result = await new AlunoService().desistirVaga(candidatura[0]?.id);
+        return response.status(200).json(result)
+    }else{
+       return response.status(406).json({ success: false, error: "Erro ao excluir favorito" })
+    }
   }
 }
 

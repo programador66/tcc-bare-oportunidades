@@ -28,7 +28,7 @@ routes.get("/faculdades", faculdadeController.index);
 routes.get('/empresas', empresaController.getEmpresas)
 routes.get('/vagas',empresaController.getVagas)
 routes.get('/eventos', faculdadeController.getEvents)
-
+routes.post('/empresas-favoritas',empresaController.getStudentFavoriteEmpresa)
 routes.use(auth);
 routes.post("/getEventsByIdFaculdade", faculdadeController.getEventByIdFaculdade);
 routes.post("/createEvent", faculdadeController.createEvent);
@@ -41,12 +41,16 @@ routes.post("/aproveStudents", faculdadeController.aproveStudents);
 routes.post("/alunos", alunoController.getStudentByCollege);
 routes.post("/applyOportunity", alunoController.applyOportunity);
 routes.post("/getAlunoById", alunoController.getAlunoByIdUsuario)
-
+routes.post("/favorite-empresa",alunoController.favoriteEmpresa)
+routes.post("/delete-favorite", alunoController.deleteFavorite)
+routes.post("/desistir-vaga", alunoController.desistirVaga)
 /** Route:Empresa */
 routes.post("/oportunity",empresaController.insertNovaOportunidade);
 routes.put("/oportunity",empresaController.updateOportunidade);
 routes.post("/get-oportunity-by-empresa",empresaController.getOportunidadesByEmpresa);
 routes.post("/get-empresa-by-id-usuario",empresaController.getEmpresaById_Usuario);
 routes.post("/students-oportunity", empresaController.getStudentsByVagas);
+routes.post("/get-candidatos-por-vaga", empresaController.getAllStudentsByIdVaga);
+
 
 export default routes;
