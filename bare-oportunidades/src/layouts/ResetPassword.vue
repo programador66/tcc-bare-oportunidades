@@ -112,16 +112,17 @@ export default {
       return false;
     },
     resetPassword() {
-      this.$q.loading.show({
-        message: "Validando dados Aguarde ..."
-      });
+      
       const validate = this.validateForm();
 
       if (validate) return (this.formHasError = true);
 
       if (this.novaSenha !== this.confimaNovaSenha)
         return this.messageAlert("Senhas Digitadas não conferem!");
-
+        
+      this.$q.loading.show({
+              message: "Validando dados Aguarde ..."
+            });
       const obj = {
         email: this.email,
         senha: this.novaSenha,
