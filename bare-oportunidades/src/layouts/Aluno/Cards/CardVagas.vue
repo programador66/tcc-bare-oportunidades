@@ -2,8 +2,8 @@
   <q-card class="rounded-borders col-4 full-height">
     <q-card-section>
       <div id="cardt1">
-        <q-avatar size="60px" id="avatar">
-          <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+        <q-avatar size="60px" color="primary" text-color="white" id="avatar">
+          {{nomeLogo}}
         </q-avatar>
         <label id="title">{{ vaga.titulo }}</label>
         <label>Ativo</label
@@ -30,8 +30,18 @@ export default {
   props: ["vaga"],
   data() {
     return {
-      inscrever: true
+      inscrever: true,
+      nomeLogo: ""
     };
+  },
+  mounted() {
+    const vaga = this.vaga.titulo.split(" ");
+    const arr1 = vaga[0].split("");
+    const arr2 = vaga.length == 2 ? vaga[1].split("") : "";
+
+    this.nomeLogo = arr2 .length ? `${arr1[0]}${arr2[0]}`.toUpperCase()
+      : `${arr1[0]}`.toUpperCase();
+
   },
   methods: {
     ...mapMutations("vaga", { setVaga: "setVagaSelected" }),

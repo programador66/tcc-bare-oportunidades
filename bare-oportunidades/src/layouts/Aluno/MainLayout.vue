@@ -138,6 +138,9 @@
         </q-page-container>
       </q-tab-panel>
       <q-tab-panel name="tab2">
+        <div id="header-alunos">
+         <h5>Lista de Vagas Oferecidas</h5>
+        </div>
         <div
           class=" bg-grey-3 rounded-borders card-aluno-vagas"
           v-for="selecoes in getterMyOportunitiesAndProfile.vagasEscolhidas"
@@ -322,6 +325,13 @@ export default {
 </script>
 
 <style>
+#header-alunos {
+  margin-top: 5%;
+}
+#header-alunos h5 {
+  color:  #e65100;
+  font-weight: bold;
+}
 #div-aprova-reprova {
   display: flex;
   justify-content: center;

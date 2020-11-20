@@ -11,8 +11,8 @@
       <q-tabs v-model="tab" shrink @click="eventoTab">
         <slot />
       </q-tabs>
-      <q-avatar size="60px" @click="drawer = !drawer">
-        <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+      <q-avatar size="60px" color="primary" text-color="white" id="avatar" @click="drawer = !drawer">
+        {{nomeLogo}}
       </q-avatar>
     </q-toolbar>
     <q-drawer
@@ -74,8 +74,15 @@ export default {
     return {
       tab: "",
       drawer: false,
-      menuList
+      menuList,
+      nomeLogo:"BO"
     };
+  },
+  mounted() {
+    const usuario =  JSON.parse(sessionStorage.getItem("usuario")).email;
+    const nl = usuario.split(" ");
+    const nl2 = usuario.split("");
+    this.nomeLogo = `${nl2[0]}`.toUpperCase();
   },
   methods: {
     logout(e) {
