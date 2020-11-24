@@ -51,6 +51,8 @@ routes.post("/get-oportunity-by-empresa",empresaController.getOportunidadesByEmp
 routes.post("/get-empresa-by-id-usuario",empresaController.getEmpresaById_Usuario);
 routes.post("/students-oportunity", empresaController.getStudentsByVagas);
 routes.post("/get-candidatos-por-vaga", empresaController.getAllStudentsByIdVaga);
+routes.post("/get-relatorio", empresaController.getRelatorio);
+
 
 
 export default routes;

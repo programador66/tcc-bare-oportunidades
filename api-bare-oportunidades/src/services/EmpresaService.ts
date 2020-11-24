@@ -152,6 +152,72 @@ class EmpresaService {
       throw new Error(error.message);
     }
   }
+
+   gerarPDF(candidatos: any, empresa: any, vagas: any, response: any) {
+     const {Base64Encode} = require('base64-stream');
+     const PDFDocument = require('pdfkit');
+     const fs = require('fs');
+
+     // Create a document
+     const doc = new PDFDocument();
+
+     // Pipe its output somewhere, like to a file or HTTP response
+     // See below for browser usage
+     let finalString = ''; // contains the base64 string
+     const stream = doc.pipe(new Base64Encode());
+
+     // Embed a font, set the font size, and render some text
+     doc.fontSize(14)
+         /** Dados da empresa*/
+         .font('Courier-Bold', 14)
+         .text('Empresa: ', 80, 50).moveDown()
+         .font('Courier', 12)
+         .text('Razão social: ' + empresa.razao_social, 100).moveDown()
+         .text('Nome fantasia: ' + empresa.nome_fantasia).moveDown()
+         .text('CNPJ: ' + empresa.cnpj).moveDown()
+         .text('CEP: ' + empresa.cep).moveDown()
+         .text('Fone: ' + empresa.fone).moveDown()
+         .text('Descrição da empresa: ' + empresa.descricao_empresa, {
+           align: 'justify',
+           border: true
+         }).moveDown()
+
+         /** Dados da vaga*/
+         .font('Courier-Bold', 14)
+         .text('Vaga Oferecida: ', 80).moveDown()
+         .font('Courier', 12)
+         .text('Atividades: ' + vagas.atividades_responsabilidades, 100).moveDown()
+         .text('Requisitos: ' + vagas.requisitos).moveDown()
+         .text('Dada/Hora: ' + vagas.data_post + ' as ' + vagas.hora_post).moveDown()
+
+         /** Dados dos canditados a vaga*/
+         .font('Courier-Bold', 14)
+         .text('Candidatos a vaga: ', 80).moveDown();
+
+     candidatos.forEach((candidato: any) => {
+       doc.fontSize(14)
+           .font('Courier', 12)
+           .text('Nome: ' + candidato.nome, 100)
+           .text('Endereço: ' + candidato.endereco)
+           .text('Sexo: ' + candidato.sexo)
+           .text('CPF: ' + candidato.cpf)
+           .text('Telefone: ' + candidato.telefone)
+           .text('E-mail: ' + candidato.email)
+           .text('Instituição: ' + candidato.faculdade)
+           .text('Registro Academico: ' + candidato.registro_academico).moveDown()
+     });
+
+     // Finalize PDF file
+     doc.end();
+
+     stream.on('data', (chunk: any) => {
+       finalString += chunk;
+     });
+     stream.on('end', function () {
+       // the stream is at its end, so push the resulting base64 string to the response
+       response.json(finalString);
+     });
+   }
 }
 
 export default EmpresaService;

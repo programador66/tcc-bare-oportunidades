@@ -50,6 +50,7 @@
       <q-separator />
 
       <q-card-actions align="right">
+        <q-btn flat label="Relatorio PDF" color="primary" @click="gerarRelatorio" />
         <q-btn flat label="Fechar" color="primary" @click="closeModal" />
       </q-card-actions>
     </q-card>
@@ -58,6 +59,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import EmpresaService from "../../../services/empresa/index";
 
 export default {
   props: ["openModal"],
@@ -66,13 +68,38 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("empresa", ["getModalCandidato", "getCandidatosAndVaga"])
+    ...mapGetters("empresa", ["getModalCandidato", "getCandidatosAndVaga", "getGerarRelatorio"])
   },
   methods: {
     ...mapMutations("empresa", ["setModalCandidato"]),
     closeModal() {
       this.setModalCandidato(false);
-    }
+    },
+    gerarRelatorio() {
+      const candidatosAndVaga = this.getCandidatosAndVaga;
+
+     const obj = {
+        id: candidatosAndVaga.id,
+        id_empresa: candidatosAndVaga.id_empresa,
+        candidatos: this.getCandidatosAndVaga.candidatos
+      };
+
+      console.log(obj);
+
+      EmpresaService.getGerarRelatorio(obj)
+        .then(response => {
+          console.log(response.data);
+          let pdfWindow = window.open("")
+          pdfWindow.document.write(
+            "<iframe width='100%' height='100%' src='data:application/pdf;base64, " + response.data + "'></iframe>"
+          )
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
+
+
   }
 };
 </script>
