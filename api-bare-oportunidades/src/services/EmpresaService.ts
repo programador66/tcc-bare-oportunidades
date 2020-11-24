@@ -154,6 +154,7 @@ class EmpresaService {
   }
 
    gerarPDF(candidatos: any, empresa: any, vagas: any, response: any) {
+     const  Buffer = require('buffer').Buffer;
      const {Base64Encode} = require('base64-stream');
      const PDFDocument = require('pdfkit');
      const fs = require('fs');
@@ -166,11 +167,14 @@ class EmpresaService {
      let finalString = ''; // contains the base64 string
      const stream = doc.pipe(new Base64Encode());
 
+     //Add an image
+     doc.image(__dirname +'/../assets/img/bare_oportunidades.PNG', 15, 15, {width: 180}).moveDown();
+
      // Embed a font, set the font size, and render some text
      doc.fontSize(14)
          /** Dados da empresa*/
          .font('Courier-Bold', 14)
-         .text('Empresa: ', 80, 50).moveDown()
+         .text('Empresa: ', 80, 100).moveDown()
          .font('Courier', 12)
          .text('Razão social: ' + empresa.razao_social, 100).moveDown()
          .text('Nome fantasia: ' + empresa.nome_fantasia).moveDown()
