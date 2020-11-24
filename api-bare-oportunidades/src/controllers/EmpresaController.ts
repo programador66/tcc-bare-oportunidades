@@ -172,10 +172,22 @@ class EmpresaController {
         error: error.message
       })
     }
-   
-       
-  } 
 
+
+  }
+  async getRelatorio(request: Request, response : Response){
+      try {
+        const { id_empresa, id, candidatos} = request.body;
+        const empresa = await new EmpresaService().getEmpresaByid(id_empresa);
+        const vagas = await new EmpresaService().getVagasById(id);
+        return  new EmpresaService().gerarPDF(candidatos, empresa, vagas, response);
+      } catch (error) {
+        return response.status(406).json({
+          success: false,
+          error: error.message
+        })
+      }
+    }
 }
 
 export default EmpresaController;
