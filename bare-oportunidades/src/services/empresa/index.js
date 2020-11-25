@@ -47,6 +47,13 @@ class Empresa extends api {
     const response = await this.api.get("/vagas");
     return response;
   }
+  async getVagasByTitulo(obj) {
+    const config = this.headerToken();
+    const response = await this.api.post("/vagasByTitulo", obj, {
+      ...config
+    });
+    return response;
+  }
 
   async getAllOportunidadesByIdVaga(obj ){
     const config = this.headerToken();

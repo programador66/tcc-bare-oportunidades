@@ -23,19 +23,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36f2a446-eba1-4953-88fc-b348c76c9760" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/api-bare-oportunidades/src/controllers/imagens/marca-bare.oportunidades-02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api-bare-oportunidades/src/controllers/imagens/marca-bare.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-bare-oportunidades/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/api-bare-oportunidades/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-bare-oportunidades/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/api-bare-oportunidades/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api-bare-oportunidades/src/controllers/EmpresaController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api-bare-oportunidades/src/controllers/EmpresaController.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api-bare-oportunidades/src/database/database.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/api-bare-oportunidades/src/database/database.sqlite" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api-bare-oportunidades/src/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api-bare-oportunidades/src/routes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api-bare-oportunidades/src/services/EmpresaService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api-bare-oportunidades/src/services/EmpresaService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bare-oportunidades/src/layouts/Aluno/MainLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/bare-oportunidades/src/layouts/Aluno/MainLayout.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bare-oportunidades/src/layouts/Empresa/Dialogs/DialogCandidatos.vue" beforeDir="false" afterPath="$PROJECT_DIR$/bare-oportunidades/src/layouts/Empresa/Dialogs/DialogCandidatos.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bare-oportunidades/src/services/empresa/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/bare-oportunidades/src/services/empresa/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bare-oportunidades/src/store/modulo-empresa/getters.js" beforeDir="false" afterPath="$PROJECT_DIR$/bare-oportunidades/src/store/modulo-empresa/getters.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bare-oportunidades/src/store/modulo-empresa/mutations.js" beforeDir="false" afterPath="$PROJECT_DIR$/bare-oportunidades/src/store/modulo-empresa/mutations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bare-oportunidades/src/store/modulo-empresa/state.js" beforeDir="false" afterPath="$PROJECT_DIR$/bare-oportunidades/src/store/modulo-empresa/state.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,20 +48,23 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/api-bare-oportunidades/src/controllers" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/api-bare-oportunidades/src/services" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/api-bare-oportunidades/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/api-bare-oportunidades/src/controllers" />
-      <recent name="$PROJECT_DIR$/api-bare-oportunidades/src/assets/img" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/api-bare-oportunidades/src/assets/img" />
+      <recent name="$PROJECT_DIR$/api-bare-oportunidades/src/services" />
       <recent name="$PROJECT_DIR$/api-bare-oportunidades/src/controllers/imagens" />
       <recent name="$PROJECT_DIR$/api-bare-oportunidades/src/controllers" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/api-bare-oportunidades/src/services" />
+      <recent name="$PROJECT_DIR$/api-bare-oportunidades/src/controllers" />
+      <recent name="$PROJECT_DIR$/api-bare-oportunidades/src/assets/img" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -80,6 +78,7 @@
       <workItem from="1605725177061" duration="40633000" />
       <workItem from="1606157305906" duration="14719000" />
       <workItem from="1606221542196" duration="4046000" />
+      <workItem from="1606303584383" duration="15274000" />
     </task>
     <servers />
   </component>

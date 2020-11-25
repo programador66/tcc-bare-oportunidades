@@ -25,7 +25,7 @@
 
         <q-page-container v-else id="container-aluno-body">
           <span id="buscar"
-            ><q-input rounded outlined label="BUSQUE SUA OPORTUNIDADE">
+            ><q-input rounded outlined label="BUSQUE SUA OPORTUNIDADE" v-on:keyup.enter="buscarVaga" v-model="titulo"  >
               <template v-slot:append>
                 <q-icon name="search" />
               </template>
@@ -200,7 +200,8 @@ export default {
       slide3: 1,
       empresas: [],
       vagas: [],
-      eventos: []
+      eventos: [],
+      titulo: []
     };
   },
   mounted() {
@@ -318,6 +319,24 @@ export default {
         .catch(e => {
           this.$q.loading.hide();
           console.log(e);
+        });
+    },
+    buscarVaga(){
+      const obj = {
+        titulo: this.titulo
+      };
+      this.$q.loading.show({
+        message: "Carregando informações aguarde..."
+      });
+      EmpresaService.getVagasByTitulo(obj)
+        .then(response => {
+          this.vagas = response.data;
+          this.getAllEmpresas();
+        })
+        .catch(e => {
+          this.$q.loading.hide();
+          if (e.response == undefined) console.log("Sem internet");
+          console.log(e.response);
         });
     }
   }

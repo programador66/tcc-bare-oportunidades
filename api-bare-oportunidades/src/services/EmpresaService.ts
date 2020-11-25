@@ -95,6 +95,21 @@ class EmpresaService {
     }
    
   }
+  async getVagasByTitulo(titulo: string){
+    try {
+      titulo = `%${titulo}%`;
+      const vagas = await knex('vagas')
+          .select('empresa.*',"vagas.titulo", "vagas.id as id_vaga","vagas.atividades_responsabilidades","vagas.data_post", "vagas.requisitos","vagas.hora_post", "vagas.status")
+          .innerJoin('empresa', 'empresa.id', 'vagas.id_empresa')
+          .where('vagas.titulo', 'like', titulo)
+          .orderBy([{column: 'vagas.data_post',order:'desc'},{ column: 'vagas.hora_post',order: 'desc'}]);
+      return vagas;
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+  }
+
   async getVagasById(id: number){
     try {
       const vagas = await knex('vagas')

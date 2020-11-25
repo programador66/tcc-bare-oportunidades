@@ -122,6 +122,19 @@ class EmpresaController {
     }
   }
 
+  async getVagasByTitulo(request: Request, response : Response){
+    try {
+      const { titulo } = request.body;
+      const vagas = await new EmpresaService().getVagasByTitulo(titulo);
+      return response.status(200).json(separarArray(vagas,3))
+    } catch (error) {
+      return response.status(406).json({
+        success: false,
+        error: error.message
+      })
+    }
+  }
+
   async getStudentsByVagas(request: Request, response:Response){
     try {
       const { id_vaga } = request.body;

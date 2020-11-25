@@ -27,6 +27,7 @@ routes.post('/reset_password', userController.reset_password)
 routes.get("/faculdades", faculdadeController.index);
 routes.get('/empresas', empresaController.getEmpresas)
 routes.get('/vagas',empresaController.getVagas)
+routes.post('/vagasByTitulo',empresaController.getVagasByTitulo)
 routes.get('/eventos', faculdadeController.getEvents)
 routes.post('/empresas-favoritas',empresaController.getStudentFavoriteEmpresa)
 routes.use(auth);
