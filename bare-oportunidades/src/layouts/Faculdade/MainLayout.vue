@@ -163,7 +163,6 @@ export default {
   },
   mounted() {
     this.buscarDadosFaculdade();
-    this.buscarAlunos();
     this.buscarEventos();
   },
   watch: {
@@ -182,15 +181,15 @@ export default {
         .then(response => {
           this.nome = response.data.data[0].nome;
           const id_faculdade = response.data.data[0].id;
+          this.buscarAlunos(id_faculdade);
         })
         .catch(e => {
           console.log(e.response);
         });
     },
-    async buscarAlunos() {
-      const id_faculdade = await JSON.parse(sessionStorage.getItem("usuario"))
-        .id;
-
+    async buscarAlunos(id_faculdade) {
+        console.log("alouuuuuu");
+        console.log(id_faculdade);
       await aluno
         .getAlunoByCollege({ id_faculdade })
         .then(response => {
