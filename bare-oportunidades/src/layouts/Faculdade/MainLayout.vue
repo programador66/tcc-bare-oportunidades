@@ -158,7 +158,8 @@ export default {
       dialog: false,
       eventos: [],
       atualiza: false, //variavel responsavel por camar o endPoint caso for inserido um novo evento
-      eventosAtualizar: []
+      eventosAtualizar: [],
+      id_faculdade: 0
     };
   },
   mounted() {
@@ -181,6 +182,7 @@ export default {
         .then(response => {
           this.nome = response.data.data[0].nome;
           const id_faculdade = response.data.data[0].id;
+          this.id_faculdade = id_faculdade;
           this.buscarAlunos(id_faculdade);
         })
         .catch(e => {
@@ -188,8 +190,7 @@ export default {
         });
     },
     async buscarAlunos(id_faculdade) {
-        console.log("alouuuuuu");
-        console.log(id_faculdade);
+
       await aluno
         .getAlunoByCollege({ id_faculdade })
         .then(response => {
@@ -264,7 +265,7 @@ export default {
             message: response.data.data.msg,
             timeout: 1500
           });
-          this.buscarAlunos();
+          this.buscarAlunos(this.id_faculdade);
         })
         .catch(e => {
           console.log(e.response);
@@ -303,7 +304,7 @@ export default {
                 message: response.data.data.msg,
                 timeout: 1500
               });
-              this.buscarAlunos();
+              this.buscarAlunos(this.id_faculdade);
             })
             .catch(e => {
               console.log(e.response);
